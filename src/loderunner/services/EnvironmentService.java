@@ -8,6 +8,5 @@ public interface EnvironmentService extends ScreenService {
 	/*
 	 * Invariants
 	 */
-	
 	public HashMap<CharacterService,ItemService> cellContent(int x, int y);
 }
