@@ -1,12 +1,11 @@
 package loderunner.services;
 
-import java.util.HashMap;
-import java.util.Set;
+import java.util.HashSet;
 
 public interface EnvironmentService extends ScreenService {
 
 	/*
 	 * Invariants
 	 */
-	public HashMap<CharacterService,ItemService> cellContent(int x, int y);
+	public HashSet<CellContent>  cellContent(int x, int y);
 }

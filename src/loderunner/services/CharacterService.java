@@ -1,9 +1,10 @@
 package loderunner.services;
 
-public interface CharacterService {
+public interface CharacterService extends CellContent{
 
 	/*
 	 * Invariants
+	 * inv : getEnvi().getCellNature(getWdt(),getHgt()) in {MLT,HOL,LAD,HDR}
 	 */
 	
 	
@@ -20,11 +21,11 @@ public interface CharacterService {
 	 */
 	
 	/**
-	 * pre  : getEnvi().getCellNature(x,y) == HOL
+	 * pre  : getEnvi().getCellNature(x,y) == EMP
 	 * post : getHgt = h 
-	 * post : getCol = c
+	 * post : getWdt = w
 	 */
-	public void init(int c, int h);
+	public void init(ScreenService screen,int w, int h);
 
 	
 	/*
@@ -32,8 +33,9 @@ public interface CharacterService {
 	 */
 	
 	/**
+	 * 
 	 * post : getHgt() == getHgt()@pre
-	 * post : getWdt() -> getWdt() == getWdt()@pre
+	 * post : getWdt()=0 -> getWdt() == getWdt()@pre
 	 * post : getEnvi().getCellNature(getWdt()-1,getHgt()) \in {MLT,PLT,LAD} -> getWdt() == getWdt()@pre
 	 * post : getEnvi().getCellNature(getWdt()-1,getHgt()) \notin {LAD,HDR} &&
 	 * 		  getEnvi().getCellNature(getWdt(),getHgt()-1) \in {PLT,MTL} &&

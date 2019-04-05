@@ -1,15 +1,13 @@
 package loderunner.impl;
 
 
-import java.awt.Point;
-import java.util.HashMap;
-
 import loderunner.services.Cell;
 import loderunner.services.ScreenService;
 
 public class ScreenImpl implements ScreenService{
 
 	private int height,width;
+	private Cell[][] ecran;
 	
 	public ScreenImpl(int h, int w) {
 		init(h,w);
@@ -26,14 +24,21 @@ public class ScreenImpl implements ScreenService{
 
 	@Override
 	public Cell getCellNature(int x, int y) {
-		return null;
+		return ecran[x][y];
 	}
 
 	@Override
 	public void init(int h, int w) {
 		this.height =h;
 		this.width =w;
+		ecran = new Cell[h][w];	
 		
+		for(int i= 0;i<h;i++) {
+			for(int j =0;j<w;j++) {
+				
+				ecran[i][j] = Cell.EMP;
+			}
+		}
 		
 		
 		
@@ -41,13 +46,13 @@ public class ScreenImpl implements ScreenService{
 
 	@Override
 	public void dig(int x, int y) {
-		// TODO Auto-generated method stub
+		ecran[x][y] = Cell.HOL;
 		
 	}
 
 	@Override
 	public void fill(int x, int y) {
-		// TODO Auto-generated method stub
+		ecran[x][y] = Cell.PLT;
 		
 	}
 
