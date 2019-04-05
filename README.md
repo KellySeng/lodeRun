@@ -25,6 +25,7 @@ Modalités :
 
 ----------------------------------------------------------------------------------------------
 Rapport :
+
     - Manuel d'utilisation du jeu
     - Description du projet et des extension
     - Expliquer les choix et difficultés concernant l'implémentation/contrat/test (point de vue CPS)
