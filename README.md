@@ -4,7 +4,7 @@ A faire pour le vendredi 12 avril:
 
 Rendre dans .jar et build.xml le contrat et l'implémentation (donc décorateur et services) de :
 
-    - Screen
+    - Screen -> EditableScreen
     - Environnement
     - Character
     - Player
