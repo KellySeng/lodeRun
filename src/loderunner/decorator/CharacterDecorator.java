@@ -7,8 +7,6 @@ import loderunner.services.ScreenService;
 public class CharacterDecorator implements CharacterService{
 
 	private CharacterService delegate;
-	
-	
 
 	protected CharacterDecorator(CharacterService s){
 		this.delegate = s;

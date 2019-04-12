@@ -1,28 +1,16 @@
 package loderunner.decorator;
 
-import java.util.HashSet;
-
 import loderunner.services.Cell;
-import loderunner.services.CellContent;
 import loderunner.services.EditableScreenService;
-import loderunner.services.EnvironmentService;
 
-public class EnvironmentDecorator implements EnvironmentService{
-	private EnvironmentService delegate;
+public class EditableScreenDecorator implements EditableScreenService{
 
-	public EnvironmentDecorator(EnvironmentService s){
+	private EditableScreenService delegate;
+	
+	protected EditableScreenDecorator(EditableScreenService s) {
 		this.delegate =s;
 	}
-
-	@Override
-	public HashSet<CellContent> getCellContent(int x, int y) {
-		return delegate.getCellContent(x, y);
-	}
-
-	@Override
-	public void init(EditableScreenService e) {
-		delegate.init(e);
-	}
+	
 	@Override
 	public int getHeight() {
 		return delegate.getHeight();
@@ -51,6 +39,16 @@ public class EnvironmentDecorator implements EnvironmentService{
 	@Override
 	public void fill(int x, int y) {
 		delegate.fill(x, y);
+	}
+
+	@Override
+	public boolean isPlayable() {
+		return delegate.isPlayable();
+	}
+
+	@Override
+	public void setNature(int x, int y, Cell c) {
+		delegate.setNature(x, y, c);
 	}
 
 }

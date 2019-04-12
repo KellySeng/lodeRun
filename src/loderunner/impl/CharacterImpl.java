@@ -42,19 +42,20 @@ public class CharacterImpl implements CharacterService{
 				env.getCellNature(getWdt(), getHgt())!= Cell.PLT ||
 				env.getCellNature(getWdt(), getHgt())!= Cell.MTL
 				) {
-			//faire rien
+			return;
 		}else {
 			wdt = getWdt()-1;
 		}
-		
-		
-		
 	}
 
 	@Override
 	public void goRight() {
-		if(getWdt()==env.getWidth() ||  env.getCellNature(getWdt()+1, getHgt())== Cell.MTL) {
-			//faire rien
+		if(getWdt()==env.getWidth() ||  env.getCellNature(getWdt()+1, getHgt())== Cell.MTL ||
+				env.getCellNature(getWdt()+1, getHgt())== Cell.PLT ||
+				env.getCellNature(getWdt()+1, getHgt())== Cell.LAD ||
+				env.getCellNature(getWdt(), getHgt())!= Cell.PLT ||
+				env.getCellNature(getWdt(), getHgt())!= Cell.MTL) {
+			return;
 			
 		}else {
 			wdt = getWdt()+1;
@@ -65,13 +66,23 @@ public class CharacterImpl implements CharacterService{
 	@Override
 	public void goUp() {
 		// TODO Auto-generated method stub
-		
+		if() {
+			
+		}
+		else {
+			hgt = getHgt()+1;
+		}
 	}
 
 	@Override
 	public void goDown() {
 		// TODO Auto-generated method stub
-		
+		if() {
+			
+		}
+		else {
+			hgt = getHgt()+1;
+		}
 	}
 
 }

@@ -7,7 +7,7 @@ import loderunner.services.ScreenService;
 public class ScreenImpl implements ScreenService{
 
 	private int height,width;
-	private Cell[][] ecran;
+	protected Cell[][] ecran;
 	
 	public ScreenImpl(int h, int w) {
 		init(h,w);
@@ -39,9 +39,6 @@ public class ScreenImpl implements ScreenService{
 				ecran[i][j] = Cell.EMP;
 			}
 		}
-		
-		
-		
 	}
 
 	@Override
@@ -53,7 +50,6 @@ public class ScreenImpl implements ScreenService{
 	@Override
 	public void fill(int x, int y) {
 		ecran[x][y] = Cell.PLT;
-		
 	}
 
 }

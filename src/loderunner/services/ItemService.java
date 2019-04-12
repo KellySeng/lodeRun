@@ -1,7 +1,6 @@
 package loderunner.services;
 
 public interface ItemService extends CellContent{
-
 	/*
 	 * Observators
 	 */
