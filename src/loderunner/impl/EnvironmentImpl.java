@@ -11,9 +11,12 @@ import loderunner.services.EnvironmentService;
 public class EnvironmentImpl extends ScreenImpl  implements EnvironmentService{
 
 	private EditableScreenService e;
+	private HashSet<CellContent>[][] cell_content;
 	
+	@SuppressWarnings("unchecked")
 	public EnvironmentImpl(int h, int w) {
 		super(h, w);
+		cell_content = (HashSet<CellContent>[][]) new HashSet[h][w];
 	}
 
 
@@ -24,13 +27,7 @@ public class EnvironmentImpl extends ScreenImpl  implements EnvironmentService{
 
 	@Override
 	public HashSet<CellContent> getCellContent(int x, int y) {
-		HashSet<CellContent> l = new HashSet<CellContent>();
-		for(int u = 0 ; u<getWidth();u++ ) {
-			for(int v = 0; v<getHeight(); v++) {
-				
-			}
-		}
-		return null;
+		return cell_content[x][y];
 	}
 	
 

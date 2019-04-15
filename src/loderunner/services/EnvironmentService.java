@@ -14,10 +14,9 @@ public interface EnvironmentService extends ScreenService {
 	 *	getCellNature(x,y) \in {MTL, PLR} -> getCellContent(x,y) == null
 	 *
 	 * inv : \forall(x:Integer,y : Integer) \in [0;getWidth()[ x [0;getHeight()[,
-	 * \exists t:ItemType.Treasure \in getCellContent(x,y) -> getCellNature(x,y) == EMP && getCellNature(x,y) \in {MTL, PLR} 
+	 * \exists t:ItemType.Treasure \in getCellContent(x,y) -> getCellNature(x,y) == EMP && getCellNature(x,y-1) \in {MTL, PLR} 
 	 *
 	 **/
-	
 	 
 	
 	/**

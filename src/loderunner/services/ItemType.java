@@ -1,5 +1,5 @@
 package loderunner.services;
 
-public enum ItemType {
+public enum ItemType implements CellContent {
 	Treasure
 }

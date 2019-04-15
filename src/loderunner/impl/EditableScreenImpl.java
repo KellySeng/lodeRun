@@ -1,6 +1,5 @@
 package loderunner.impl;
 
-import loderunner.contrat.InvariantError;
 import loderunner.services.Cell;
 import loderunner.services.EditableScreenService;
 
