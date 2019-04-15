@@ -1,6 +1,9 @@
 package loderunner.impl;
 
+import java.util.ArrayList;
+
 import loderunner.services.Cell;
+import loderunner.services.CellContent;
 import loderunner.services.CharacterService;
 import loderunner.services.EnvironmentService;
 import loderunner.services.ScreenService;
@@ -33,55 +36,84 @@ public class CharacterImpl implements CharacterService{
 		env = (EnvironmentService)screen;
 		
 	}
+	
+	private ArrayList<CellContent> getCharacterList(int w, int h) {
+		ArrayList <CellContent> list = new ArrayList<>();	
+		for(CellContent c : getEnvi().getCellContent(w,h)) {
+			if(c instanceof CharacterService) list.add(c);
+		}
+		return list;
+	}
 
 	@Override
 	public void goLeft() {
-		if(getWdt()==0 || env.getCellNature(getWdt()-1, getHgt())== Cell.MTL ||
-				env.getCellNature(getWdt()-1, getHgt())== Cell.PLT ||
-				env.getCellNature(getWdt()-1, getHgt())== Cell.LAD ||
-				env.getCellNature(getWdt(), getHgt())!= Cell.PLT ||
-				env.getCellNature(getWdt(), getHgt())!= Cell.MTL
-				) {
+		
+		ArrayList <CellContent> character_list_wdt_minus_1 = getCharacterList(getWdt()-1,getHgt());	
+		ArrayList <CellContent> character_list_hgt_minus_1 = getCharacterList(getWdt(),getHgt()-1);	
+		
+		if(wdt!= 0 
+				   && (env.getCellNature(getWdt()-1,getHgt()) !=  Cell.MTL || env.getCellNature(getWdt()-1,getHgt()) !=  Cell.PLT) 
+				   || (env.getCellNature(getWdt(),getHgt()) ==  Cell.LAD || env.getCellNature(getWdt(),getHgt()) !=  Cell.HDR) 
+				   || (env.getCellNature(getWdt(),getHgt()-1) !=  Cell.PLT || env.getCellNature(getWdt(),getHgt()-1) !=  Cell.MTL ||
+					   env.getCellNature(getWdt(),getHgt()-1) !=  Cell.LAD ) 
+				   || (character_list_hgt_minus_1.size() != 0)
+				   && !(character_list_wdt_minus_1.size() !=0) ) {
+			wdt = wdt-1;
+		}
+		else {
 			return;
-		}else {
-			wdt = getWdt()-1;
 		}
 	}
 
 	@Override
 	public void goRight() {
-		if(getWdt()==env.getWidth() ||  env.getCellNature(getWdt()+1, getHgt())== Cell.MTL ||
-				env.getCellNature(getWdt()+1, getHgt())== Cell.PLT ||
-				env.getCellNature(getWdt()+1, getHgt())== Cell.LAD ||
-				env.getCellNature(getWdt(), getHgt())!= Cell.PLT ||
-				env.getCellNature(getWdt(), getHgt())!= Cell.MTL) {
+		ArrayList <CellContent> character_list_wdt_plus_1 = getCharacterList(getWdt()+1,getHgt());	
+		ArrayList <CellContent> character_list_hgt_minus_1 = getCharacterList(getWdt(),getHgt()-1);	
+		
+
+		if(wdt != env.getWidth()
+				   && (env.getCellNature(getWdt()+1,getHgt()) !=  Cell.MTL || env.getCellNature(getWdt()+1,getHgt()) !=  Cell.PLT) 
+				   || (env.getCellNature(getWdt(),getHgt()) ==  Cell.LAD || env.getCellNature(getWdt(),getHgt()) !=  Cell.HDR) 
+				   || (env.getCellNature(getWdt(),getHgt()-1) !=  Cell.PLT || env.getCellNature(getWdt(),getHgt()-1) !=  Cell.MTL ||
+					   env.getCellNature(getWdt(),getHgt()-1) !=  Cell.LAD ) 
+				   || (character_list_hgt_minus_1.size() != 0)
+				   && !(character_list_wdt_plus_1.size() !=0) ) {
+			wdt = wdt+1;
+		}
+		else {
 			return;
-			
-		}else {
-			wdt = getWdt()+1;
 		}
 		
 	}
 
 	@Override
 	public void goUp() {
-		// TODO Auto-generated method stub
-		if() {
-			
-		}
+		
+		ArrayList <CellContent> character_list_hgt_plus_1 = getCharacterList(getWdt(),getHgt()+1);	
+		
+		if(hgt == env.getHeight() 
+		   && (env.getCellNature(wdt,hgt+1) == Cell.LAD)
+		   && !(character_list_hgt_plus_1.size() != 0)) {
+			hgt = hgt+1;
+		  }
 		else {
-			hgt = getHgt()+1;
+			return;
 		}
 	}
 
 	@Override
 	public void goDown() {
-		// TODO Auto-generated method stub
-		if() {
-			
+		ArrayList <CellContent> character_list_hgt_minus_1 = getCharacterList(getWdt(),getHgt()-1);	
+		
+		if((getHgt() == 0) && 
+		   (getEnvi().getCellNature(getWdt(),getHgt()-1) == Cell.LAD || 
+			getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.MTL ||
+			getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.PLT )
+		    && !(character_list_hgt_minus_1.size() != 0)) {
+			hgt = hgt-1;
 		}
 		else {
-			hgt = getHgt()+1;
+			return;
 		}
 	}
 
