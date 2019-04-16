@@ -1,5 +1,6 @@
 package loderunner.services;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 public interface EngineService {
@@ -11,7 +12,7 @@ public interface EngineService {
 	
 	public PlayerService getPlayer();
 	
-	public Set<Guard> getGuards();
+	public ArrayList<Guard> getGuards();
 
 	public Set<ItemService> getTreasures();
 	

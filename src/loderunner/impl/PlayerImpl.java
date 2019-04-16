@@ -12,8 +12,19 @@ import loderunner.services.PlayerService;
 
 public class PlayerImpl extends CharacterImpl implements PlayerService {
 
-	
+	private int hgt,wdt;
 	EngineService engine;
+	
+	@Override
+	public int getHgt() {
+		return hgt;
+	}
+
+	@Override
+	public int getWdt() {
+		return wdt;
+	}
+
 	@Override
 	public EngineService getEngine() {
 		return engine;
@@ -27,13 +38,32 @@ public class PlayerImpl extends CharacterImpl implements PlayerService {
 	@Override
 	public void step() {
 
-		Set<CellContent> set =  getEngine().getEnvironment().getCellContent(getWdt(), getHgt()-1);
+		int x = getWdt();
+		int y = getHgt();
+		
+		Set<CellContent> set =  getEnvi().getCellContent(x, y-1);
 		boolean havePersonnageEnBas = false;
 		for(CellContent c : set) {
 			if(c instanceof CharacterService) {
 				havePersonnageEnBas = true;
 			}
 		}
+		
+		//	Le joueur tombe (comme un garde) quand il ne se trouve pas dans une echelle ou un rail et que la case en ´
+		//	dessous de lui est libre et ne contient pas de personnage.	
+		 if(getEnvi().getCellNature(x, y) != Cell.LAD
+			&&  getEnvi().getCellNature(x, y) != Cell.HDR
+			&& ( getEnvi().getCellNature(x, y-1) == Cell.EMP ||
+				getEnvi().getCellNature(x, y-1) == Cell.LAD ||
+				getEnvi().getCellNature(x, y-1) == Cell.HDR ||
+				getEnvi().getCellNature(x, y-1) == Cell.HOL )
+			&& !havePersonnageEnBas ) {
+			 
+			 
+			 hgt = hgt-1;
+			 
+		 }
+		
 		
 		switch(engine.getNextCommand()) {
 			
@@ -55,33 +85,33 @@ public class PlayerImpl extends CharacterImpl implements PlayerService {
 				break;
 			case DigL :
 				
-				if( (getEngine().getEnvironment().getCellNature(getWdt(), getHgt()-1) == Cell.MTL 
-					|| getEngine().getEnvironment().getCellNature(getWdt(), getHgt()-1) == Cell.PLT 
+				if( (getEnvi().getCellNature(x, y-1) == Cell.MTL 
+					|| getEnvi().getCellNature(x, y-1) == Cell.PLT 
 					|| havePersonnageEnBas  )  //la case a sa gauche est libre
-					&& ( getEngine().getEnvironment().getCellNature(getWdt()-1, getHgt()) == Cell.EMP ||
-						 getEngine().getEnvironment().getCellNature(getWdt()-1, getHgt()) == Cell.LAD ||
-						 getEngine().getEnvironment().getCellNature(getWdt()-1, getHgt()) == Cell.HDR ||
-						 getEngine().getEnvironment().getCellNature(getWdt()-1, getHgt()) == Cell.HOL )
-					&& getEngine().getEnvironment().getCellNature(getWdt()-1, getHgt()-1) == Cell.PLT
+					&& ( getEnvi().getCellNature(x-1, y) == Cell.EMP ||
+							getEnvi().getCellNature(x-1, y) == Cell.LAD ||
+									getEnvi().getCellNature(x-1, y) == Cell.HDR ||
+											getEnvi().getCellNature(x-1, y) == Cell.HOL )
+					&& getEnvi().getCellNature(x-1, y-1) == Cell.PLT
 					) {
 				
-					getEngine().getEnvironment().dig(getWdt()-1, getHgt()-1);				
+					getEnvi().dig(x-1, y-1);				
 				
 				}
 							
 				break;
 			case DigR:
-				if( (getEngine().getEnvironment().getCellNature(getWdt(), getHgt()-1) == Cell.MTL 
-				|| getEngine().getEnvironment().getCellNature(getWdt(), getHgt()-1) == Cell.PLT 
+				if( (getEnvi().getCellNature(x, y-1) == Cell.MTL 
+				|| getEnvi().getCellNature(x, y-1) == Cell.PLT 
 				|| havePersonnageEnBas  )  //la case a sa droite est libre
-				&& ( getEngine().getEnvironment().getCellNature(getWdt()+1, getHgt()) == Cell.EMP ||
-					 getEngine().getEnvironment().getCellNature(getWdt()+1, getHgt()) == Cell.LAD ||
-					 getEngine().getEnvironment().getCellNature(getWdt()+1, getHgt()) == Cell.HDR ||
-					 getEngine().getEnvironment().getCellNature(getWdt()+1, getHgt()) == Cell.HOL )
-				&& getEngine().getEnvironment().getCellNature(getWdt()+1, getHgt()-1) == Cell.PLT
+				&& ( getEnvi().getCellNature(x+1, y) == Cell.EMP ||
+						getEnvi().getCellNature(x+1, y) == Cell.LAD ||
+								getEnvi().getCellNature(x+1, y) == Cell.HDR ||
+										getEnvi().getCellNature(x+1, y) == Cell.HOL )
+				&& getEnvi().getCellNature(x+1, y-1) == Cell.PLT
 				) {
 			
-				getEngine().getEnvironment().dig(getWdt()+1, getHgt()-1);				
+					getEnvi().dig(x+1, y-1);				
 			
 				}
 			

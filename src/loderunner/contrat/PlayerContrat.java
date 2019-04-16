@@ -35,7 +35,7 @@ public class PlayerContrat extends PlayerDecorator {
 	public void step() {
 
 		//capture
-		Set<CellContent> set =  getEngine().getEnvironment().getCellContent(getWdt(), getHgt()-1);
+		Set<CellContent> set =  getEnvi().getCellContent(getWdt(), getHgt()-1);
 		boolean havePersonnageEnbas = false;
 		for(CellContent c : set) {
 			if(c instanceof CharacterService) {
@@ -43,11 +43,11 @@ public class PlayerContrat extends PlayerDecorator {
 			}
 		}
 
-		Cell cell_bas_pre = getEngine().getEnvironment().getCellNature(getWdt(), getHgt()-1);
-		Cell cell_bas_gauche_pre = getEngine().getEnvironment().getCellNature(getWdt()-1, getHgt()-1);
-		Cell cell_bas_droite_pre = getEngine().getEnvironment().getCellNature(getWdt()+1, getHgt()-1);
-		Cell cell_gauche_pre = getEngine().getEnvironment().getCellNature(getWdt()-1, getHgt());
-		Cell cell_droite_pre = getEngine().getEnvironment().getCellNature(getWdt()+1, getHgt());
+		Cell cell_bas_pre = getEnvi().getCellNature(getWdt(), getHgt()-1);
+		Cell cell_bas_gauche_pre = getEnvi().getCellNature(getWdt()-1, getHgt()-1);
+		Cell cell_bas_droite_pre = getEnvi().getCellNature(getWdt()+1, getHgt()-1);
+		Cell cell_gauche_pre = getEnvi().getCellNature(getWdt()-1, getHgt());
+		Cell cell_droite_pre = getEnvi().getCellNature(getWdt()+1, getHgt());
 
 
 		super.step();
@@ -64,7 +64,7 @@ public class PlayerContrat extends PlayerDecorator {
 				&& cell_bas_gauche_pre == Cell.PLT
 				) {
 
-			if(getEngine().getEnvironment().getCellNature(getWdt()-1, getHgt()-1) != Cell.HOL) {
+			if(getEnvi().getCellNature(getWdt()-1, getHgt()-1) != Cell.HOL) {
 				throw new PostconditionError("DigL error");
 			}
 
@@ -85,7 +85,7 @@ public class PlayerContrat extends PlayerDecorator {
 				) 
 		{
 
-			if(getEngine().getEnvironment().getCellNature(getWdt()+1, getHgt()-1) != Cell.HOL) {
+			if(getEnvi().getCellNature(getWdt()+1, getHgt()-1) != Cell.HOL) {
 				throw new PostconditionError("DigL error");
 			}
 
