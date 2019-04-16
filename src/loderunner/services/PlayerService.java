@@ -22,6 +22,9 @@ public interface PlayerService extends CharacterService{
 	/*
 	 * Operator 
 	 */
+	/**
+	 * post : if getEngine()
+	 */
 	public void step();
 	
 

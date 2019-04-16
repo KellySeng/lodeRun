@@ -19,11 +19,11 @@ public interface EngineService {
 	
 	
 	/**
-	 * pre : e!=null
-	 * post : getEngine() == e
-	 * @param e
+	 * pre : screen!=null
+	 * post : getEnvironment() == screen
+	 * @param screen
 	 */
-	public void init(EditableScreenService screen);
+	public void init(EditableScreenService screen, int x,int y);
 	
 
 	/*
