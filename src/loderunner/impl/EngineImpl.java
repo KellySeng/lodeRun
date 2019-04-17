@@ -1,6 +1,7 @@
 package loderunner.impl;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import loderunner.services.Command;
@@ -9,8 +10,11 @@ import loderunner.services.EngineService;
 import loderunner.services.EnvironmentService;
 import loderunner.services.Guard;
 import loderunner.services.ItemService;
+import loderunner.services.Pair;
 import loderunner.services.PlayerService;
 import loderunner.services.Status;
+import loderunner.services.Triplet;
+
 
 public class EngineImpl implements EngineService {
 	
@@ -18,7 +22,7 @@ public class EngineImpl implements EngineService {
 	PlayerService player;
 	ArrayList<Guard> guards;
 	Status status;
-	
+	ArrayList<Triplet<Integer,Integer,Integer>> holes;
 	
 	@Override
 	public EnvironmentService getEnvironment() {
@@ -37,13 +41,11 @@ public class EngineImpl implements EngineService {
 
 	@Override
 	public Set<ItemService> getTreasures() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Command getNextCommand() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -51,20 +53,49 @@ public class EngineImpl implements EngineService {
 		return status;
 	}
 	@Override
-	public void init(EditableScreenService screen, int x, int y) {
-		// TODO Auto-generated method stub
+	public void init(EditableScreenService screen, int x, int y, List<Pair<Integer,Integer>> listGuards,List<Pair<Integer,Integer>> listTresors ) {
 		
+		
+
+	
 	}
 
 	@Override
 	public void step() {
+		
+		//	le temps de chaque trou est incrementee
+		for(Triplet<Integer, Integer, Integer> h : holes) {
+			int t = h.getThird();
+			if(t<15) {
+				h.setThird(t+1);
+			}
+		}
+		
+		//	tous les trous dont la troisieme coordonnees vaut 15 sont rebouches.
+		
+		for(Triplet<Integer, Integer, Integer> h : holes) {
+			int t = h.getThird();
+			if(t==15) {
+				
+			}
+		}
+		
 		player.step();
 		
 		for(Guard guard : guards) {
+			guard.step();
 			
 		}
 		
 	}
+
+	@Override
+	public ArrayList<Triplet<Integer, Integer, Integer>> getHoles() {
+		
+		return holes;
+	}
+
+	
 	
 
 }

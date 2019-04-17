@@ -62,6 +62,9 @@ public interface Guard extends CharacterService {
 	 */
 	public void climbRight();
 	
+	public void step();
+	
+	
 	
 	
 

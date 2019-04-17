@@ -1,5 +1,7 @@
 package loderunner.decorator;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import loderunner.services.Command;
@@ -8,7 +10,9 @@ import loderunner.services.EngineService;
 import loderunner.services.EnvironmentService;
 import loderunner.services.Guard;
 import loderunner.services.ItemService;
+import loderunner.services.Pair;
 import loderunner.services.PlayerService;
+import loderunner.services.Triplet;
 
 public class EngineDecorator implements EngineService{
 	private EngineService delegate;
@@ -28,9 +32,7 @@ public class EngineDecorator implements EngineService{
 		return delegate.getPlayer();
 	}
 
-	public Set<Guard> getGuards() {
-		return delegate.getGuards();
-	}
+	
 
 	public Set<ItemService> getTreasures() {
 		return delegate.getTreasures();
@@ -40,12 +42,29 @@ public class EngineDecorator implements EngineService{
 		return delegate.getNextCommand();
 	}
 
-	public void init(EditableScreenService screen, int x, int y) {
-		delegate.init(screen, x, y);
-	}
-
+	
 	public void step() {
 		delegate.step();
+	}
+
+
+	@Override
+	public ArrayList<Guard> getGuards() {
+		return delegate.getGuards();
+	}
+
+
+	@Override
+	public void init(EditableScreenService screen, int x, int y, List<Pair<Integer, Integer>> listGuards,
+			List<Pair<Integer, Integer>> listTresors) {
+
+		 delegate.init(screen, x, y, listGuards, listTresors);
+	}
+
+
+	@Override
+	public ArrayList<Triplet<Integer, Integer, Integer>> getHoles() {
+		return delegate.getHoles();
 	}
 
 }
