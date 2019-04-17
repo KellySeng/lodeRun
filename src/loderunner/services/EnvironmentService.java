@@ -5,6 +5,9 @@ import java.util.List;
 
 public interface EnvironmentService extends ScreenService {
 
+	
+	
+	
 	/**
 	 * Invariants
 	 * inv : \forall(x:Integer,y : Integer) \in [0;getWidth()[ x [0;getHeight()[,

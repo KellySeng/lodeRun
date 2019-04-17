@@ -2,6 +2,7 @@ package loderunner.services;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public interface EngineService {
@@ -21,6 +22,8 @@ public interface EngineService {
 	
 	public Command getNextCommand();
 	
+	public ArrayList<Triplet<Integer,Integer,Integer>> getHoles(); 
+	
 	
 	/**
 	 * pre : screen!=null
@@ -30,9 +33,8 @@ public interface EngineService {
 	 * post : getTreasures() = t
 	 * @param screen
 	 */
-	public void init(EnvironmentService screen, PlayerService p,
-			ArrayList<GuardService> g, HashSet<ItemService> t);
-	
+	public void init(EditableScreenService screen, int x, int y, List<Pair<Integer,Integer>> listGuards,List<Pair<Integer,Integer>> listTresors );	
+
 
 	/*
 	 * Operator 

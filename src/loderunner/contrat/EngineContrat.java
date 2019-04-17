@@ -2,9 +2,12 @@ package loderunner.contrat;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import loderunner.decorator.EngineDecorator;
+import loderunner.impl.ItemImpl;
+import loderunner.impl.PlayerImpl;
 import loderunner.services.CellContent;
 import loderunner.services.EditableScreenService;
 import loderunner.services.EngineService;
@@ -12,6 +15,7 @@ import loderunner.services.EnvironmentService;
 import loderunner.services.GuardService;
 import loderunner.services.ItemService;
 import loderunner.services.ItemType;
+import loderunner.services.Pair;
 import loderunner.services.PlayerService;
 import loderunner.services.Status;
 
@@ -52,35 +56,23 @@ class EngineContrat extends EngineDecorator{
 		}
 	}
 	
-	@Override
-	public void init(EnvironmentService screen, PlayerService p, ArrayList<GuardService> g, HashSet<ItemService> t) {
-		
-		if(!(screen != null  || p != null  || g != null  || t != null   )) {
-			throw new PreconditionError("init error pre");
-		}
-		
-		checkInvariant();
-		super.init(screen, p, g, t);
-		
-		checkInvariant();
-		
-		if(!(getEnvironment() == screen)) {
-			throw new PostconditionError("init error post");
-		}
-		
-		if(!(getPlayer() == p)) {
-			throw new PostconditionError("init error post");
-		}
-		
-		if(!(getGuards() == g)) {
-			throw new PostconditionError("init error post");
-		}
-		
-		if(!(getTreasures() == t)) {
-			throw new PostconditionError("init error post");
-		}
-	}
+	public void init(EditableScreenService screen, int x, int y, List<Pair<Integer, Integer>> listGuards,
+		List<Pair<Integer, Integer>> listTresors) {
 	
+		if(!(screen == null  || (0<=x && x<=screen.getWidth()) || (0<=y && y<=screen.getHeight()) 
+				|| listGuards == null || listTresors == null)) {
+			throw new PreconditionError("init error");
+		}
+		
+		
+		checkInvariant();
+		super.init(screen, x, y, listGuards, listTresors);
+		
+		
+		checkInvariant();
+		
+		
+	}
 	
 	
 	public void step() {
