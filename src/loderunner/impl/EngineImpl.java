@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import loderunner.services.CellContent;
 import loderunner.services.Command;
 import loderunner.services.EditableScreenService;
 import loderunner.services.EngineService;
@@ -63,6 +64,18 @@ public class EngineImpl implements EngineService {
 	@Override
 	public void step() {
 		
+		//Si au debut d’un tour, le joueur se trouve sur une case contenant un tresor,
+		//ce tresor disparait
+		int x = player.getWdt();
+		int y = player.getHgt();
+		
+		Set<CellContent> set = envi.getCellContent(x, y);
+		for(CellContent c :set) {
+			if (c instanceof ItemService ) {
+				set.remove(c);
+			}
+		}
+		
 		//	le temps de chaque trou est incrementee
 		for(Triplet<Integer, Integer, Integer> h : holes) {
 			int t = h.getThird();
@@ -71,21 +84,38 @@ public class EngineImpl implements EngineService {
 			}
 		}
 		
-		//	tous les trous dont la troisieme coordonnees vaut 15 sont rebouches.
-		
-		for(Triplet<Integer, Integer, Integer> h : holes) {
-			int t = h.getThird();
-			if(t==15) {
-				
-			}
-		}
-		
+	
 		player.step();
 		
 		for(Guard guard : guards) {
 			guard.step();
 			
 		}
+		
+	//	tous les trous dont la troisieme coordonnees vaut 15 sont rebouches.
+		
+		for(Triplet<Integer, Integer, Integer> h : holes) {
+			int t = h.getThird();
+			if(t==15) {
+				//	si le joueur etait dedans
+				if(h.getFirst() == player.getWdt() && h.getSecond() == player.getHgt()) {
+					//	le jeu est perdu
+					status = Status.Loss;
+				}
+				
+
+				for(Guard guard : guards) {
+					
+					//si un garde ´ etait dedans, il revient a sa position initiale
+					if(h.getFirst() == guard.getWdt() && h.getSecond() == guard.getHgt()) {
+						
+					}
+					
+				}
+				
+			}
+		}
+		
 		
 	}
 
