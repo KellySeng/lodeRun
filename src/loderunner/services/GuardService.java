@@ -1,6 +1,6 @@
 package loderunner.services;
 
-public interface Guard extends CharacterService {
+public interface GuardService extends CharacterService {
 	
 	/**
 	 * Invariants
@@ -63,6 +63,10 @@ public interface Guard extends CharacterService {
 	public void climbRight();
 	
 	
+	/**
+	 * 
+	 */
+	public void step();
 	
 
 }

@@ -35,7 +35,6 @@ public class ScreenImpl implements ScreenService{
 		
 		for(int i= 0;i<h;i++) {
 			for(int j =0;j<w;j++) {
-				
 				ecran[i][j] = Cell.EMP;
 			}
 		}

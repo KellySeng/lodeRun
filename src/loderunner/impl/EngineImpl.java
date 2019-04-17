@@ -1,13 +1,14 @@
 package loderunner.impl;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 
 import loderunner.services.Command;
 import loderunner.services.EditableScreenService;
 import loderunner.services.EngineService;
 import loderunner.services.EnvironmentService;
-import loderunner.services.Guard;
+import loderunner.services.GuardService;
 import loderunner.services.ItemService;
 import loderunner.services.PlayerService;
 import loderunner.services.Status;
@@ -16,8 +17,18 @@ public class EngineImpl implements EngineService {
 	
 	EnvironmentService envi;
 	PlayerService player;
-	ArrayList<Guard> guards;
+	ArrayList<GuardService> guards;
+	HashSet<ItemService> treasures;
 	Status status;
+	
+	@Override
+	public void init(EnvironmentService screen, PlayerService p, ArrayList<GuardService> g, HashSet<ItemService> t) {
+		this.envi = screen;
+		this.guards = g;
+		this.player =p;
+		this.treasures = t;
+		
+	}
 	
 	
 	@Override
@@ -31,14 +42,13 @@ public class EngineImpl implements EngineService {
 	}
 
 	@Override
-	public ArrayList<Guard> getGuards() {
+	public ArrayList<GuardService> getGuards() {
 		return guards;
 	}
 
 	@Override
 	public Set<ItemService> getTreasures() {
-		// TODO Auto-generated method stub
-		return null;
+		return treasures;
 	}
 
 	@Override
@@ -50,21 +60,15 @@ public class EngineImpl implements EngineService {
 	public Status getStatus() {
 		return status;
 	}
-	@Override
-	public void init(EditableScreenService screen, int x, int y) {
-		// TODO Auto-generated method stub
-		
-	}
 
+	
 	@Override
 	public void step() {
+
 		player.step();
-		
-		for(Guard guard : guards) {
-			
-		}
-		
 	}
+
+
 	
 
 }
