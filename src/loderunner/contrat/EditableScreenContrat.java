@@ -7,7 +7,7 @@ import loderunner.services.EditableScreenService;
 
 public class EditableScreenContrat extends EditableScreenDecorator{
 
-	protected EditableScreenContrat(EditableScreenService s) {
+	public EditableScreenContrat(EditableScreenService s) {
 		super(s);
 	}
 	

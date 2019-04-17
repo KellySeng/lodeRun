@@ -8,10 +8,11 @@ import loderunner.services.Command;
 import loderunner.services.EditableScreenService;
 import loderunner.services.EngineService;
 import loderunner.services.EnvironmentService;
-import loderunner.services.Guard;
+import loderunner.services.GuardService;
 import loderunner.services.ItemService;
 import loderunner.services.Pair;
 import loderunner.services.PlayerService;
+import loderunner.services.Status;
 import loderunner.services.Triplet;
 
 public class EngineDecorator implements EngineService{
@@ -49,7 +50,7 @@ public class EngineDecorator implements EngineService{
 
 
 	@Override
-	public ArrayList<Guard> getGuards() {
+	public ArrayList<GuardService> getGuards() {
 		return delegate.getGuards();
 	}
 
@@ -65,6 +66,19 @@ public class EngineDecorator implements EngineService{
 	@Override
 	public ArrayList<Triplet<Integer, Integer, Integer>> getHoles() {
 		return delegate.getHoles();
+	}
+
+
+	@Override
+	public Status getStatus() {
+		return delegate.getStatus();
+	}
+
+
+	@Override
+	public void setCmd(Command c) {
+		delegate.setCmd(c);
+		
 	}
 
 }

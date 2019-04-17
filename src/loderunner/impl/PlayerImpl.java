@@ -9,21 +9,13 @@ import loderunner.services.CharacterService;
 import loderunner.services.Command;
 import loderunner.services.EngineService;
 import loderunner.services.PlayerService;
+import loderunner.services.Triplet;
 
 public class PlayerImpl extends CharacterImpl implements PlayerService {
 
-	private int hgt,wdt;
 	EngineService engine;
 	
-	@Override
-	public int getHgt() {
-		return hgt;
-	}
 
-	@Override
-	public int getWdt() {
-		return wdt;
-	}
 
 	@Override
 	public EngineService getEngine() {
@@ -40,6 +32,7 @@ public class PlayerImpl extends CharacterImpl implements PlayerService {
 
 		int x = getWdt();
 		int y = getHgt();
+		System.out.println("y = "+y);
 		
 		Set<CellContent> set =  getEnvi().getCellContent(x, y-1);
 		boolean havePersonnageEnBas = false;
@@ -61,6 +54,7 @@ public class PlayerImpl extends CharacterImpl implements PlayerService {
 			 
 			 
 			 hgt = hgt-1;
+			 System.out.println("tomber ");
 			 
 		 }
 		
@@ -95,7 +89,8 @@ public class PlayerImpl extends CharacterImpl implements PlayerService {
 					&& getEnvi().getCellNature(x-1, y-1) == Cell.PLT
 					) {
 				
-					getEnvi().dig(x-1, y-1);				
+					getEnvi().dig(x-1, y-1);	
+					getEngine().getHoles().add(new Triplet(x-1,y-1,0));
 				
 				}
 							
@@ -111,7 +106,9 @@ public class PlayerImpl extends CharacterImpl implements PlayerService {
 				&& getEnvi().getCellNature(x+1, y-1) == Cell.PLT
 				) {
 			
-					getEnvi().dig(x+1, y-1);				
+					getEnvi().dig(x+1, y-1);	
+					getEngine().getHoles().add(new Triplet(x+1,y-1,0));
+
 			
 				}
 			

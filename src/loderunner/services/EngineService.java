@@ -6,6 +6,8 @@ import java.util.Set;
 
 public interface EngineService {
 
+	
+	public void setCmd(Command c) ;
 	/*
 	 * Observators
 	 */
@@ -13,9 +15,11 @@ public interface EngineService {
 	
 	public PlayerService getPlayer();
 	
-	public ArrayList<Guard> getGuards();
+	public ArrayList<GuardService> getGuards();
 
 	public Set<ItemService> getTreasures();
+
+	public Status getStatus();
 	
 	public Command getNextCommand();
 	
@@ -25,9 +29,13 @@ public interface EngineService {
 	/**
 	 * pre : screen!=null
 	 * post : getEnvironment() == screen
+	 * post : getPlayer() = p
+	 * post : getGuards() = g
+	 * post : getTreasures() = t
 	 * @param screen
 	 */
 	public void init(EditableScreenService screen, int x, int y, List<Pair<Integer,Integer>> listGuards,List<Pair<Integer,Integer>> listTresors );	
+
 
 	/*
 	 * Operator 

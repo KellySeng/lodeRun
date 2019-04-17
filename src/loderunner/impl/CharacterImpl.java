@@ -10,7 +10,8 @@ import loderunner.services.ScreenService;
 
 public class CharacterImpl implements CharacterService{
 
-	private int hgt,wdt;
+	protected int hgt;
+	protected int wdt;
 	private	EnvironmentService env;
 	
 	@Override
@@ -31,8 +32,8 @@ public class CharacterImpl implements CharacterService{
 
 	@Override
 	public void init(ScreenService screen,int x, int y) {
-		hgt = x;
-		wdt = y;
+		hgt = y;
+		wdt = x;
 		env = (EnvironmentService)screen;
 		
 	}
@@ -40,6 +41,8 @@ public class CharacterImpl implements CharacterService{
 	private ArrayList<CellContent> getCharacterList(int w, int h) {
 		ArrayList <CellContent> list = new ArrayList<>();	
 		for(CellContent c : getEnvi().getCellContent(w,h)) {
+			
+
 			if(c instanceof CharacterService) list.add(c);
 		}
 		return list;
@@ -67,6 +70,10 @@ public class CharacterImpl implements CharacterService{
 
 	@Override
 	public void goRight() {
+		
+		
+		System.out.println(getWdt()+"   hgt"+getHgt());
+
 		ArrayList <CellContent> character_list_wdt_plus_1 = getCharacterList(getWdt()+1,getHgt());	
 		ArrayList <CellContent> character_list_hgt_minus_1 = getCharacterList(getWdt(),getHgt()-1);	
 		
@@ -79,6 +86,8 @@ public class CharacterImpl implements CharacterService{
 				   || (character_list_hgt_minus_1.size() != 0)
 				   && !(character_list_wdt_plus_1.size() !=0) ) {
 			wdt = wdt+1;
+			env.getCellContent(wdt, hgt).remove(this);
+			env.getCellContent(wdt+1, hgt).add(this);
 		}
 		else {
 			return;

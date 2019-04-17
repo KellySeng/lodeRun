@@ -6,7 +6,7 @@ import loderunner.services.ScreenService;
 
 public class ScreenContrat extends ScreenDecorator {
 
-	protected ScreenContrat(ScreenService s) {
+	public ScreenContrat(ScreenService s) {
 		super(s);
 	}
 	
