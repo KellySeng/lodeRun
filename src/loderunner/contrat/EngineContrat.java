@@ -12,6 +12,7 @@ import loderunner.services.GuardService;
 import loderunner.services.ItemService;
 import loderunner.services.ItemType;
 import loderunner.services.Pair;
+import loderunner.services.PlayerService;
 import loderunner.services.Status;
 
 public class EngineContrat extends EngineDecorator{
@@ -31,9 +32,11 @@ public class EngineContrat extends EngineDecorator{
 			if(getPlayer()!=null) {
 				
 				
-				System.out.println("x = "+ getPlayer().getWdt()+ "y = "+ getPlayer().getHgt());
 				HashSet<CellContent> player_cell_content = getEnvironment().getCellContent(getPlayer().getWdt(), getPlayer().getHgt());
-				if(!(player_cell_content.contains((CharacterService)getPlayer()))) {
+				PlayerService p = getPlayer();
+				System.out.println("y = "+p.getHgt()+"x = "+p.getWdt());
+				System.out.println("size = "+player_cell_content.size());
+				if(!(player_cell_content.contains(getPlayer()))) {
 					throw new InvariantError("player not synchronized with env");
 				}
 			}
@@ -41,7 +44,6 @@ public class EngineContrat extends EngineDecorator{
 		
 			for(ItemService t : getTreasures()) {
 				
-				System.out.println("x = "+ t.getCol()+ "y = "+ t.getHgt());
 				HashSet<CellContent> treasure_cell_content = getEnvironment().getCellContent(t.getCol(), t.getHgt());
 				if(!(treasure_cell_content.contains(t))) {
 					throw new InvariantError("treasure not synchronized with env");
@@ -85,7 +87,7 @@ public class EngineContrat extends EngineDecorator{
 	
 	public void step() {
 		
-		checkInvariant();
+//		checkInvariant();
 		
 		//capture
 		HashSet<CellContent> t_cell_content_atpre = getEnvironment().getCellContent(getPlayer().getWdt(), getPlayer().getHgt());

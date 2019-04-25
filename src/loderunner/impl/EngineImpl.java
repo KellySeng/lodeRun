@@ -190,7 +190,6 @@ public class EngineImpl implements EngineService {
 		player.init(envi, x, y);
 		player.init(this);
 		envi.getCellContent(x, y).add(player);
-		System.out.println("x = "+ x+ "y = "+y);
 		for(Pair<Integer,Integer> l : listGuards) {
 			// pas de gardes 
 		}

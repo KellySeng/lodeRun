@@ -32,7 +32,6 @@ public class PlayerImpl extends CharacterImpl implements PlayerService {
 
 		int x = getWdt();
 		int y = getHgt();
-		System.out.println("y = "+y);
 		
 		Set<CellContent> set =  getEnvi().getCellContent(x, y-1);
 		boolean havePersonnageEnBas = false;

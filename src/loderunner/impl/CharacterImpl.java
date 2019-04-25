@@ -71,8 +71,6 @@ public class CharacterImpl implements CharacterService{
 	@Override
 	public void goRight() {
 		
-		
-		System.out.println(getWdt()+"   hgt"+getHgt());
 
 		ArrayList <CellContent> character_list_wdt_plus_1 = getCharacterList(getWdt()+1,getHgt());	
 		ArrayList <CellContent> character_list_hgt_minus_1 = getCharacterList(getWdt(),getHgt()-1);	
@@ -85,8 +83,13 @@ public class CharacterImpl implements CharacterService{
 					   env.getCellNature(getWdt(),getHgt()-1) !=  Cell.LAD ) 
 				   || (character_list_hgt_minus_1.size() != 0)
 				   && !(character_list_wdt_plus_1.size() !=0) ) {
-			wdt = wdt+1;
+			
 			env.getCellContent(wdt, hgt).remove(this);
+			wdt = wdt+1;
+			env.getCellContent(wdt, hgt).add(this);
+
+
+			
 			env.getCellContent(wdt+1, hgt).add(this);
 		}
 		else {
