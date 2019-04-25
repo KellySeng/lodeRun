@@ -190,8 +190,14 @@ public class EngineImpl implements EngineService {
 		player.init(envi, x, y);
 		player.init(this);
 		envi.getCellContent(x, y).add(player);
+		
+		guards = new ArrayList<GuardService>();
 		for(Pair<Integer,Integer> l : listGuards) {
-			// pas de gardes 
+			GuardService guard = new GuardImpl();
+			guard.init(envi,l.getL(), l.getR());
+			guards.add(guard);
+			envi.getCellContent(l.getL(), l.getR()).add(guard);
+			
 		}
 		
 		treasures = new HashSet<ItemService>();

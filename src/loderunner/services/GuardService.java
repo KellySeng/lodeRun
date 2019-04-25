@@ -31,12 +31,7 @@ public interface GuardService extends CharacterService {
 	
 	
 	
-	//Constructors 
 	
-	/**
-	 * p
-	 */
-	public void init();
 	
 	//Operators
 	

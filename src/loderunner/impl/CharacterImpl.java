@@ -61,7 +61,11 @@ public class CharacterImpl implements CharacterService{
 					   env.getCellNature(getWdt(),getHgt()-1) !=  Cell.LAD ) 
 				   || (character_list_hgt_minus_1.size() != 0)
 				   && !(character_list_wdt_minus_1.size() !=0) ) {
+			env.getCellContent(wdt, hgt).remove(this);
+
 			wdt = wdt-1;
+			env.getCellContent(wdt, hgt).add(this);
+
 		}
 		else {
 			return;
@@ -90,7 +94,7 @@ public class CharacterImpl implements CharacterService{
 
 
 			
-			env.getCellContent(wdt+1, hgt).add(this);
+			
 		}
 		else {
 			return;
@@ -106,7 +110,11 @@ public class CharacterImpl implements CharacterService{
 		if(hgt == env.getHeight() 
 		   && (env.getCellNature(wdt,hgt+1) == Cell.LAD)
 		   && !(character_list_hgt_plus_1.size() != 0)) {
+			env.getCellContent(wdt, hgt).remove(this);
+
 			hgt = hgt+1;
+			env.getCellContent(wdt, hgt).add(this);
+
 		  }
 		else {
 			return;
@@ -117,12 +125,16 @@ public class CharacterImpl implements CharacterService{
 	public void goDown() {
 		ArrayList <CellContent> character_list_hgt_minus_1 = getCharacterList(getWdt(),getHgt()-1);	
 		
-		if((getHgt() == 0) && 
+		if((getHgt() != 0) && 
 		   (getEnvi().getCellNature(getWdt(),getHgt()-1) == Cell.LAD || 
 			getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.MTL ||
 			getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.PLT )
 		    && !(character_list_hgt_minus_1.size() != 0)) {
+			env.getCellContent(wdt, hgt).remove(this);
+
 			hgt = hgt-1;
+			env.getCellContent(wdt, hgt).add(this);
+
 		}
 		else {
 			return;
