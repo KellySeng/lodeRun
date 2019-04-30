@@ -40,7 +40,7 @@ public interface GuardService extends CharacterService {
 	 * post : getWdt() ==0 -> getWdt() == getWdt()@pre  && getHgt() ==  get Hgt()@pre
 	 * post : getEnvi().getCellNature(getWdt()-1,getHgt()+1) \in {MTL,PLT} -> getWdt() == getWdt()@pre && getHgt() == getHgt()@pre
 	 * post : \exist c:Character \in getEnvi().getCellContent(getWdt()-1,getHgt()+1) -> getWdt() == getWdt()@pre && getHgt() == getHgt()@pre
-	 * post : getWdt() == 0 &&  !(getEnvi().getCellNature(getWdt()-1,getHgt()+1) \in {MTL,PLT})  && !(\exist c:Character \in getEnvi().getCellContent(getWdt()-1,getHgt()+1)
+	 * post : getWdt() != 0 &&  !(getEnvi().getCellNature(getWdt()-1,getHgt()+1) \in {MTL,PLT})  && !(\exist c:Character \in getEnvi().getCellContent(getWdt()-1,getHgt()+1)
 	 * ) -> getWdt() == getWdt()@pre -1 && getHgt() == getHgt()@pre +1
 	 * 
 	 */
@@ -48,10 +48,10 @@ public interface GuardService extends CharacterService {
 	
 	/**
 	 * pre : getEnvi().getCellNature(getWdt(),getHgt()) == HOL
-	 * post : getWdt() ==0 -> getWdt() == getWdt()@pre  && getHgt() ==  get Hgt()@pre
+	 * post : getWdt() == getEnvi().getWidth() -> getWdt() == getWdt()@pre  && getHgt() ==  get Hgt()@pre
 	 * post : getEnvi().getCellNature(getWdt()+1,getHgt()+1) \in {MTL,PLT} -> getWdt() == getWdt()@pre && getHgt() == getHgt()@pre
 	 * post : \exist c:Character \in getEnvi().getCellContent(getWdt()+1,getHgt()+1) -> getWdt() == getWdt()@pre && getHgt() == getHgt()@pre
-	 * post : getWdt() == 0 &&  !(getEnvi().getCellNature(getWdt()+1,getHgt()+1) \in {MTL,PLT})  && !(\exist c:Character \in getEnvi().getCellContent(getWdt()-1,getHgt()+1)
+	 * post : getWdt() ==  getEnvi().getWidth() &&  !(getEnvi().getCellNature(getWdt()+1,getHgt()+1) \in {MTL,PLT})  && !(\exist c:Character \in getEnvi().getCellContent(getWdt()+1,getHgt()+1)
 	 * ) -> getWdt() == getWdt()@pre +1 && getHgt() == getHgt()@pre +1
 	 * 
 	 */

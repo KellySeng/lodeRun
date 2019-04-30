@@ -2,11 +2,9 @@ package loderunner.impl;
 
 import java.util.Set;
 
-import loderunner.contrat.PostconditionError;
 import loderunner.services.Cell;
 import loderunner.services.CellContent;
 import loderunner.services.CharacterService;
-import loderunner.services.Command;
 import loderunner.services.EngineService;
 import loderunner.services.PlayerService;
 import loderunner.services.Triplet;
