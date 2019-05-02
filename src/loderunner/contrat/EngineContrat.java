@@ -1,5 +1,6 @@
 package loderunner.contrat;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
@@ -7,10 +8,12 @@ import loderunner.decorator.EngineDecorator;
 import loderunner.services.CellContent;
 import loderunner.services.EditableScreenService;
 import loderunner.services.EngineService;
+import loderunner.services.EnvironmentService;
 import loderunner.services.GuardService;
 import loderunner.services.ItemService;
 import loderunner.services.ItemType;
 import loderunner.services.Pair;
+import loderunner.services.PlayerService;
 import loderunner.services.Status;
 
 public class EngineContrat extends EngineDecorator{
@@ -29,6 +32,7 @@ public class EngineContrat extends EngineDecorator{
 			if(getPlayer()!=null) {
 
 				HashSet<CellContent> player_cell_content = getEnvironment().getCellContent(getPlayer().getWdt(), getPlayer().getHgt());			
+			
 				if(!(player_cell_content.contains(getPlayer()))) {
 					throw new InvariantError("player not synchronized with env");
 				}
@@ -62,8 +66,8 @@ public class EngineContrat extends EngineDecorator{
 	public void init(EditableScreenService screen, int x, int y, List<Pair<Integer, Integer>> listGuards,
 			List<Pair<Integer, Integer>> listTresors) {
 
-		if(!(screen == null  || (0<=x && x<=screen.getWidth()) || (0<=y && y<=screen.getHeight()) 
-				|| listGuards == null || listTresors == null)) {
+		if(screen == null  || ! (0<=x && x<screen.getWidth()) || !(0<=y && y<screen.getHeight()) 
+				|| listGuards == null || listTresors == null) {
 			throw new PreconditionError("init error");
 		}
 
@@ -77,6 +81,19 @@ public class EngineContrat extends EngineDecorator{
 
 	}
 
+	@Override
+	public void init(EnvironmentService envi, PlayerService player, ArrayList<GuardService> listGuards,
+			List<Pair<Integer, Integer>> listTresors) {
+		
+		
+		
+		checkInvariant();
+
+		super.init(envi, player, listGuards, listTresors);
+		checkInvariant();
+
+		
+	}
 
 	public void step() {
 

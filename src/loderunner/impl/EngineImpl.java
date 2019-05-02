@@ -29,8 +29,7 @@ public class EngineImpl implements EngineService {
 	HashSet<ItemService> treasures;
 	Status status;
 	EditableScreenService screen;
-	int x; 
-	int y;
+	
 	List<Pair<Integer, Integer>> listGuards;
 	List<Pair<Integer, Integer>> listTresors;
 	ArrayList<Triplet<Integer,Integer,Integer>> holes;
@@ -203,11 +202,45 @@ public class EngineImpl implements EngineService {
 		
 		treasures = new HashSet<ItemService>();
 		for(Pair<Integer,Integer> l : listTresors) {
+			ItemImpl tresor = new ItemImpl(id, ItemType.Treasure, l.getL(), l.getR());
+			treasures.add(tresor);
+			id++;
+			envi.getCellContent(l.getL(), l.getR()).add(tresor);
+		}
+		
+	}
+
+	@Override
+	public void init(EnvironmentService screen, PlayerService joueur, ArrayList<GuardService> listGuards,
+			List<Pair<Integer, Integer>> listTresors) {
+		holes = new ArrayList<Triplet<Integer,Integer,Integer>>();
+		int id =0;
+		
+		envi = screen;
+		
+		
+		player = joueur;
+		player.init(envi,player.getWdt(), player.getHgt());
+		player.init(this);
+		envi.getCellContent(player.getWdt(), player.getHgt()).add(player);
+
+		
+		guards = listGuards;
+		
+		for(GuardService guard : guards) {
+			envi.getCellContent(guard.getWdt(), guard.getHgt()).add(guard);
+
+		}
+		
+		
+		treasures = new HashSet<ItemService>();
+		for(Pair<Integer,Integer> l : listTresors) {
 			 ItemImpl tresor = new ItemImpl(id, ItemType.Treasure, l.getL(), l.getR());
 			treasures.add(tresor);
 			id++;
 			envi.getCellContent(l.getL(), l.getR()).add(tresor);
 		}
+		
 		
 	}
 

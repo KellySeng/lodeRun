@@ -54,30 +54,32 @@ public class PlayerContrat extends PlayerDecorator {
 		Cell cell_bas_droite_pre = getEnvi().getCellNature(getWdt()+1, getHgt()-1);
 		Cell cell_gauche_pre = getEnvi().getCellNature(getWdt()-1, getHgt());
 		Cell cell_droite_pre = getEnvi().getCellNature(getWdt()+1, getHgt());
-		
-		PlayerService p_goLeft =null;
-		PlayerService p_goRight  =null;
-		PlayerService p_goDown  =null;
-		PlayerService p_goUp  =null;
-		try {
-			p_goLeft = (PlayerService) this.clone();
-			p_goLeft.goLeft();
-			
-			p_goRight = (PlayerService) this.clone();
-			p_goRight.goRight();
-			
-			p_goDown = (PlayerService) this.clone();
-			p_goDown.goDown();
-			
-			p_goUp = (PlayerService) this.clone();
-			p_goUp.goUp();
-			
-		} catch (CloneNotSupportedException e) {
-			e.printStackTrace();
-		}
+//		
+//		PlayerService p_goLeft =null;
+//		PlayerService p_goRight  =null;
+//		PlayerService p_goDown  =null;
+//		PlayerService p_goUp  =null;
+//		try {
+//			p_goLeft = (PlayerService) this.clone();
+//			p_goLeft.goLeft();
+//			
+//			p_goRight = (PlayerService) this.clone();
+//			p_goRight.goRight();
+//			
+//			p_goDown = (PlayerService) this.clone();
+//			p_goDown.goDown();
+//			
+//			p_goUp = (PlayerService) this.clone();
+//			p_goUp.goUp();
+//			
+//		} catch (CloneNotSupportedException e) {
+//			e.printStackTrace();
+//		}
 
 
 		super.step();
+
+		System.out.println("apres step : getWdt() = "+getWdt()+" getHgt()" + getHgt());
 
 		//post : if getNextCommand() = DigL  	
 		if(getEngine().getNextCommand() == Command.DigL 			
@@ -117,31 +119,31 @@ public class PlayerContrat extends PlayerDecorator {
 			}
 		}
 		
-		//post : if getNextCommand() = Left
-		if(getEngine().getNextCommand() == Command.Left) {
-			if(!(getWdt() != p_goLeft.getWdt() && getHgt() != p_goLeft.getHgt())) {
-				throw new PostconditionError("goLeft error");
-			}
-		}
-		
-		//post : if getNextCommand() = Right
-		if(getEngine().getNextCommand() == Command.Right) {
-			if(!(getWdt() != p_goRight.getWdt() && getHgt() != p_goRight.getHgt())) {
-				throw new PostconditionError("goRight error");
-			}
-		}
-		//post : if getNextCommand() = Up
-		if(getEngine().getNextCommand() == Command.Up) {
-			if(!(getWdt() != p_goUp.getWdt() && getHgt() != p_goUp.getHgt())) {
-				throw new PostconditionError("goUp error");
-			}
-		}
-		//post : if getNextCommand() = Down
-		if(getEngine().getNextCommand() == Command.Down) {
-			if(!(getWdt() != p_goDown.getWdt() && getHgt() != p_goDown.getHgt())) {
-				throw new PostconditionError("goUp error");
-			}
-		}
+//		//post : if getNextCommand() = Left
+//		if(getEngine().getNextCommand() == Command.Left) {
+//			if(!(getWdt() != p_goLeft.getWdt() && getHgt() != p_goLeft.getHgt())) {
+//				throw new PostconditionError("goLeft error");
+//			}
+//		}
+//		
+//		//post : if getNextCommand() = Right
+//		if(getEngine().getNextCommand() == Command.Right) {
+//			if(!(getWdt() != p_goRight.getWdt() && getHgt() != p_goRight.getHgt())) {
+//				throw new PostconditionError("goRight error");
+//			}
+//		}
+//		//post : if getNextCommand() = Up
+//		if(getEngine().getNextCommand() == Command.Up) {
+//			if(!(getWdt() != p_goUp.getWdt() && getHgt() != p_goUp.getHgt())) {
+//				throw new PostconditionError("goUp error");
+//			}
+//		}
+//		//post : if getNextCommand() = Down
+//		if(getEngine().getNextCommand() == Command.Down) {
+//			if(!(getWdt() != p_goDown.getWdt() && getHgt() != p_goDown.getHgt())) {
+//				throw new PostconditionError("goUp error");
+//			}
+//		}
 
 	}
 

@@ -81,4 +81,12 @@ public class EngineDecorator implements EngineService{
 		
 	}
 
+
+	@Override
+	public void init(EnvironmentService envi, PlayerService player, ArrayList<GuardService> listGuards,
+			List<Pair<Integer, Integer>> listTresors) {
+		delegate.init(envi, player, listGuards, listTresors);
+		
+	}
+
 }

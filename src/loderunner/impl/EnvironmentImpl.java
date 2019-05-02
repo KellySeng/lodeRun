@@ -13,6 +13,9 @@ public class EnvironmentImpl extends ScreenImpl  implements EnvironmentService{
 	private EditableScreenService e;
 	private HashSet<CellContent>[][] cell_content;
 
+	
+	
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public void init(EditableScreenService e) {
@@ -41,6 +44,11 @@ public class EnvironmentImpl extends ScreenImpl  implements EnvironmentService{
 	@Override
 	public HashSet<CellContent> getCellContent(int x, int y) {
 		return cell_content[x][y];
+	}
+
+	@Override
+	public void addCellContent(int x, int y, CellContent cell) {
+		cell_content[x][y].add(cell);		
 	}
 	
 

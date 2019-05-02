@@ -36,6 +36,8 @@ public interface EngineService {
 	 */
 	public void init(EditableScreenService screen, int x, int y, List<Pair<Integer,Integer>> listGuards,List<Pair<Integer,Integer>> listTresors );	
 
+	public void init(EnvironmentService screen, PlayerService player, ArrayList<GuardService> listGuards,List<Pair<Integer,Integer>> listTresors );
+
 
 	/*
 	 * Operator 

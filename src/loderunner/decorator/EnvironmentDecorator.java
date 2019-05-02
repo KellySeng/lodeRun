@@ -53,4 +53,10 @@ public class EnvironmentDecorator implements EnvironmentService{
 		delegate.fill(x, y);
 	}
 
+	@Override
+	public void addCellContent(int x, int y, CellContent cell) {
+		 delegate.addCellContent(x, y,cell);
+		
+	}
+
 }

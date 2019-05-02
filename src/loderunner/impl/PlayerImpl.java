@@ -49,9 +49,20 @@ public class PlayerImpl extends CharacterImpl implements PlayerService {
 				getEnvi().getCellNature(x, y-1) == Cell.HOL )
 			&& !havePersonnageEnBas ) {
 			 
+			 
+			 
+			 for(CellContent c:  getEnvi().getCellContent(wdt, hgt)) {
+					System.out.println(c.getClass());
+				}
+				
 			 getEnvi().getCellContent(wdt, hgt).remove(this);
 
 			 hgt = hgt-1;
+			 
+			 for(CellContent c:  getEnvi().getCellContent(wdt, hgt)) {
+					System.out.println(c.getClass());
+				}
+				
 			 getEnvi().getCellContent(wdt, hgt).add(this);
 
 			 System.out.println("tomber ");
@@ -66,6 +77,11 @@ public class PlayerImpl extends CharacterImpl implements PlayerService {
 				break;
 			case Left :
 				goLeft();
+				
+				getEnvi().addCellContent(getWdt(), getHgt(), this);
+				 for(CellContent c:  getEnvi().getCellContent(wdt, hgt)) {
+						System.out.println("after goleft : "+c.getClass());
+					}
 				break;
 			
 			case Up :

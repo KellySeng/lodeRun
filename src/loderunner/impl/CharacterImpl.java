@@ -60,10 +60,17 @@ public class CharacterImpl implements CharacterService{
 					   env.getCellNature(getWdt(),getHgt()-1) !=  Cell.LAD ) 
 				   || (character_list_hgt_minus_1.size() != 0)
 				   && !(character_list_wdt_minus_1.size() !=0) ) {
+			
+			 for(CellContent c:  getEnvi().getCellContent(wdt, hgt)) {
+					System.out.println(c.getClass());
+				}
+			 
 			env.getCellContent(wdt, hgt).remove(this);
 
 			wdt = wdt-1;
+			
 			env.getCellContent(wdt, hgt).add(this);
+			
 
 		}
 		else {

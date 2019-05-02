@@ -19,9 +19,13 @@ public class EnvironmentContrat extends EnvironmentDecorator{
 	
 	
 	private ArrayList<CellContent> getCharacterList(int w, int h) {
-		ArrayList <CellContent> list = new ArrayList<>();	
-		for(CellContent c : getCellContent(w,h)) {
-			if(c instanceof CharacterService) list.add(c);
+		ArrayList <CellContent> list = new ArrayList<>();
+		
+		
+		if(getCellContent(w,h)!= null) {
+			for(CellContent c : getCellContent(w,h)) {
+				if(c instanceof CharacterService) list.add(c);
+			}
 		}
 		return list;
 	}
@@ -38,9 +42,9 @@ public class EnvironmentContrat extends EnvironmentDecorator{
 		
 		
 		
-//	inv : \forall(x:Integer,y : Integer) \in [0;getWidth()[ x [0;getHeight()[,
-//		  \forall c1: Character, c2 : Character in getCellContent(x,y), c1 = c2	
-		
+	//	inv : \forall(x:Integer,y : Integer) \in [0;getWidth()[ x [0;getHeight()[,
+	//		  \forall c1: Character, c2 : Character in getCellContent(x,y), c1 = c2	
+			
 		for(int x = 0 ; x<getWidth();x++) {
 			for(int y = 0 ; y<getHeight();y++) {
 				ArrayList<CellContent> l = getCharacterList(x, y);
@@ -50,21 +54,22 @@ public class EnvironmentContrat extends EnvironmentDecorator{
 			}
 		}
 		
-//		  inv : \forall(x:Integer,y : Integer) \in [0;getWidth()[ x [0;getHeight()[,
-//           getCellNature(x,y) \in {MTL, PLR} -> getCellContent(x,y) == null
+		//	inv : \forall(x:Integer,y : Integer) \in [0;getWidth()[ x [0;getHeight()[,
+		//      getCellNature(x,y) \in {MTL, PLR} -> getCellContent(x,y) == vide
 		
 		for(int x = 0 ; x<getWidth();x++) {
 			for(int y = 0 ; y<getHeight();y++) {
-				if(!(getCellNature(x,y) == Cell.MTL || getCellNature(x,y) == Cell.PLT) || (getCellContent(x,y) == null)) {
-					throw new InvariantError("getCellNature(x,y) \\in {MTL, PLR} not implies getCellContent(x,y) == null");
+				if(getCellNature(x,y) == Cell.MTL || getCellNature(x,y) == Cell.PLT) {
+					if (getCellContent(x,y).size() != 0) {
+						throw new InvariantError("getCellNature(x,y) \\in {MTL, PLR} not implies getCellContent(x,y) == null");
+
+				}
 				}
 			}
 		}
 		
 //		  inv : \forall(x:Integer,y : Integer) \in [0;getWidth()[ x [0;getHeight()[,
 //			    \exists t:ItemType.Treasure \in getCellContent(x,y) -> getCellNature(x,y) == EMP && getCellNature(x,y-1) \in {MTL, PLT} 
-		
-
 		for(int x = 0 ; x<getWidth();x++) {
 			for(int y = 0 ; y<getHeight();y++) {
 				if(getTreasureList(x, y).size()!=0) {
@@ -80,7 +85,7 @@ public class EnvironmentContrat extends EnvironmentDecorator{
 	
 
 	public void init(EditableScreenService e) {
-		checkInvariant();
+//		checkInvariant();
 		super.init(e);
 		checkInvariant();
 		
@@ -96,17 +101,16 @@ public class EnvironmentContrat extends EnvironmentDecorator{
 	}
 	
 	
-	public HashSet<CellContent> getCellContent(int x,int y){
-		
-		//pre : 0 <= y && y <= getHeight() &&  0 <= x && x <= getWidth()   
-		if(!( 0 <= y && y <= getHeight() &&  0 <= x && x <= getWidth())) {
-			throw new PreconditionError(" ! (0<y<getHeight && 0<x<getWidth");
-		}
-		
-		checkInvariant();
-		
-		return super.getCellContent(x, y);
-		
-	}
+//	public HashSet<CellContent> getCellContent(int x,int y){
+//		
+//		//pre : 0 <= y && y <= getHeight() &&  0 <= x && x <= getWidth()   
+//		if(!( 0 <= y && y <= getHeight() &&  0 <= x && x <= getWidth())) {
+//			throw new PreconditionError(" ! (0<y<getHeight && 0<x<getWidth");
+//		}
+//		
+//		
+//		return super.getCellContent(x, y);
+//		
+//	}
 
 }
