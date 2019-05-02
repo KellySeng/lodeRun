@@ -5,10 +5,6 @@ import loderunner.services.EditableScreenService;
 
 public class EditableScreenImpl extends ScreenImpl implements EditableScreenService{
 
-	public EditableScreenImpl(int h, int w) {
-		super(h, w);
-	}
-
 	@Override
 	public boolean isPlayable() {
 		

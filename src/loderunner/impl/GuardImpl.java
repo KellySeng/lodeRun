@@ -100,7 +100,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 			}
 		}		
 
-		//Si le garde se trouve dans une case qui n’est ni une echelle,ni un rail, ni un trou et
+		//Si le garde se trouve dans une case qui nâ€™est ni une echelle,ni un rail, ni un trou et
 		// que la case en dessous de lui est libre, le garde tombe.
 		if(getEnvi().getCellNature(x, y) != Cell.LAD
 				&&  getEnvi().getCellNature(x, y) != Cell.HDR
@@ -118,7 +118,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 			System.out.println("le guarde tomber ");
 
 		}
-		//Si le garde se trouve dans un trou et que TimeInHole est strictement inférieur a 5	 
+		//Si le garde se trouve dans un trou et que TimeInHole est strictement infeÌ�rieur a 5	 
 		else if(getEnvi().getCellNature(x, y) == Cell.HOL && timeInHole<5) {
 			timeInHole = timeInHole -1;
 
@@ -135,13 +135,12 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 		}else {		
 			switch(behaviour) {
 
-				case  Right :
+				case Right :
 					goRight();
 					break;
 				case Left :
 					goLeft();
 					break;
-		
 				case Up :
 					goUp();
 					break;

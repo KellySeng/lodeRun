@@ -74,9 +74,13 @@ public interface CharacterService extends CellContent{
 	
 	/**
 	 * post : getWdt() == getWdt()@pre
+	 * 
 	 * post : getHgt()=getEnvi.getHeight() -> getHgt() == getHgt()@pre
+	 * 
 	 * post : getEnvi().getCellNature(getWdt(),getHgt()+1) != {LAD} -> getHgt() == getHgt()@pre
+	 * 
 	 * post : c:Character \exists \in getEnvi.getCellContent(getWdt(),getHgt()+1) -> getHgt() == getHgt()@pre
+	 * 
 	 * post : getHgt() != getEnvi.getHeight()
 	 * 		  && getEnvi().getCellNature(getWdt(),getHgt()+1) == LAD
 	 *		  && \not(c:Character \exists \in getEnvi.getCellContent(getWdt(),getHgt()+1)) -> getHgt() == getHgt()@pre + 1

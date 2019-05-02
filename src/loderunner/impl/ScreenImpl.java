@@ -9,9 +9,7 @@ public class ScreenImpl implements ScreenService{
 	private int height,width;
 	protected Cell[][] ecran;
 	
-	public ScreenImpl(int h, int w) {
-		init(h,w);
-	}
+
 	@Override
 	public int getHeight() {
 		return height;

@@ -60,8 +60,7 @@ public class PlayerImpl extends CharacterImpl implements PlayerService {
 		
 		
 		switch(engine.getNextCommand()) {
-			
-
+		
 			case  Right :
 				goRight();
 				break;

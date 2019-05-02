@@ -32,9 +32,10 @@ public class Test1 extends AbstractJeuTest{
 	public void testInitPrePositif() {
 
 
-		EditableScreenService screen = new EditableScreenImpl(5,5);
+		EditableScreenService screen = new EditableScreenImpl();
+		screen.init(5, 5);
 		for(int i = 0; i<5;i++)
-			screen.setNature(i, 0, Cell.PLT);
+			screen.setNature(i, 0, Cell.MTL);
 		List<Pair<Integer, Integer>> listGuards = new ArrayList<Pair<Integer, Integer>>();
 		listGuards.add(new Pair(1,1));
 		List<Pair<Integer, Integer>> listTresors = new ArrayList<Pair<Integer, Integer>> ();
@@ -51,7 +52,8 @@ public class Test1 extends AbstractJeuTest{
 	public void testGoRightPrePositif() {
 
 
-		EditableScreenService screen = new EditableScreenImpl(5,5);
+		EditableScreenService screen = new EditableScreenImpl();
+		screen.init(5, 5);
 		for(int i = 0; i<5;i++) {
 			screen.setNature(i, 0, Cell.MTL);
 
@@ -74,7 +76,8 @@ public class Test1 extends AbstractJeuTest{
 	public void testGoLeftPrePositif() {
 
 
-		EditableScreenService screen = new EditableScreenImpl(5,5);
+		EditableScreenService screen = new EditableScreenImpl();
+		screen.init(5, 5);
 		for(int i = 0; i<5;i++) {
 			screen.setNature(i, 0, Cell.MTL);
 
@@ -97,7 +100,8 @@ public class Test1 extends AbstractJeuTest{
 	public void testGoUpPrePositif() {
 
 
-		EditableScreenService screen = new EditableScreenImpl(5,5);
+		EditableScreenService screen = new EditableScreenImpl();
+		screen.init(5, 5);
 		for(int i = 0; i<5;i++) {
 			screen.setNature(i, 0, Cell.MTL);
 

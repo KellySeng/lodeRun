@@ -181,7 +181,8 @@ public class EngineImpl implements EngineService {
 		int id =0;
 		
 		//créer un environment
-		envi = new EnvironmentImpl(screen.getHeight(),screen.getWidth());
+		envi = new EnvironmentImpl();
+		envi.init(screen.getHeight(),screen.getWidth());
 		envi.init(screen);
 		
 		

@@ -16,7 +16,6 @@ public class CharacterImpl implements CharacterService{
 	
 	@Override
 	public EnvironmentService getEnvi() {
-		
 		return env;
 	}
 

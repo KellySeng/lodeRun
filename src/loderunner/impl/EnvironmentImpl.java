@@ -12,10 +12,14 @@ public class EnvironmentImpl extends ScreenImpl  implements EnvironmentService{
 
 	private EditableScreenService e;
 	private HashSet<CellContent>[][] cell_content;
-	
+
 	@SuppressWarnings("unchecked")
-	public EnvironmentImpl(int h, int w) {
-		super(h, w);
+	@Override
+	public void init(EditableScreenService e) {
+		
+		int h = e.getHeight();
+		int w = e.getWidth();
+		
 		cell_content = (HashSet<CellContent>[][]) new HashSet[h][w];
 		for(int i = 0;i<h;i++) {
 			
@@ -25,14 +29,6 @@ public class EnvironmentImpl extends ScreenImpl  implements EnvironmentService{
 			}
 		}
 		
-	}
-
-
-	@Override
-	public void init(EditableScreenService e) {
-		
-		int h = e.getHeight();
-		int w = e.getWidth();
 		for(int i=0;i < h;i++) {
 			for(int j = 0;j<w;j++) {
 				ecran[i][j] = e.getCellNature(i, j);
@@ -44,7 +40,6 @@ public class EnvironmentImpl extends ScreenImpl  implements EnvironmentService{
 
 	@Override
 	public HashSet<CellContent> getCellContent(int x, int y) {
-		
 		return cell_content[x][y];
 	}
 	
