@@ -32,4 +32,6 @@ public interface EnvironmentService extends ScreenService {
 	 * 		getCellNature(x,y) == e.getCellNature(x,y)
 	 **/
 	public void init (EditableScreenService e);
+	
+	
 }

@@ -72,22 +72,31 @@ public class PlayerContrat extends PlayerDecorator {
 				haveCharacterEnGauche = true;
 			}
 		}
-
-		Set<CellContent> setDroite =  getEnvi().getCellContent(getWdt()-1, getHgt());
+		Set<CellContent> setDroite ;
 		boolean haveCharacterEnDroite = false;
-		for(CellContent c : setDroite) {
-			if(c instanceof CharacterService) {
-				haveCharacterEnDroite = true;
+		if(getWdt()< getEnvi().getWidth()-1 ) {
+			setDroite =  getEnvi().getCellContent(getWdt()+1, getHgt());
+			for(CellContent c : setDroite) {
+				if(c instanceof CharacterService) {
+					haveCharacterEnDroite = true;
+				}
 			}
 		}
 		int hgt_pre = getHgt();
 		int wdt_pre = getWdt();
 
-		Cell cell_bas_pre = getEnvi().getCellNature(getWdt(), getHgt()-1);
-		Cell cell_bas_gauche_pre = getEnvi().getCellNature(getWdt()-1, getHgt()-1);
-		Cell cell_bas_droite_pre = getEnvi().getCellNature(getWdt()+1, getHgt()-1);
-		Cell cell_gauche_pre = getEnvi().getCellNature(getWdt()-1, getHgt());
-		Cell cell_droite_pre = getEnvi().getCellNature(getWdt()+1, getHgt());
+		Cell cell_bas_pre = null;
+		Cell cell_bas_gauche_pre = null;
+		Cell cell_bas_droite_pre = null;
+		Cell cell_gauche_pre = null;
+		Cell cell_droite_pre = null;
+
+
+		if(getHgt()>=1) cell_bas_pre = getEnvi().getCellNature(getWdt(), getHgt()-1);
+		if(getHgt()>=1 && getWdt()>=1) cell_bas_gauche_pre = getEnvi().getCellNature(getWdt()-1, getHgt()-1);
+		if(getHgt()>=1  && getWdt()<getEnvi().getWidth()-1) cell_bas_droite_pre = getEnvi().getCellNature(getWdt()+1, getHgt()-1);
+		if(getWdt()>=1) cell_gauche_pre = getEnvi().getCellNature(getWdt()-1, getHgt());
+		if(getWdt()<getEnvi().getWidth()-1 ) cell_droite_pre = getEnvi().getCellNature(getWdt()+1, getHgt());
 
 
 		boolean willFall = (getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.EMP ||

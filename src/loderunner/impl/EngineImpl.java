@@ -96,17 +96,25 @@ public class EngineImpl implements EngineService {
 	@Override
 	public void step() {
 		
+
+
+		
 		//Si au debut d’un tour, le joueur se trouve sur une case contenant un tresor,
 		//ce tresor disparait
 		int x = player.getWdt();
 		int y = player.getHgt();
 		
 		Set<CellContent> set = envi.getCellContent(x, y);
+		
 		for(CellContent c :set) {
-			if (c instanceof ItemService ) {
-				set.remove(c);
+			if (c instanceof ItemService ) {		
 				treasures.remove(c);
 			}
+		}
+		for(ItemService c : treasures) {	
+				if(c.getCol() == x && c.getHgt() == y) {
+					envi.getCellContent(x, y).remove(c);
+				}
 		}
 		
 		//	le temps de chaque trou est incrementee
@@ -120,10 +128,10 @@ public class EngineImpl implements EngineService {
 	
 		player.step();
 		
-//		for(GuardService guard : guards) {
-//			guard.step();
-//			
-//		}
+		for(GuardService guard : guards) {
+			guard.step();
+			
+		}
 		
 	//	tous les trous dont la troisieme coordonnees vaut 15 sont rebouches.
 		
@@ -132,8 +140,7 @@ public class EngineImpl implements EngineService {
 			if(t==15) {
 				
 				
-				screen.setNature(h.getFirst(), h.getSecond(), Cell.PLT);
-				
+				envi.fill(h.getFirst(), h.getSecond());
 				//	si le joueur etait dedans
 				if(h.getFirst() == player.getWdt() && h.getSecond() == player.getHgt()) {
 					//	le jeu est perdu
@@ -208,6 +215,9 @@ public class EngineImpl implements EngineService {
 			envi.getCellContent(l.getL(), l.getR()).add(tresor);
 		}
 		
+		 holes = new ArrayList<Triplet<Integer,Integer,Integer>>();
+
+		
 	}
 
 	@Override
@@ -240,6 +250,8 @@ public class EngineImpl implements EngineService {
 			envi.getCellContent(l.getL(), l.getR()).add(tresor);
 		}
 		
+		 holes = new ArrayList<Triplet<Integer,Integer,Integer>>();
+
 		
 	}
 

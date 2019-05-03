@@ -54,7 +54,7 @@ public class PlayerImpl extends CharacterImpl implements PlayerService {
 			
 			 getEnvi().getCellContent(wdt, hgt).add(this);
 
-			 System.out.println("tomber ");
+			 System.out.println("player tomber ");
 			 
 		 }
 		

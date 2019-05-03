@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import loderunner.decorator.EngineDecorator;
+import loderunner.services.Cell;
 import loderunner.services.CellContent;
 import loderunner.services.EditableScreenService;
 import loderunner.services.EngineService;
@@ -54,7 +55,17 @@ public class EngineContrat extends EngineDecorator{
 
 			for(GuardService g : getGuards()) {
 				HashSet<CellContent> guard_cell_content = getEnvironment().getCellContent(g.getWdt(), g.getHgt());
-				if(!(guard_cell_content.contains(g))) {
+				boolean containsGuard = false;
+				int id_guard = -1 ;
+				for(CellContent c:  guard_cell_content) {
+						if(c instanceof GuardService) {
+							containsGuard = true;
+							id_guard = ((GuardService) c).getId();
+						}
+					}
+				
+				
+				if(!(containsGuard && g.getId() ==id_guard )) {
 					throw new InvariantError("treasure not synchronized with env");
 				}
 			}
@@ -71,7 +82,7 @@ public class EngineContrat extends EngineDecorator{
 	public void init(EditableScreenService screen, int x, int y, List<Pair<Integer, Integer>> listGuards,
 			List<Pair<Integer, Integer>> listTresors) {
 
-		if(screen == null  || ! (0<=x && x<screen.getWidth()) || !(0<=y && y<screen.getHeight()) 
+		if(screen == null || !screen.isPlayable() || ! (0<=x && x<screen.getWidth()) || !(0<=y && y<screen.getHeight()) 
 				|| listGuards == null || listTresors == null) {
 			throw new PreconditionError("init error");
 		}
@@ -91,7 +102,27 @@ public class EngineContrat extends EngineDecorator{
 			List<Pair<Integer, Integer>> listTresors) {
 		
 		
+		// pre : envi.getCellNature(player.getWdt(), player.getHgt()) == Cell.EMP
+		if(envi.getCellNature(player.getWdt(), player.getHgt())!= Cell.EMP) {
+			throw new PreconditionError("Engine init error , la case de player n'est pas empty");
+		}
 		
+		//pre : forall g in listGuards, envi.getCellNature(g.getWdt(), g.getHgt()) == Cell.EMP
+		for(GuardService guard : listGuards) {
+			if(envi.getCellNature(guard.getWdt(),guard.getHgt())!=Cell.EMP) {
+				throw new PreconditionError("Engine init error , la case du guard n'est pas empty");
+
+			}
+		}
+		
+		// pre : forall t in listTresors, envi.getCellNature(t.getWdt(), t.getHgt()-1) == Cell.PLT
+		for(Pair<Integer, Integer> t :listTresors ) {
+			if(!(envi.getCellNature(t.getL(),t.getR()-1)== Cell.PLT
+					||envi.getCellNature(t.getL(),t.getR()-1)== Cell.MTL) ) {
+				throw new PreconditionError("Engine init error , la case dessous de tresor  est libre");
+
+			}
+		}
 		checkInvariant();
 
 		super.init(envi, player, listGuards, listTresors);

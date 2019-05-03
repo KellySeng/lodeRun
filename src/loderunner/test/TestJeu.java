@@ -24,8 +24,9 @@ import loderunner.services.EnvironmentService;
 import loderunner.services.GuardService;
 import loderunner.services.Pair;
 import loderunner.services.PlayerService;
+import loderunner.services.Status;
 
-public class Test1 extends AbstractJeuTest{
+public class TestJeu extends AbstractJeuTest{
 
 
 
@@ -127,11 +128,14 @@ public class Test1 extends AbstractJeuTest{
 	public void testPlayerGoRightPrePositif() {
 
 
-		initialisation(); // player en position (3,2), guard est en position(0, 2)
+		initialisation(); // player en position (3,2), un seul guard est en position(0, 2)
 		engine.setCmd(Command.Right);
 		engine.step();
 		assertEquals(engine.getPlayer().getWdt(),4);
+		assertEquals(engine.getPlayer().getHgt(),2);
 		assertEquals(engine.getGuards().get(0).getWdt(), 1);
+		assertEquals(engine.getGuards().get(0).getHgt(), 2);
+
 
 	}
 
@@ -140,10 +144,13 @@ public class Test1 extends AbstractJeuTest{
 	public void testPlayerGoLeftPrePositif() {
 
 
-		initialisation();// player en position (3,2)
+		initialisation();// player en position (3,2), un seul guard est en position(0, 2)
 		engine.setCmd(Command.Left);
 		engine.step();
 		assertEquals(engine.getPlayer().getWdt(),2);
+		assertEquals(engine.getPlayer().getHgt(),2);
+		assertEquals(engine.getGuards().get(0).getWdt(), 1);
+		assertEquals(engine.getGuards().get(0).getHgt(), 2);
 
 
 	}
@@ -192,15 +199,17 @@ public class Test1 extends AbstractJeuTest{
 		EngineService engine = getEngine();
 		engine.init(enviContrat,playerContrat, guardsContrat, listTresors);
 
-
-
+		// En initiale, player en position (2,1), un seul guard est en position(1, 1)
 		engine.setCmd(Command.Right);
 		engine.step();
 
 		engine.setCmd(Command.Up);
 		engine.step();
 		assertEquals(engine.getPlayer().getHgt(),2);
-		System.out.println("hgt = "+ engine.getPlayer().getHgt());
+		assertEquals(engine.getPlayer().getWdt(),3);
+		assertEquals(engine.getGuards().get(0).getWdt(), 3);
+		assertEquals(engine.getGuards().get(0).getHgt(), 1);
+
 
 	}
 	@Test
@@ -285,34 +294,47 @@ public class Test1 extends AbstractJeuTest{
 		//Initialiser engine
 		engine = getEngine();
 		engine.init(enviContrat,playerContrat, guardsContrat, listTresors);	
+		
+		// En initiale, player en position (2,1), un seul guard est en position(1, 1)
+
 		engine.setCmd(Command.Right);
 		engine.step();
 		engine.setCmd(Command.Up);
 		engine.step();
-		engine.setCmd(Command.Down);
+		engine.setCmd(Command.Neutral);
 		engine.step();
-		assertEquals(engine.getPlayer().getHgt(),1);
-		assertEquals(engine.getPlayer().getWdt(),3);
 
 	}
 	
 
+	/**
+	 * En initialisation, le player est  en position (3,2),un seul guard est en position(0, 2)
+	 * player fait DigL, et apres il fait rien pendant 2 step, le guard tombe dans le trou
+	 */
 	@Test
 	public void testPlayerDigLPrePositif() {
 	
-		initialisation();// player en position (3,2)
+		initialisation();
 		engine.setCmd(Command.DigL);
 		engine.step();
+		engine.setCmd(Command.Neutral);
+		engine.step();
+		engine.setCmd(Command.Neutral);
+		engine.step();
 		assertEquals(engine.getEnvironment().getCellNature(2, 1), Cell.HOL);
+		assertEquals(engine.getGuards().get(0).getWdt(), 2);
+		assertEquals(engine.getGuards().get(0).getHgt(), 1);
 
 	}
 	@Test
 	public void testPlayerDigRPrePositif() {
 	
-		initialisation();// player en position (3,2)
+		initialisation();// player en position (3,2),un seul guard est en position(0, 2)
 		engine.setCmd(Command.DigR);
 		engine.step();
 		assertEquals(engine.getEnvironment().getCellNature(4, 1), Cell.HOL);
+		assertEquals(engine.getGuards().get(0).getWdt(), 1);
+		assertEquals(engine.getGuards().get(0).getHgt(), 2);
 
 	}
 

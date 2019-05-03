@@ -53,11 +53,11 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 		if(getEnvi().getCellNature(wdt, hgt)==Cell.HOL				
 			||getEnvi().getCellNature(wdt, hgt)==Cell.HDR
 			||
-			 (getEnvi().getCellNature(wdt, hgt-1)==Cell.MTL 
+				(getEnvi().getCellNature(wdt, hgt-1)==Cell.MTL 
 				||getEnvi().getCellNature(wdt, hgt-1)==Cell.PLT
 				||getEnvi().getCellNature(wdt, hgt-1)==Cell.LAD
 				||haveCharacterEnBas
-			 )
+					)
 			) {
 			
 			//Behaviour renvoie Left si la cible du garde se trouve strictement plus a gauche que lui
@@ -133,6 +133,8 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 
 	@Override
 	public void climbLeft() {
+		System.out.println("guard climbLeft");
+
 		int x = getWdt();
 		int y = getHgt();
 
@@ -157,6 +159,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 
 	@Override
 	public void climbRight() {
+		System.out.println("guard climbRight");
 		int x = getWdt();
 		int y = getHgt();
 
@@ -213,7 +216,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 		}
 		//Si le garde se trouve dans un trou et que TimeInHole est strictement infeÌ�rieur a 5	 
 		else if(getEnvi().getCellNature(x, y) == Cell.HOL && timeInHole<5) {
-			timeInHole = timeInHole -1;
+			timeInHole = timeInHole +1;
 
 		}
 		//Si le garde se trouve dans un trou, que TimeInHole vaut 5

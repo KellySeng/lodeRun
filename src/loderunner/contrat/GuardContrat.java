@@ -200,11 +200,15 @@ public class GuardContrat extends GuardDecorator{
 	public void step() {
 
 		//capture
-		Set<CellContent> setBas =  getEnvi().getCellContent(getWdt(), getHgt()-1);
+		Set<CellContent> setBas = null;
 		boolean haveCharacterEnbas = false;
-		for(CellContent c : setBas) {
-			if(c instanceof CharacterService) {
-				haveCharacterEnbas = true;
+
+		if(getHgt()>0) {
+			setBas =  getEnvi().getCellContent(getWdt(), getHgt()-1);
+			for(CellContent c : setBas) {
+				if(c instanceof CharacterService) {
+					haveCharacterEnbas = true;
+				}
 			}
 		}
 
@@ -217,15 +221,19 @@ public class GuardContrat extends GuardDecorator{
 			}
 		}
 
-		Set<CellContent> setGauche =  getEnvi().getCellContent(getWdt()-1, getHgt());
+		Set<CellContent> setGauche  = null;
 		boolean haveCharacterEnGauche = false;
-		for(CellContent c : setGauche) {
-			if(c instanceof CharacterService) {
-				haveCharacterEnGauche = true;
+
+		if(getWdt()>0) {
+			 setGauche =  getEnvi().getCellContent(getWdt()-1, getHgt());
+			for(CellContent c : setGauche) {
+				if(c instanceof CharacterService) {
+					haveCharacterEnGauche = true;
+				}
 			}
 		}
 
-		Set<CellContent> setDroite =  getEnvi().getCellContent(getWdt()-1, getHgt());
+		Set<CellContent> setDroite =  getEnvi().getCellContent(getWdt()+1, getHgt());
 		boolean haveCharacterEnDroite = false;
 		for(CellContent c : setDroite) {
 			if(c instanceof CharacterService) {
