@@ -1,6 +1,5 @@
 package loderunner.decorator;
 
-import loderunner.services.CharacterService;
 import loderunner.services.EngineService;
 import loderunner.services.EnvironmentService;
 import loderunner.services.PlayerService;
@@ -22,9 +21,7 @@ public class PlayerDecorator implements PlayerService{
 		return delegate.getEngine();
 	}
 
-	public void init(EngineService e) {
-		delegate.init(e);
-	}
+	
 
 	public int getHgt() {
 		return delegate.getHgt();
@@ -56,6 +53,12 @@ public class PlayerDecorator implements PlayerService{
 
 	public void goDown() {
 		delegate.goDown();
+	}
+
+	@Override
+	public void init(EnvironmentService env, int x, int y, EngineService e) {
+		delegate.init(env, x, y, e);
+		
 	}
 
 }

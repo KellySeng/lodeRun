@@ -32,8 +32,13 @@ public class EngineContrat extends EngineDecorator{
 			if(getPlayer()!=null) {
 
 				HashSet<CellContent> player_cell_content = getEnvironment().getCellContent(getPlayer().getWdt(), getPlayer().getHgt());			
-			
-				if(!(player_cell_content.contains(getPlayer()))) {
+				boolean containsPlayer = false;
+				for(CellContent c:  player_cell_content) {
+						if(c instanceof PlayerService) {
+							containsPlayer = true;
+						}
+					}
+				if(!containsPlayer) {
 					throw new InvariantError("player not synchronized with env");
 				}
 			}

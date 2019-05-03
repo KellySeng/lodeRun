@@ -16,7 +16,7 @@ public interface PlayerService extends CharacterService{
 	 * post : getEngine() == e
 	 * @param e
 	 */
-	public void init(EngineService e);
+	public void init(EnvironmentService env, int x, int y , EngineService e);
 	
 	
 	

@@ -73,6 +73,7 @@ public interface CharacterService extends CellContent{
 	public void goRight();
 	
 	/**
+	 * 
 	 * post : getWdt() == getWdt()@pre
 	 * 
 	 * post : getHgt()=getEnvi.getHeight() -> getHgt() == getHgt()@pre

@@ -12,7 +12,7 @@ public class CharacterImpl implements CharacterService{
 
 	protected int hgt;
 	protected int wdt;
-	private	EnvironmentService env;
+	protected	EnvironmentService env;
 	
 	@Override
 	public EnvironmentService getEnvi() {
@@ -34,6 +34,8 @@ public class CharacterImpl implements CharacterService{
 		hgt = y;
 		wdt = x;
 		env = (EnvironmentService)screen;
+		env.getCellContent(x, y).add(this);
+
 		
 	}
 	
@@ -61,9 +63,7 @@ public class CharacterImpl implements CharacterService{
 				   || (character_list_hgt_minus_1.size() != 0)
 				   && !(character_list_wdt_minus_1.size() !=0) ) {
 			
-			 for(CellContent c:  getEnvi().getCellContent(wdt, hgt)) {
-					System.out.println(c.getClass());
-				}
+			
 			 
 			env.getCellContent(wdt, hgt).remove(this);
 
@@ -71,7 +71,8 @@ public class CharacterImpl implements CharacterService{
 			
 			env.getCellContent(wdt, hgt).add(this);
 			
-
+			
+			
 		}
 		else {
 			return;
@@ -113,9 +114,11 @@ public class CharacterImpl implements CharacterService{
 		
 		ArrayList <CellContent> character_list_hgt_plus_1 = getCharacterList(getWdt(),getHgt()+1);	
 		
-		if(hgt == env.getHeight() 
-		   && (env.getCellNature(wdt,hgt+1) == Cell.LAD)
-		   && !(character_list_hgt_plus_1.size() != 0)) {
+		if(hgt < env.getHeight() 
+		   && (env.getCellNature(wdt,hgt+1) == Cell.LAD || env.getCellNature(wdt,hgt+1) == Cell.EMP 
+		   || env.getCellNature(wdt,hgt+1) == Cell.HDR || env.getCellNature(wdt,hgt+1) == Cell.HOL )
+		   && character_list_hgt_plus_1.size() == 0) {
+			
 			env.getCellContent(wdt, hgt).remove(this);
 
 			hgt = hgt+1;

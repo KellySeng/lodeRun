@@ -187,8 +187,8 @@ public class EngineImpl implements EngineService {
 		
 		
 		player = new PlayerImpl();
-		player.init(envi, x, y);
-		player.init(this);
+	
+		player.init(envi, x, y, this);
 		envi.getCellContent(x, y).add(player);
 		
 		guards = new ArrayList<GuardService>();
@@ -219,10 +219,9 @@ public class EngineImpl implements EngineService {
 		envi = screen;
 		
 		
+		
 		player = joueur;
-		player.init(envi,player.getWdt(), player.getHgt());
-		player.init(this);
-		envi.getCellContent(player.getWdt(), player.getHgt()).add(player);
+		player.init(envi, joueur.getWdt(), joueur.getHgt(), this);
 
 		
 		guards = listGuards;

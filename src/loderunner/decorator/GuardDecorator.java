@@ -75,5 +75,11 @@ public class GuardDecorator implements GuardService {
 		delegate.goDown();
 	}
 
+	@Override
+	public void init(int id, int x, int y, EnvironmentService env, CharacterService target) {
+		delegate.init(id, x, y, env, target);
+		
+	}
+
 
 }

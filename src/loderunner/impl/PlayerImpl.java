@@ -6,6 +6,7 @@ import loderunner.services.Cell;
 import loderunner.services.CellContent;
 import loderunner.services.CharacterService;
 import loderunner.services.EngineService;
+import loderunner.services.EnvironmentService;
 import loderunner.services.PlayerService;
 import loderunner.services.Triplet;
 
@@ -20,11 +21,7 @@ public class PlayerImpl extends CharacterImpl implements PlayerService {
 		return engine;
 	}
 
-	@Override
-	public void init(EngineService e) {
-		engine = e;
-	}
-
+	
 	@Override
 	public void step() {
 
@@ -50,19 +47,11 @@ public class PlayerImpl extends CharacterImpl implements PlayerService {
 			&& !havePersonnageEnBas ) {
 			 
 			 
-			 
-			 for(CellContent c:  getEnvi().getCellContent(wdt, hgt)) {
-					System.out.println(c.getClass());
-				}
-				
 			 getEnvi().getCellContent(wdt, hgt).remove(this);
 
 			 hgt = hgt-1;
 			 
-			 for(CellContent c:  getEnvi().getCellContent(wdt, hgt)) {
-					System.out.println(c.getClass());
-				}
-				
+			
 			 getEnvi().getCellContent(wdt, hgt).add(this);
 
 			 System.out.println("tomber ");
@@ -78,10 +67,7 @@ public class PlayerImpl extends CharacterImpl implements PlayerService {
 			case Left :
 				goLeft();
 				
-				getEnvi().addCellContent(getWdt(), getHgt(), this);
-				 for(CellContent c:  getEnvi().getCellContent(wdt, hgt)) {
-						System.out.println("after goleft : "+c.getClass());
-					}
+				
 				break;
 			
 			case Up :
@@ -133,6 +119,15 @@ public class PlayerImpl extends CharacterImpl implements PlayerService {
 		
 		
 		}
+		
+	}
+
+	@Override
+	public void init(EnvironmentService env, int x, int y, EngineService e) {
+		engine = e;
+		this.env = env;
+		this.hgt = y;
+		this.wdt = x; 
 		
 	}
 

@@ -8,84 +8,143 @@ import loderunner.services.CellContent;
 import loderunner.services.CharacterService;
 import loderunner.services.Command;
 import loderunner.services.EngineService;
+import loderunner.services.EnvironmentService;
 import loderunner.services.PlayerService;
 
 public class PlayerContrat extends PlayerDecorator {
-	
+
 	public PlayerContrat(PlayerService delegate) {
-		
+
 		super(delegate);
 	}
-	
-	
-	public void init(EngineService engine) {
-		
+
+	@Override
+	public void init(EnvironmentService env, int x, int y, EngineService engine) {
+
+
 		// pre : engine!=null
 		if(engine==null) {
 			throw new PreconditionError("engine est null");
 
 		}
-		
-		
-		super.init(engine);
+
+		//pre :getCellNature(x, y) == Cell.EMP
+		if(getEnvi().getCellNature(x, y)!=Cell.EMP) {
+			throw new PreconditionError("la case d'initialisation n'est pas empty");
+
+		}
+		super.init(env, x, y,engine );
 		// post : getEngine() == engine
-		
+
 		if(!(getEngine() == engine)) {
 			throw new PostconditionError("getEngine != engine");
 		}
+
 	}
-	
-	
-	
+
+
+
 	public void step() {
 
-		
+
 		//capture
-		Set<CellContent> set =  getEnvi().getCellContent(getWdt(), getHgt()-1);
-		boolean havePersonnageEnbas = false;
-		for(CellContent c : set) {
+		Set<CellContent> setBas =  getEnvi().getCellContent(getWdt(), getHgt()-1);
+		boolean haveCharacterEnbas = false;
+		for(CellContent c : setBas) {
 			if(c instanceof CharacterService) {
-				havePersonnageEnbas = true;
+				haveCharacterEnbas = true;
 			}
 		}
+
+
+		Set<CellContent> setHaut =  getEnvi().getCellContent(getWdt(), getHgt()+1);
+		boolean haveCharacterEnHaut = false;
+		for(CellContent c : setHaut) {
+			if(c instanceof CharacterService) {
+				haveCharacterEnHaut = true;
+			}
+		}
+
+		Set<CellContent> setGauche =  getEnvi().getCellContent(getWdt()-1, getHgt());
+		boolean haveCharacterEnGauche = false;
+		for(CellContent c : setGauche) {
+			if(c instanceof CharacterService) {
+				haveCharacterEnGauche = true;
+			}
+		}
+
+		Set<CellContent> setDroite =  getEnvi().getCellContent(getWdt()-1, getHgt());
+		boolean haveCharacterEnDroite = false;
+		for(CellContent c : setDroite) {
+			if(c instanceof CharacterService) {
+				haveCharacterEnDroite = true;
+			}
+		}
+		int hgt_pre = getHgt();
+		int wdt_pre = getWdt();
 
 		Cell cell_bas_pre = getEnvi().getCellNature(getWdt(), getHgt()-1);
 		Cell cell_bas_gauche_pre = getEnvi().getCellNature(getWdt()-1, getHgt()-1);
 		Cell cell_bas_droite_pre = getEnvi().getCellNature(getWdt()+1, getHgt()-1);
 		Cell cell_gauche_pre = getEnvi().getCellNature(getWdt()-1, getHgt());
 		Cell cell_droite_pre = getEnvi().getCellNature(getWdt()+1, getHgt());
-//		
-//		PlayerService p_goLeft =null;
-//		PlayerService p_goRight  =null;
-//		PlayerService p_goDown  =null;
-//		PlayerService p_goUp  =null;
-//		try {
-//			p_goLeft = (PlayerService) this.clone();
-//			p_goLeft.goLeft();
-//			
-//			p_goRight = (PlayerService) this.clone();
-//			p_goRight.goRight();
-//			
-//			p_goDown = (PlayerService) this.clone();
-//			p_goDown.goDown();
-//			
-//			p_goUp = (PlayerService) this.clone();
-//			p_goUp.goUp();
-//			
-//		} catch (CloneNotSupportedException e) {
-//			e.printStackTrace();
-//		}
 
 
+		boolean willFall = (getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.EMP ||
+				getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.HOL ) && !haveCharacterEnbas
+				&&  getEnvi().getCellNature(getWdt(), getHgt()) != Cell.LAD 
+				&&	getEnvi().getCellNature(getWdt(), getHgt()) != Cell.HDR ;
+
+		boolean willGoUp =( getEngine().getNextCommand() == Command.Up 
+				&& getHgt() < getEnvi().getHeight() 
+				&& (getEnvi().getCellNature(getWdt(),getHgt()+1) == Cell.LAD || getEnvi().getCellNature(getWdt(),getHgt()+1) == Cell.EMP 
+				|| getEnvi().getCellNature(getWdt(),getHgt()+1) == Cell.HDR || getEnvi().getCellNature(getWdt(),getHgt()+1) == Cell.HOL )
+				& ! haveCharacterEnHaut ) ;
+
+		boolean willGoDown = (getEngine().getNextCommand() == Command.Down
+				&& getHgt() != 0
+				&& (getEnvi().getCellNature(getWdt(),getHgt()-1) == Cell.LAD || getEnvi().getCellNature(getWdt(),getHgt()-1) == Cell.EMP 
+				|| getEnvi().getCellNature(getWdt(),getHgt()-1) == Cell.HDR || getEnvi().getCellNature(getWdt(),getHgt()-1) == Cell.HOL )
+				& ! haveCharacterEnbas);
+
+		boolean willGoLeft = (getEngine().getNextCommand() == Command.Left
+				&& getWdt()!=0
+				&& getEnvi().getCellNature(getWdt()-1,getHgt()) != Cell.MTL
+				&& getEnvi().getCellNature(getWdt()-1,getHgt()) != Cell.PLT
+				&& (getEnvi().getCellNature(getWdt(),getHgt()) == Cell.LAD
+				||getEnvi().getCellNature(getWdt(),getHgt()) == Cell.HDR
+				|| getEnvi().getCellNature(getWdt(),getHgt()-1) == Cell.PLT
+				|| getEnvi().getCellNature(getWdt(),getHgt()-1) == Cell.MTL
+				|| getEnvi().getCellNature(getWdt(),getHgt()-1) == Cell.LAD
+				|| haveCharacterEnbas				
+						)
+				&& !haveCharacterEnGauche
+				);
+
+		boolean willGoRight = (getEngine().getNextCommand() == Command.Right
+				&& getWdt()< getEnvi().getWidth()
+				&& getEnvi().getCellNature(getWdt()+1,getHgt()) != Cell.MTL
+				&& getEnvi().getCellNature(getWdt()+1,getHgt()) != Cell.PLT
+				&& (getEnvi().getCellNature(getWdt(),getHgt()) == Cell.LAD
+					||getEnvi().getCellNature(getWdt(),getHgt()) == Cell.HDR
+					|| getEnvi().getCellNature(getWdt(),getHgt()-1) == Cell.PLT
+					|| getEnvi().getCellNature(getWdt(),getHgt()-1) == Cell.MTL
+					|| getEnvi().getCellNature(getWdt(),getHgt()-1) == Cell.LAD
+					|| haveCharacterEnbas				
+					)
+				&& !haveCharacterEnDroite
+				);
+		
+		
 		super.step();
 
-		System.out.println("apres step : getWdt() = "+getWdt()+" getHgt()" + getHgt());
+		//		System.out.println("apres step : getWdt() = "+getWdt()+" getHgt()" + getHgt());
 
 		//post : if getNextCommand() = DigL  	
 		if(getEngine().getNextCommand() == Command.DigL 			
 				&& (  cell_bas_pre == Cell.MTL 
 				|| cell_bas_pre == Cell.PLT 
-				||havePersonnageEnbas  ) 
+				||haveCharacterEnbas  ) 
 				&& ( cell_gauche_pre == Cell.EMP ||  //la case a sa gauche est libre
 				cell_gauche_pre == Cell.LAD ||
 				cell_gauche_pre == Cell.HDR ||
@@ -105,7 +164,7 @@ public class PlayerContrat extends PlayerDecorator {
 		if(getEngine().getNextCommand() == Command.DigR			
 				&& (  cell_bas_pre == Cell.MTL 
 				|| cell_bas_pre == Cell.PLT 
-				||havePersonnageEnbas  ) 
+				||haveCharacterEnbas  ) 
 				&& ( cell_droite_pre == Cell.EMP ||  //la case a sa droite est libre
 				cell_droite_pre == Cell.LAD ||
 				cell_droite_pre == Cell.HDR ||
@@ -118,32 +177,40 @@ public class PlayerContrat extends PlayerDecorator {
 				throw new PostconditionError("DigR error");
 			}
 		}
+
+		//Post: if willFall
+		if(willFall) {
+			if(!(getWdt() == wdt_pre && getHgt() == hgt_pre-1)) {
+				throw new PostconditionError("willFall error");
+			}
+		}
+		//post : if getNextCommand() = Left
+		if(willGoLeft) {
+			if(!(getWdt() == wdt_pre-1 && getHgt() == hgt_pre)) {
+				throw new PostconditionError("goLeft error");
+			}
+		}
+
+		//post : if getNextCommand() = Right
+		if(willGoRight) {
+			if(!(getWdt() == wdt_pre+1 && getHgt() == hgt_pre)) {
+				throw new PostconditionError("goRight error");
+			}
+		}
+		//post : if getNextCommand() = Up
+		if(willGoUp) {
+			if(!(getWdt() == wdt_pre && getHgt() == hgt_pre+1)) {
+				throw new PostconditionError("goUp error");
+			}
+		}
+		//post : if getNextCommand() = Down
+		if(willGoDown) {
+			if(!(getWdt() == wdt_pre && getHgt() == hgt_pre-1)) {
+				throw new PostconditionError("goDown error");
+			}
+		}
 		
-//		//post : if getNextCommand() = Left
-//		if(getEngine().getNextCommand() == Command.Left) {
-//			if(!(getWdt() != p_goLeft.getWdt() && getHgt() != p_goLeft.getHgt())) {
-//				throw new PostconditionError("goLeft error");
-//			}
-//		}
-//		
-//		//post : if getNextCommand() = Right
-//		if(getEngine().getNextCommand() == Command.Right) {
-//			if(!(getWdt() != p_goRight.getWdt() && getHgt() != p_goRight.getHgt())) {
-//				throw new PostconditionError("goRight error");
-//			}
-//		}
-//		//post : if getNextCommand() = Up
-//		if(getEngine().getNextCommand() == Command.Up) {
-//			if(!(getWdt() != p_goUp.getWdt() && getHgt() != p_goUp.getHgt())) {
-//				throw new PostconditionError("goUp error");
-//			}
-//		}
-//		//post : if getNextCommand() = Down
-//		if(getEngine().getNextCommand() == Command.Down) {
-//			if(!(getWdt() != p_goDown.getWdt() && getHgt() != p_goDown.getHgt())) {
-//				throw new PostconditionError("goUp error");
-//			}
-//		}
+		
 
 	}
 

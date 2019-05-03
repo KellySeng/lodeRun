@@ -275,8 +275,8 @@ public class CharacterContrat extends CharacterDecorator{
 				&& \not(c:Character \exists \in getEnvi.getCellContent(getWdt(),getHgt()+1)) -> getHgt() == getHgt()@pre + 1
 		*/
 		
-		if((getHgt() == getEnvi().getHeight()) && (getEnvi().getCellNature(getWdt(),getHgt()) == Cell.LAD)
-			&& !(character_list_hgt_plus_1.size() != 0)) {
+		if((getHgt() < getEnvi().getHeight()) && (getEnvi().getCellNature(getWdt(),getHgt()) == Cell.LAD)
+			&& character_list_hgt_plus_1.size() == 0) {
 			if(!(getHgt() == getHgt_pre +1)) throw new PostconditionError("CharacterContrat post goUp: getHgt() != getHgt_pre +1 ");
 		}
 		

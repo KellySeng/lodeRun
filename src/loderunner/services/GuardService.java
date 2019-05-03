@@ -17,6 +17,7 @@ public interface GuardService extends CharacterService {
 	 * 			|| (\exists c:Character \in getEnvi().getCellContent(getWdt(),getHgt()+1)
 	 * 			-> getTarget().getHgt() + getHgt() > |getTarget().getWdt() - getWdt()| )
 	 * 		-> getBehavior() = Down
+	 * @return 
 	 */
 	
 	
@@ -24,6 +25,7 @@ public interface GuardService extends CharacterService {
 	 * Observators
 	 */
 	
+	public void init(int id,int x,int y, EnvironmentService env, CharacterService target);
 	public int getId();
 	public Move getBehavior();
 	public CharacterService getTarget();
