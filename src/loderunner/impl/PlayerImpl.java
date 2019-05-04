@@ -36,14 +36,12 @@ public class PlayerImpl extends CharacterImpl implements PlayerService {
 			}
 		}
 		
-		//	Le joueur tombe (comme un garde) quand il ne se trouve pas dans une echelle ou un rail et que la case en ´
+		//	Le joueur tombe quand il ne se trouve pas dans une echelle ou un rail et que la case en ´
 		//	dessous de lui est libre et ne contient pas de personnage.	
 		 if(getEnvi().getCellNature(x, y) != Cell.LAD
 			&&  getEnvi().getCellNature(x, y) != Cell.HDR
-			&& ( getEnvi().getCellNature(x, y-1) == Cell.EMP ||
-				getEnvi().getCellNature(x, y-1) == Cell.LAD ||
-				getEnvi().getCellNature(x, y-1) == Cell.HDR ||
-				getEnvi().getCellNature(x, y-1) == Cell.HOL )
+			&&  getEnvi().getCellNature(x, y-1) != Cell.PLT 
+			&&  getEnvi().getCellNature(x, y-1) != Cell.MTL
 			&& !havePersonnageEnBas ) {
 			 
 			 
@@ -56,69 +54,70 @@ public class PlayerImpl extends CharacterImpl implements PlayerService {
 
 			 System.out.println("player tomber ");
 			 
-		 }
+		 }else {
 		
 		
-		switch(engine.getNextCommand()) {
-		
-			case  Right :
-				goRight();
-				break;
-			case Left :
-				goLeft();
-				
-				
-				break;
+			switch(engine.getNextCommand()) {
 			
-			case Up :
-				goUp();
-				break;
-			case Down : 
-				goDown();
-				break;
-			case Neutral :
-				break;
-			case DigL :
+				case  Right :
+					goRight();
+					break;
+				case Left :
+					goLeft();
+					
+					
+					break;
 				
-				if( (getEnvi().getCellNature(x, y-1) == Cell.MTL 
+				case Up :
+					goUp();
+					break;
+				case Down : 
+					goDown();
+					break;
+				case Neutral :
+					break;
+				case DigL :
+					
+					if( (getEnvi().getCellNature(x, y-1) == Cell.MTL 
+						|| getEnvi().getCellNature(x, y-1) == Cell.PLT 
+						|| havePersonnageEnBas  )  //la case a sa gauche est libre
+						&& ( getEnvi().getCellNature(x-1, y) == Cell.EMP ||
+								getEnvi().getCellNature(x-1, y) == Cell.LAD ||
+										getEnvi().getCellNature(x-1, y) == Cell.HDR ||
+												getEnvi().getCellNature(x-1, y) == Cell.HOL )
+						&& getEnvi().getCellNature(x-1, y-1) == Cell.PLT
+						) {
+					
+						getEnvi().dig(x-1, y-1);	
+						getEngine().getHoles().add(new Triplet(x-1,y-1,0));
+					
+					}
+								
+					break;
+				case DigR:
+					if( (getEnvi().getCellNature(x, y-1) == Cell.MTL 
 					|| getEnvi().getCellNature(x, y-1) == Cell.PLT 
-					|| havePersonnageEnBas  )  //la case a sa gauche est libre
-					&& ( getEnvi().getCellNature(x-1, y) == Cell.EMP ||
-							getEnvi().getCellNature(x-1, y) == Cell.LAD ||
-									getEnvi().getCellNature(x-1, y) == Cell.HDR ||
-											getEnvi().getCellNature(x-1, y) == Cell.HOL )
-					&& getEnvi().getCellNature(x-1, y-1) == Cell.PLT
+					|| havePersonnageEnBas  )  //la case a sa droite est libre
+					&& ( getEnvi().getCellNature(x+1, y) == Cell.EMP ||
+							getEnvi().getCellNature(x+1, y) == Cell.LAD ||
+									getEnvi().getCellNature(x+1, y) == Cell.HDR ||
+											getEnvi().getCellNature(x+1, y) == Cell.HOL )
+					&& getEnvi().getCellNature(x+1, y-1) == Cell.PLT
 					) {
 				
-					getEnvi().dig(x-1, y-1);	
-					getEngine().getHoles().add(new Triplet(x-1,y-1,0));
+						getEnvi().dig(x+1, y-1);	
+						getEngine().getHoles().add(new Triplet(x+1,y-1,0));
+	
 				
-				}
-							
-				break;
-			case DigR:
-				if( (getEnvi().getCellNature(x, y-1) == Cell.MTL 
-				|| getEnvi().getCellNature(x, y-1) == Cell.PLT 
-				|| havePersonnageEnBas  )  //la case a sa droite est libre
-				&& ( getEnvi().getCellNature(x+1, y) == Cell.EMP ||
-						getEnvi().getCellNature(x+1, y) == Cell.LAD ||
-								getEnvi().getCellNature(x+1, y) == Cell.HDR ||
-										getEnvi().getCellNature(x+1, y) == Cell.HOL )
-				&& getEnvi().getCellNature(x+1, y-1) == Cell.PLT
-				) {
+					}
+				
+					break;
+				
 			
-					getEnvi().dig(x+1, y-1);	
-					getEngine().getHoles().add(new Triplet(x+1,y-1,0));
-
 			
-				}
 			
-				break;
-			
-		
-		
-		
-		}
+			}
+		 }
 		
 	}
 

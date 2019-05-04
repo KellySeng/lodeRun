@@ -138,6 +138,16 @@ public class EngineContrat extends EngineDecorator{
 		//capture
 		HashSet<CellContent> t_cell_content_atpre = getEnvironment().getCellContent(getPlayer().getWdt(), getPlayer().getHgt());
 
+//		Si au début d’un tour, un garde est dans la même case que le joueur, le jeu est perdu (cette règle nécessite de
+			//	modifier la régle qui interdit à une case de contenir plus d’un personnage, par exemple, en établissant qu’une
+			//	case ne peut contenir plus d’un garde, cette modification n’est pas demandée dans l’examen).
+		for(GuardService g : getGuards()) {
+			if(g.getHgt() == getPlayer().getHgt() && g.getWdt() == getPlayer().getWdt()) {
+				if(!(getStatus() == Status.Loss)) {
+					throw new PostconditionError("Game should be lost");
+				}
+			}
+		}
 		super.step();
 
 
@@ -157,16 +167,8 @@ public class EngineContrat extends EngineDecorator{
 			}
 		}
 		
-//		Si au début d’un tour, un garde est dans la même case que le joueur, le jeu est perdu (cette règle nécessite de
-			//	modifier la régle qui interdit à une case de contenir plus d’un personnage, par exemple, en établissant qu’une
-			//	case ne peut contenir plus d’un garde, cette modification n’est pas demandée dans l’examen).
-		for(GuardService g : getGuards()) {
-			if(g.getHgt() == getPlayer().getHgt() && g.getWdt() == getPlayer().getWdt()) {
-				if(!(getStatus() == Status.Loss)) {
-					throw new PostconditionError("Game should be lost");
-				}
-			}
-		}
+
+		
 
 
 

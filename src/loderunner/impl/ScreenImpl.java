@@ -29,10 +29,10 @@ public class ScreenImpl implements ScreenService{
 	public void init(int h, int w) {
 		this.height =h;
 		this.width =w;
-		ecran = new Cell[h][w];	
+		ecran = new Cell[w][h];	
 		
-		for(int i= 0;i<h;i++) {
-			for(int j =0;j<w;j++) {
+		for(int i= 0;i<w;i++) {
+			for(int j =0;j<h;j++) {
 				
 				ecran[i][j] = Cell.EMP;
 			}

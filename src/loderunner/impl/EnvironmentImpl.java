@@ -24,17 +24,17 @@ public class EnvironmentImpl extends ScreenImpl  implements EnvironmentService{
 		int h = e.getHeight();
 		int w = e.getWidth();
 		
-		cell_content = (HashSet<CellContent>[][]) new HashSet[h][w];
-		for(int i = 0;i<h;i++) {
+		cell_content = (HashSet<CellContent>[][]) new HashSet[w][h];
+		for(int i = 0;i<w;i++) {
 			
-			for(int j=0;j<w;j++) {
+			for(int j=0;j<h;j++) {
 				
-				cell_content[j][i] = new HashSet<CellContent>();
+				cell_content[i][j] = new HashSet<CellContent>();
 			}
 		}
 		
-		for(int i=0;i < h;i++) {
-			for(int j = 0;j<w;j++) {
+		for(int i=0;i < w;i++) {
+			for(int j = 0;j<h;j++) {
 				ecran[i][j] = e.getCellNature(i, j);
 			}
 			

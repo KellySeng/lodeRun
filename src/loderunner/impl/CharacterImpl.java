@@ -55,13 +55,14 @@ public class CharacterImpl implements CharacterService{
 		ArrayList <CellContent> character_list_wdt_minus_1 = getCharacterList(getWdt()-1,getHgt());	
 		ArrayList <CellContent> character_list_hgt_minus_1 = getCharacterList(getWdt(),getHgt()-1);	
 		
-		if(wdt!= 0 
-				   && (env.getCellNature(getWdt()-1,getHgt()) !=  Cell.MTL || env.getCellNature(getWdt()-1,getHgt()) !=  Cell.PLT) 
-				   || (env.getCellNature(getWdt(),getHgt()) ==  Cell.LAD || env.getCellNature(getWdt(),getHgt()) !=  Cell.HDR) 
-				   || (env.getCellNature(getWdt(),getHgt()-1) !=  Cell.PLT || env.getCellNature(getWdt(),getHgt()-1) !=  Cell.MTL ||
-					   env.getCellNature(getWdt(),getHgt()-1) !=  Cell.LAD ) 
-				   || (character_list_hgt_minus_1.size() != 0)
-				   && !(character_list_wdt_minus_1.size() !=0) ) {
+		if( wdt!= 0 
+			&& env.getCellNature(getWdt()-1,getHgt()) !=  Cell.MTL && env.getCellNature(getWdt()-1,getHgt()) !=  Cell.PLT 
+			&&(	(env.getCellNature(getWdt(),getHgt()) ==  Cell.LAD || env.getCellNature(getWdt(),getHgt()) ==  Cell.HDR) 
+				   || (env.getCellNature(getWdt(),getHgt()-1) ==  Cell.PLT || env.getCellNature(getWdt(),getHgt()-1) ==  Cell.MTL ||
+					   env.getCellNature(getWdt(),getHgt()-1) ==  Cell.LAD ) 
+				   || (character_list_hgt_minus_1.size() > 0)
+			   )
+		    && character_list_wdt_minus_1.size() ==0 ) {
 			
 			
 			 

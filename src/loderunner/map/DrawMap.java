@@ -1,4 +1,4 @@
-package loderunner.main;
+package loderunner.map;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -15,64 +15,72 @@ import loderunner.impl.ScreenImpl;
 import loderunner.services.Cell;
 import loderunner.services.EditableScreenService;
 import loderunner.services.EngineService;
+import loderunner.services.Pair;
 import loderunner.services.PlayerService;
 import loderunner.services.ScreenService;
 
-public class Main {
+public class DrawMap {
 
-	public static void main(String[] args) {
+	public static void drawmap(EditableScreenService s) {
 		List<String> l = new ArrayList<String>();
-		Path source = Paths.get("filename");
-		int i, j;
+		Path source = Paths.get("src/loderunner/map/map1.txt");
+
 		try {
 			l = Files.readAllLines(source, StandardCharsets.UTF_8);
 		} catch (IOException e) {
 			System.out.println("fail with readAllLines");
 			System.out.println(e.getMessage());
 		}
+
 		
-		EditableScreenService s = new EditableScreenImpl();
-		s.init(l.size(), l.get(0).length());
-		for (i = 0; i < l.size(); i++) {
-			for (j = 0; j < l.get(0).length(); j++) {
-				switch ((l.get(i).charAt(j))) {
-					case 'E' :  
-						s.setNature(i, j, Cell.EMP); 
-						break;
-					
+		int width = l.get(l.size()-1).length();
+		int height = l.size();
+
+		s.init(height, width);
+
+		for (int j = 0; j < height; j++) {
+			for (int i = 0; i < l.get(j).length(); i++) {
+				if(!l.get(j).isEmpty()) {
+					switch ((l.get(j).charAt(i))) {
+
+
+
 					case 'P' :
-						s.setNature(i, j, Cell.PLT);
+						s.setNature(i, height-1-j, Cell.PLT);
 						break;
-						
-					case 'H' : 
-						s.setNature(i, j, Cell.HOL);
-						break;
-					
+
+
 					case 'L' : 
-						s.setNature(i, j, Cell.LAD);
+						s.setNature(i, height-1-j, Cell.LAD);
 						break;
-					
-					case 'h' : 
-						s.setNature(i, j, Cell.HDR);
+
+					case 'H' : 
+						s.setNature(i, height-1-j, Cell.HDR);
 						break;
-					
+
 					case 'M' :
-						s.setNature(i, j, Cell.MTL);	
+						s.setNature(i, height-1-j, Cell.MTL);	
 						break;
-					
-					default : break;
+
+					default : 
+						break;
+					}
 				}
 			}
 
 		}
 		
-		PlayerService player = new PlayerImpl();
-		EngineService engine = new EngineImpl();
-		//engine.init(s, x, y, listGuards, listTresors);
-		player.init(s,1,3);
-		
-		
-		
+//		for (int j = 0; j < height; j++) {
+//			for (int i = 0; i < width; i++) {
+//				System.out.print(s.getCellNature(i, j));
+//			}
+//			System.out.println();
+//			
+//		}
+//		
+
+
+
 	}
-	
+
 }
