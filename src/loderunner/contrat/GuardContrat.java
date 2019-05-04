@@ -6,7 +6,6 @@ import loderunner.decorator.GuardDecorator;
 import loderunner.services.Cell;
 import loderunner.services.CellContent;
 import loderunner.services.CharacterService;
-import loderunner.services.Command;
 import loderunner.services.EnvironmentService;
 import loderunner.services.GuardService;
 import loderunner.services.Move;
@@ -18,66 +17,187 @@ public class GuardContrat extends GuardDecorator{
 	}
 
 	public void checkInvariant() {
-
-		Set<CellContent> set_bas =  getEnvi().getCellContent(getWdt(), getHgt()-1);
-		boolean haveCharacter_bas = false;
-		for(CellContent c : set_bas) {
-			if(c instanceof CharacterService) {
-				haveCharacter_bas = true;
+	
+			Set<CellContent> set_bas =  getEnvi().getCellContent(getWdt(), getHgt()-1);
+			boolean haveCharacter_bas = false;
+			for(CellContent c : set_bas) {
+				if(c instanceof CharacterService) {
+					haveCharacter_bas = true;
+				}
 			}
-		}
-
-
-		Set<CellContent> set_haut =  getEnvi().getCellContent(getWdt(), getHgt()+1);
-		boolean haveCharacter_haut = false;
-		for(CellContent c : set_haut) {
-			if(c instanceof CharacterService) {
-				haveCharacter_haut = true;
+	
+	
+			Set<CellContent> set_haut =  getEnvi().getCellContent(getWdt(), getHgt()+1);
+			boolean haveCharacter_haut = false;
+			for(CellContent c : set_haut) {
+				if(c instanceof CharacterService) {
+					haveCharacter_haut = true;
+				}
 			}
-		}
-
-
-		// inv : getEnvi().getCellNature(getWdt(),getHgt()) == LAD 
-		//	  		&& getHgt() < getTarget().getHgt()
-		//	  		&& (!(getEnvi().getCellNature(getWdt(),getHgt()-1) \in {PLT,MTL}) 
-		//	  			|| (\exists c:Character \in getEnvi().getCellContent(getWdt(),getHgt()-1)
-		//	  			-> getTarget().getHgt() - getHgt() < |getTarget().getWdt() - getWdt()| )
-		//	  		-> getBehavior() = Up
-		if(getEnvi().getCellNature(getWdt(),getHgt()) == Cell.LAD
-				&& getHgt() < getTarget().getHgt()
-				&& ( !(( getEnvi().getCellNature(getWdt(),getHgt()-1)!= Cell.PLT && getEnvi().getCellNature(getWdt(),getHgt()-1)!= Cell.MTL) 
-						|| haveCharacter_bas)			
-						|| getTarget().getHgt() - getHgt() < Math.abs(getTarget().getWdt() - getWdt()))
+			
+			Set<CellContent> set_left =  getEnvi().getCellContent(getWdt()-1, getHgt());
+			boolean haveCharacter_left = false;
+			for(CellContent c : set_left) {
+				if(c instanceof CharacterService) {
+					haveCharacter_left = true;
+				}
+			}
+			
+			Set<CellContent> set_right =  getEnvi().getCellContent(getWdt()+1, getHgt());
+			boolean haveCharacter_right = false;
+			for(CellContent c : set_right) {
+				if(c instanceof CharacterService) {
+					haveCharacter_right = true;
+				}
+			}
+		
+		
+	
+			// inv : getEnvi().getCellNature(getWdt(),getHgt()) == LAD 
+			//	  		&& getHgt() < getTarget().getHgt()
+			//	  		&& (!(getEnvi().getCellNature(getWdt(),getHgt()-1) \in {PLT,MTL}) 
+			//	  			|| (\exists c:Character \in getEnvi().getCellContent(getWdt(),getHgt()-1)
+			//	  			-> getTarget().getHgt() - getHgt() < |getTarget().getWdt() - getWdt()| )
+			//	  		-> getBehavior() = Up
+			if(getEnvi().getCellNature(getWdt(),getHgt()) == Cell.LAD
+					&& getHgt() < getTarget().getHgt()
+					&& ( !(( getEnvi().getCellNature(getWdt(),getHgt()-1)!= Cell.PLT && getEnvi().getCellNature(getWdt(),getHgt()-1)!= Cell.MTL) 
+							|| haveCharacter_bas)			
+							|| getTarget().getHgt() - getHgt() < Math.abs(getTarget().getWdt() - getWdt()))
+					) {
+				if(!( getBehavior() == Move.Up)) {
+					throw new InvariantError("getBehavior() != Move.Up");
+	
+				}
+	
+			}
+	
+			// inv :  getEnvi().getCellNature(getWdt(),getHgt()) == LAD 
+			//	  		&& getHgt() > getTarget().getHgt()
+			//		 		&& (!(getEnvi().getCellNature(getWdt(),getHgt()-1) \in {PLT,MTL}) 
+			//		  			|| (\exists c:Character \in getEnvi().getCellContent(getWdt(),getHgt()+1)
+			//		  			-> getTarget().getHgt() - getHgt() < |getTarget().getWdt() - getWdt()| )
+			//		  		-> getBehavior() = Down
+			
+			if(getEnvi().getCellNature(getWdt(),getHgt()) == Cell.LAD
+					&& getHgt() > getTarget().getHgt()
+					&&( !(( getEnvi().getCellNature(getWdt(),getHgt()-1)!= Cell.PLT && getEnvi().getCellNature(getWdt(),getHgt()-1)!= Cell.MTL) 
+							|| haveCharacter_bas)			
+							||  getHgt() - getTarget().getHgt() < Math.abs(getTarget().getWdt() - getWdt()))
+					) {
+				if(!( getBehavior() == Move.Down)) {
+					throw new InvariantError("getBehavior() != Move.Down");
+	
+				}
+			}
+			
+	
+			// inv :  getEnvi().getCellNature(getWdt(),getHgt()) == LAD 
+			//	  		&& getWdt() > getTarget().Wdt()
+			//		 		&& (!(getEnvi().getCellNature(getWdt(),getHgt()-1) \in {PLT,MTL}) 
+			//		  			|| (\exists c:Character \in getEnvi().getCellContent(getWdt(),getHgt()+1)
+			//		  			-> getTarget().getHgt() - getHgt() > |getTarget().getWdt() - getWdt()| )
+			//		  		-> getBehavior() = Left
+			//	
+			if(getEnvi().getCellNature(getWdt(),getHgt()) == Cell.LAD
+					&& getWdt() > getTarget().getWdt()
+					&&( !(( getEnvi().getCellNature(getWdt(),getHgt()-1)!= Cell.PLT && getEnvi().getCellNature(getWdt(),getHgt()-1)!= Cell.MTL) 
+							|| haveCharacter_bas)			
+							||  getHgt() - getTarget().getHgt() > Math.abs(getTarget().getWdt() - getWdt()))
+					) {
+				if(!( getBehavior() == Move.Left)) {
+					throw new InvariantError("getBehavior() != Move.Left");
+	
+				}
+			}
+			
+			// inv :  getEnvi().getCellNature(getWdt(),getHgt()) == LAD 
+			//	  		&& getWdt() < getTarget().Wdt()
+			//		 		&& (!(getEnvi().getCellNature(getWdt(),getHgt()-1) \in {PLT,MTL}) 
+			//		  			|| (\exists c:Character \in getEnvi().getCellContent(getWdt(),getHgt()+1)
+			//		  			-> getTarget().getHgt() - getHgt() > |getTarget().getWdt() - getWdt()| )
+			//		  		-> getBehavior() = Right
+			//	
+			if(getEnvi().getCellNature(getWdt(),getHgt()) == Cell.LAD
+					&& getWdt() < getTarget().getWdt()
+					&&( !(( getEnvi().getCellNature(getWdt(),getHgt()-1)!= Cell.PLT && getEnvi().getCellNature(getWdt(),getHgt()-1)!= Cell.MTL) 
+							|| haveCharacter_bas)			
+							||  getHgt() - getTarget().getHgt() > Math.abs(getTarget().getWdt() - getWdt()))
+					) {
+				if(!( getBehavior() == Move.Right)) {
+					throw new InvariantError("getBehavior() != Move.Right");
+	
+				}
+			}
+			
+		
+			if(((getEnvi().getCellNature(getWdt(), getHgt()) == Cell.HOL ||
+			   getEnvi().getCellNature(getWdt(), getHgt()) == Cell.HDR)  ||
+				(getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.MTL ||
+				getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.PLT || 
+				getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.LAD) ||
+				haveCharacter_bas) 
+					&& 
+				getWdt() > getTarget().getWdt()  &&(getEnvi().getCellNature(getWdt()-1, getHgt()) != Cell.MTL ||
+						getEnvi().getCellNature(getWdt()-1, getHgt()) != Cell.PLT) && !haveCharacter_left
 				) {
-			if(!( getBehavior() == Move.Up)) {
-				throw new InvariantError("getBehavior() != Move.Up");
-
+				if(!( getBehavior() == Move.Left)) {
+					throw new InvariantError("getBehavior() != Move.Left");
+				}
 			}
-
+	
+		
+			if(((getEnvi().getCellNature(getWdt(), getHgt()) == Cell.HOL ||
+				   getEnvi().getCellNature(getWdt(), getHgt()) == Cell.HDR)  ||
+					(getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.MTL ||
+					getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.PLT || 
+					getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.LAD) ||
+					haveCharacter_bas) 
+						&& 
+					getWdt() < getTarget().getWdt()  &&(getEnvi().getCellNature(getWdt()+1, getHgt()) != Cell.MTL ||
+							getEnvi().getCellNature(getWdt()+1, getHgt()) != Cell.PLT) && !haveCharacter_right
+					) {
+					if(!( getBehavior() == Move.Right)) {
+						throw new InvariantError("getBehavior() != Move.Right");
+					}
+				}
+		
+			if(((getEnvi().getCellNature(getWdt(), getHgt()) == Cell.HOL ||
+				   getEnvi().getCellNature(getWdt(), getHgt()) == Cell.HDR)  ||
+					(getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.MTL ||
+					getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.PLT || 
+					getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.LAD) ||
+					haveCharacter_bas) 
+						&& 
+					getWdt() == getTarget().getWdt()  &&(getEnvi().getCellNature(getWdt()+1, getHgt()) != Cell.MTL ||
+							getEnvi().getCellNature(getWdt()+1, getHgt()) != Cell.PLT)
+					) {
+					if(!( getBehavior() == Move.Neutral)) {
+						throw new InvariantError("getBehavior() != Move.Neutral");
+					}
+				}
+			
+			if(getEnvi().getCellNature(getWdt(), getHgt()) == Cell.LAD && getHgt() < getTarget().getHgt()) {
+				if(!( getBehavior() == Move.Up)) {
+					throw new InvariantError("getBehavior() != Move.Up");
+				}
+			}
+			
+			if(getEnvi().getCellNature(getWdt(), getHgt()) == Cell.LAD && getHgt() > getTarget().getHgt()) {
+				if(!( getBehavior() == Move.Down)) {
+					throw new InvariantError("getBehavior() != Move.Down");
+				}
+			}
+			
+			if(getEnvi().getCellNature(getWdt(), getHgt()) == Cell.LAD && getHgt() == getTarget().getHgt()) {
+				if(!( getBehavior() == Move.Neutral)) {
+					throw new InvariantError("getBehavior() != Move.Neutral");
+				}
+			}
+		
 		}
 
-		// inv :  getEnvi().getCellNature(getWdt(),getHgt()) == LAD 
-		//	  		&& getHgt() > getTarget().getHgt()
-		//		 		&& (!(getEnvi().getCellNature(getWdt(),getHgt()-1) \in {PLT,MTL}) 
-		//		  			|| (\exists c:Character \in getEnvi().getCellContent(getWdt(),getHgt()+1)
-		//		  			-> getTarget().getHgt() + getHgt() > |getTarget().getWdt() - getWdt()| )
-		//		  		-> getBehavior() = Down
-		//	
-		if(getEnvi().getCellNature(getWdt(),getHgt()) == Cell.LAD
-				&& getHgt() > getTarget().getHgt()
-				&&( !(( getEnvi().getCellNature(getWdt(),getHgt()+1)!= Cell.PLT && getEnvi().getCellNature(getWdt(),getHgt()+1)!= Cell.MTL) 
-						|| haveCharacter_haut)			
-						||  getHgt() -getTarget().getHgt() < Math.abs(getTarget().getWdt() - getWdt()))
-				) {
-			if(!( getBehavior() == Move.Down)) {
-				throw new InvariantError("getBehavior() != Move.Down");
 
-			}
-
-		}
-
-
-	}
 	public void climbLeft() {
 
 		// pre : getEnvi().getCellNature(getWdt(),getHgt()) == HOL
