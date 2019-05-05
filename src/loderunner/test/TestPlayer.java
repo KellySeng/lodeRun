@@ -112,6 +112,8 @@ public class TestPlayer extends AbstractJeuTest{
 		engine.step();
 		engine.setCmd(Command.Up);
 		engine.step();
+		engine.setCmd(Command.Up);
+		engine.step();
 		engine.setCmd(Command.Right);
 		engine.step();
 		
@@ -120,12 +122,11 @@ public class TestPlayer extends AbstractJeuTest{
 		
 		engine.setCmd(Command.Right);
 		engine.step();
-		System.out.println("x="+engine.getPlayer().getWdt()+"y = "+ engine.getPlayer().getHgt());
-//
-//		assertEquals(engine.getPlayer().getWdt(),5);
-//		assertEquals(engine.getPlayer().getHgt(),2);
-//		assertEquals(engine.getGuards().get(0).getWdt(), 1);
-//		assertEquals(engine.getGuards().get(0).getHgt(), 2);
+		engine.setCmd(Command.Right);
+		engine.step();
+	
+		assertEquals(engine.getPlayer().getWdt(),7);
+		assertEquals(engine.getPlayer().getHgt(),6);
 
 
 	}
@@ -166,39 +167,30 @@ public class TestPlayer extends AbstractJeuTest{
 
 	}
 	@Test
-	public void testPlayerWillFallPrePositif() {
+	public void testPlayerFallPrePositif() {
 		
 		// En initiale,le player en position (4,2), un seul guard est en position(0, 2)
 		initialisation();
 
 		engine.setCmd(Command.Left);
 		engine.step();
-
 		engine.setCmd(Command.Up);
 		engine.step();
-
 		engine.setCmd(Command.Up);
 		engine.step();
-
 		engine.setCmd(Command.Up);
 		engine.step();
-
 		engine.setCmd(Command.Up);
 		engine.step();
-		System.out.println("x="+engine.getPlayer().getWdt()+"y = "+ engine.getPlayer().getHgt());
-
 		engine.setCmd(Command.Left);
 		engine.step();
-		System.out.println("x="+engine.getPlayer().getWdt()+"y = "+ engine.getPlayer().getHgt());
-
 		engine.setCmd(Command.Left);
 		engine.step();
-
-		System.out.println("x="+engine.getPlayer().getWdt()+"y = "+ engine.getPlayer().getHgt());
 
 		engine.setCmd(Command.Neutral);
 		engine.step();
-		assertEquals(engine.getPlayer().getHgt(),4);
+		assertEquals(engine.getPlayer().getHgt(),5);
+		assertEquals(engine.getPlayer().getWdt(),1);
 
 	}
 

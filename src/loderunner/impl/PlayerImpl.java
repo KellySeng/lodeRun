@@ -40,8 +40,9 @@ public class PlayerImpl extends CharacterImpl implements PlayerService {
 		//	dessous de lui est libre et ne contient pas de personnage.	
 		 if(getEnvi().getCellNature(x, y) != Cell.LAD
 			&&  getEnvi().getCellNature(x, y) != Cell.HDR
-			&&  getEnvi().getCellNature(x, y-1) != Cell.PLT 
-			&&  getEnvi().getCellNature(x, y-1) != Cell.MTL
+			&&(  getEnvi().getCellNature(x, y-1) == Cell.EMP 
+			    || getEnvi().getCellNature(x, y-1) == Cell.HOL
+			    )
 			&& !havePersonnageEnBas ) {
 			 
 			 
