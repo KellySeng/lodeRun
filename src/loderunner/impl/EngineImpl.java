@@ -100,7 +100,7 @@ public class EngineImpl implements EngineService {
 		int y = player.getHgt();
 
 
-		//Si au debut d’un tour, le joueur se trouve sur une case contenant un tresor,
+		//Si au debut dâ€™un tour, le joueur se trouve sur une case contenant un tresor,
 		//ce tresor disparait		
 		Set<CellContent> set = envi.getCellContent(x, y);
 
@@ -116,14 +116,7 @@ public class EngineImpl implements EngineService {
 		}
 
 
-		//Si au debut d’un tour, un garde est dans la meme case que le joueur, le jeu est perdu 		
-		for(GuardService guard : guards) {
-			if(guard.getWdt() == x && guard.getHgt() == y){
-				status = Status.Loss;
-			}
-
-		}
-
+	
 
 		//	le temps de chaque trou est incrementee
 		for(Triplet<Integer, Integer, Integer> h : holes) {
@@ -153,10 +146,10 @@ public class EngineImpl implements EngineService {
 				if(h.getFirst() == player.getWdt() && h.getSecond() == player.getHgt()) {
 					//	le jeu est perdu
 					status = Status.Loss;
-					System.out.println("le joueur était dedans quand un trou est rebouche, le jeu est perdu." );
+					System.out.println("le joueur eÌ�tait dedans quand un trou est rebouche, le jeu est perdu." );
 				}
 
-				//si un garde était dedans, il revient a sa position initiale
+				//si un garde Ã©tait dedans, il revient a sa position initiale
 				for(GuardService guard : guards) {	
 					if(h.getFirst() == guard.getWdt() && h.getSecond() == guard.getHgt()) {
 						int index = guards.indexOf(guard);
@@ -172,11 +165,20 @@ public class EngineImpl implements EngineService {
 
 
 
-		//	Le jeu est gagné quand il n’y a plus de trésors.
+		//	Le jeu est gagnÃ© quand il nâ€™y a plus de trÃ©sors.
 		if(treasures.size() == 0) {			
 			status = Status.Win;
 		}
 
+		
+		//Si au debut dâ€™un tour, un garde est dans la meme case que le joueur, le jeu est perdu 		
+		for(GuardService guard : guards) {
+			if(guard.getWdt() == x && guard.getHgt() == y){
+				status = Status.Loss;
+			}
+		}
+		
+		
 
 	}
 
@@ -186,48 +188,6 @@ public class EngineImpl implements EngineService {
 		return holes;
 	}
 
-	@Override
-	public void init(EditableScreenService screen, int x, int y, List<Pair<Integer, Integer>> listGuards,
-			List<Pair<Integer, Integer>> listTresors) {
-
-
-
-		holes = new ArrayList<Triplet<Integer,Integer,Integer>>();
-		int id =0;
-
-		//créer un environment
-		envi = new EnvironmentImpl();
-		envi.init(screen.getHeight(),screen.getWidth());
-		envi.init(screen);
-
-
-
-		player = new PlayerImpl();
-
-		player.init(envi, x, y, this);
-		envi.getCellContent(x, y).add(player);
-
-		guards = new ArrayList<GuardService>();
-		for(Pair<Integer,Integer> l : listGuards) {
-			GuardService guard = new GuardImpl();
-			guard.init(envi,l.getL(), l.getR());
-			guards.add(guard);
-			envi.getCellContent(l.getL(), l.getR()).add(guard);
-
-		}
-
-		treasures = new HashSet<ItemService>();
-		for(Pair<Integer,Integer> l : listTresors) {
-			ItemImpl tresor = new ItemImpl(id, ItemType.Treasure, l.getL(), l.getR());
-			treasures.add(tresor);
-			id++;
-			envi.getCellContent(l.getL(), l.getR()).add(tresor);
-		}
-
-		holes = new ArrayList<Triplet<Integer,Integer,Integer>>();
-		status = Status.Playing;
-
-	}
 
 	@Override
 	public void init(EnvironmentService screen, PlayerService joueur, ArrayList<GuardService> listGuards,

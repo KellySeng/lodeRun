@@ -54,15 +54,6 @@ public class EngineDecorator implements EngineService{
 		return delegate.getGuards();
 	}
 
-
-	@Override
-	public void init(EditableScreenService screen, int x, int y, List<Pair<Integer, Integer>> listGuards,
-			List<Pair<Integer, Integer>> listTresors) {
-
-		 delegate.init(screen, x, y, listGuards, listTresors);
-	}
-
-
 	@Override
 	public ArrayList<Triplet<Integer, Integer, Integer>> getHoles() {
 		return delegate.getHoles();

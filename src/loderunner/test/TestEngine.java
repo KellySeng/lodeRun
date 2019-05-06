@@ -61,6 +61,7 @@ public class TestEngine extends AbstractJeuTest{
 		enviContrat.init(screenContrat);
 				
 	}
+	
 	public void initialisation() {
 		
 		drawMap();
@@ -130,9 +131,6 @@ public class TestEngine extends AbstractJeuTest{
 		engine.setCmd(Command.Neutral);
 		engine.step();
 		assertEquals(engine.getStatus(), Status.Loss);
-	
-
-
 	}
 	
 	/*
