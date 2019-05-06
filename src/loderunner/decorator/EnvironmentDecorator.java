@@ -20,10 +20,6 @@ public class EnvironmentDecorator implements EnvironmentService{
 	}
 
 	@Override
-	public void init(EditableScreenService e) {
-		delegate.init(e);
-	}
-	@Override
 	public int getHeight() {
 		return delegate.getHeight();
 	}
@@ -57,6 +53,11 @@ public class EnvironmentDecorator implements EnvironmentService{
 	public void addCellContent(int x, int y, CellContent cell) {
 		 delegate.addCellContent(x, y,cell);
 		
+	}
+
+	@Override
+	public void init(int h, int w, EditableScreenService e) {
+		delegate.init(h, w, e);
 	}
 
 }

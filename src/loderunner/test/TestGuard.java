@@ -55,8 +55,7 @@ public class TestGuard extends AbstractJeuTest{
 		//créer un environment
 		EnvironmentImpl	envi = new EnvironmentImpl();
 		EnvironmentContrat enviContrat = new EnvironmentContrat(envi);
-		enviContrat.init(screenContrat.getHeight(),screenContrat.getWidth());
-		enviContrat.init(screenContrat);
+		enviContrat.init(screenContrat.getHeight(),screenContrat.getWidth(),screenContrat);
 				
 		//créer un player qui est en position (3,2)
 		PlayerImpl player = new PlayerImpl();

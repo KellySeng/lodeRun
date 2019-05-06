@@ -84,13 +84,13 @@ public class EnvironmentContrat extends EnvironmentDecorator{
 	}
 	
 
-	public void init(EditableScreenService e) {
-//		checkInvariant();
-		super.init(e);
+	
+	@Override
+	public void init(int h, int w, EditableScreenService e) {
+		super.init(h, w, e);
+		
 		checkInvariant();
 		
-//		  post :  \forall(x:Integer,y : Integer) \in [0;getWidth()[ x [0;getHeight()[,
-// 		getCellNature(x,y) == e.getCellNature(x,y)
 		for(int x = 0 ; x<getWidth();x++) {
 			for(int y = 0 ; y<getHeight();y++) {
 				if(!(getCellNature(x,y) == e.getCellNature(x, y))) {
@@ -99,18 +99,17 @@ public class EnvironmentContrat extends EnvironmentDecorator{
 			}
 		}
 	}
-	
-	
-//	public HashSet<CellContent> getCellContent(int x,int y){
-//		
-//		//pre : 0 <= y && y <= getHeight() &&  0 <= x && x <= getWidth()   
-//		if(!( 0 <= y && y <= getHeight() &&  0 <= x && x <= getWidth())) {
-//			throw new PreconditionError(" ! (0<y<getHeight && 0<x<getWidth");
-//		}
-//		
-//		
-//		return super.getCellContent(x, y);
-//		
-//	}
+
+
+	public HashSet<CellContent> getCellContent(int x,int y){
+		
+		//pre : 0 <= y && y <= getHeight() &&  0 <= x && x <= getWidth()   
+		if(!( 0 <= y && y <= getHeight() &&  0 <= x && x <= getWidth())) {
+			throw new PreconditionError(" ! (0<y<getHeight && 0<x<getWidth");
+		}
+		
+		return super.getCellContent(x, y);
+		
+	}
 
 }

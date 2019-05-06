@@ -57,8 +57,7 @@ public class TestEngine extends AbstractJeuTest{
 		//créer un environment
 		EnvironmentImpl	envi = new EnvironmentImpl();
 		 enviContrat = new EnvironmentContrat(envi);
-		enviContrat.init(screenContrat.getHeight(),screenContrat.getWidth());
-		enviContrat.init(screenContrat);
+		enviContrat.init(screenContrat.getHeight(),screenContrat.getWidth(),screenContrat);
 				
 	}
 	

@@ -10,19 +10,13 @@ import loderunner.services.EnvironmentService;
 
 public class EnvironmentImpl extends ScreenImpl  implements EnvironmentService{
 
-	private EditableScreenService e;
 	private HashSet<CellContent>[][] cell_content;
-
-	
-	
-	
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public void init(EditableScreenService e) {
-		
-		int h = e.getHeight();
-		int w = e.getWidth();
+	public void init(int h,int w,EditableScreenService e) {
+
+		super.init(h, w);
 		
 		cell_content = (HashSet<CellContent>[][]) new HashSet[w][h];
 		for(int i = 0;i<w;i++) {
@@ -33,13 +27,13 @@ public class EnvironmentImpl extends ScreenImpl  implements EnvironmentService{
 			}
 		}
 		
-		for(int i=0;i < w;i++) {
-			for(int j = 0;j<h;j++) {
+		for(int i=0;i < e.getWidth();i++) {
+			for(int j = 0;j<e.getHeight();j++) {
 				ecran[i][j] = e.getCellNature(i, j);
 			}
 			
 		}
-		this.e=e;
+		
 	}
 
 	@Override
@@ -53,4 +47,5 @@ public class EnvironmentImpl extends ScreenImpl  implements EnvironmentService{
 	}
 	
 
+	
 }
