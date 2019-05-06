@@ -48,6 +48,13 @@ public class ScreenContrat extends ScreenDecorator {
 		}
 	}
 	
+	public Cell getCellNature(int x, int y) {
+		if(!(0<=x && x<getWidth() && 0<=y && y<=getHeight())) {
+			throw new PreconditionError("getCellNature : 0<=x<getWidth() &&  0<=y<getHeight()");
+		}
+		return super.getCellNature(x, y);
+	}
+	
 	public void dig(int x, int y) {
 		
 		// pre : getCellNature(x,y) == PLT

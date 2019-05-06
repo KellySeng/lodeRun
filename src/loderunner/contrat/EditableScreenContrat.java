@@ -25,18 +25,31 @@ public class EditableScreenContrat extends EditableScreenDecorator{
 			}
 		}
 		
-		
-
 		for(int x=0;x<getWidth();x++) {
 				if(!(getCellNature(x,0) == Cell.MTL)) {
 					Playable = false;
 				}
 		}
 		
-		
-		if(isPlayable() !=Playable ) {
+		if(Playable != super.isPlayable()) {
 			throw new InvariantError("EditableScreenContrat inv error ");
 		}
+	}
+	
+	@Override
+	public void init(int h,int w) {
+		
+		super.init(h, w);
+		
+		for(int x=0;x<getWidth();x++) {
+			if(!(getCellNature(x,0) == Cell.MTL)) {
+				throw new PostconditionError("lowest cells must be all metals");
+			}
+		}
+		
+		checkInvariant();
+		
+		
 	}
 	
 	
@@ -67,6 +80,8 @@ public class EditableScreenContrat extends EditableScreenDecorator{
 		
 		super.setNature(x, y, c);
 		
+		checkInvariant();
+		
 		//post :  setNature(x,y,c).getCellNature() == c
 		
 		if(!(getCellNature(x,y) == c)) {
@@ -86,6 +101,8 @@ public class EditableScreenContrat extends EditableScreenDecorator{
 				}
 			}
 		}
+		
+		
 		
 	}
 	

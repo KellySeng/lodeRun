@@ -6,8 +6,13 @@ import loderunner.services.EditableScreenService;
 public class EditableScreenImpl extends ScreenImpl implements EditableScreenService{
 
 	@Override
+	public void init(int w,int h) {
+		super.init(h, w);
+		for (int i = 0; i < w; i++) ecran[i][0] = Cell.MTL;
+	}
+	
+	@Override
 	public boolean isPlayable() {
-		
 		
 		for(int x=0;x<getWidth();x++) {
 			for(int y=0;y<getHeight();y++) {

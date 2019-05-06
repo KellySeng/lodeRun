@@ -41,13 +41,13 @@ public class ScreenImpl implements ScreenService{
 
 	@Override
 	public void dig(int x, int y) {
-		ecran[x][y] = Cell.HOL;
+		if(ecran[x][y] == Cell.PLT)	ecran[x][y] = Cell.HOL;
 		
 	}
 
 	@Override
 	public void fill(int x, int y) {
-		ecran[x][y] = Cell.PLT;
+		if(ecran[x][y] == Cell.HOL)	ecran[x][y] = Cell.PLT;
 	}
 
 }

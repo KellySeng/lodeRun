@@ -56,6 +56,9 @@
 \texttt{[invariant]}: & \texttt{Playable(S)} \textbf{min} \\
 & \quad\quad\quad\quad \textbf{forall} $(x,y)$ \textbf{in} \texttt{[0;Width(S)[}$\times$ \texttt{[0;Height(S)[}, \texttt{CellNature(S,x,y)} $\neq$ \textbf{HOL}  \\
 & \quad\quad\quad\quad \textbf{and} \textbf{forall} $x$ \textbf{in} \texttt{[0;Width(S)[}, \texttt{CellNature(S,x,0)} $=$ \textbf{MTL}  \\
+
+\texttt{[init]}:  & \textbf{forall} $u$ \textbf{in} \texttt{[0;Width(S)[}, CellNature(S,u,0) = \textbf{MTL} \\
+
 \texttt{[SetNature]}: & \texttt{CellNature(SetNature(S,x,y,C)),x,y} $=$ C \\
         & \textbf{forall} $(u,v)$ \textbf{in} \texttt{[0;Width(S)[}$\times$ \texttt{[0;Height(S)[}, \\ & \quad\quad\quad\quad (\texttt{x} $\neq$ \texttt{u} \textbf{or} \texttt{y} $\neq$ \texttt{v}) \textbf{implies} \texttt{CellNature(SetNature(S,x,y,C)),u,v)} $=$ \texttt{CellNature(u,v)} \\
 \end{tabular}
@@ -148,7 +151,9 @@
 & \quad \textrm{Hgt(GoUp(C))} = \textrm{Hgt(C)} \\
 
 & \textrm{Hgt(C)} $\neq$ \textrm{Environment::Height(Envi(C))} \\
-& \quad \textbf{and} \textrm{Environment::CellNature(Envi(C),Wdt(C),Hgt(C)+1} = \textbf{LAD} \\
+& \quad \textbf{and} (
+    \textrm{Environment::CellNature(Envi(C),Wdt(C),Hgt(C)+1} = \textbf{LAD} \\
+& \quad\quad  \textrm{Environment::CellNature(Envi(C),Wdt(C),Hgt(C)+1} \textbf{not in } \textbf{ \{ MTL,PLT \}} \\
 & \quad \textbf{and} \textrm{Environment::CellNature(Envi(C),Wdt(C),Hgt(C)} = \textbf{LAD} \\
 & \quad \textbf{and} \textbf{not exists} \textrm{Character} c \textbf{in} \textrm{Environment::CellNature(Envi(C),Wdt(C),Hgt(C)+1} \\
 & \quad \textbf{implies} \textrm{Wdt(GoUp(C))} = \textrm{Hgt(C)}+1 \\
@@ -195,28 +200,102 @@
 
 \textrm{[invariant]}: 
 
-%inv down
+%inv 
 & \textrm{Environment::CellNature(Envi(G),Wdt(G),Hgt(G))} $=$ \textbf{LAD} \\
 & \quad\quad \textbf{and} \textrm{Hgt(G)} $<$ \textrm{Character::Hgt(Target(G))} \\
 & \quad\quad \textbf{and} (\textrm{Environment::CellNature(Envi(G),Wdt(G),Hgt(G)-1)} \textbf{not in} \{\textbf{PLT}, \textbf{MTL}  \} \\
 & \quad\quad\quad\quad \textbf{or} \textbf{exists} \textrm{Character} c \textbf{in} \textrm{Environment::CellContent(Envi(G),Wdt(G),Hgt(G)-1)} \\
-& \quad\quad\quad\quad \textbf{implies} \textrm{Environment::Hgt(Target(G)) - Hgt(G)} $<$\\
+& \quad\quad\quad\quad \textbf{implies} $|$\textrm{Environment::Hgt(Target(G)) - Hgt(G)}$|$ $<$\\
 & \quad\quad\quad\quad\quad $|$\textrm{Environment::Wdt(Target(G)) - Wdt(G)})$|$)\\
 & \quad\quad \textbf{implies} \textrm{Behaviour(G)} $=$ \textbf{Up} \\
 
-%inv up
+%inv
 & \textrm{Environment::CellNature(Envi(G),Wdt(G),Hgt(G))} $=$ \textbf{LAD} \\
 & \quad\quad \textbf{and} \textrm{Hgt(G)} $>$ \textrm{Character::Hgt(Target(G))} \\
 & \quad\quad \textbf{and} (\textrm{Environment::CellNature(Envi(G),Wdt(G),Hgt(G)-1)} \textbf{not in} \{\textbf{PLT}, \textbf{MTL}  \} \\
 & \quad\quad\quad\quad \textbf{or} \textbf{exists} \textrm{Character} c \textbf{in} \textrm{Environment::CellContent(Envi(G),Wdt(G),Hgt(G)-1)} \\
-& \quad\quad\quad\quad \textbf{implies} \textrm{Environment::Hgt(Target(G)) - Hgt(G)} $>$\\
+& \quad\quad\quad\quad \textbf{implies} $|$\textrm{Environment::Hgt(Target(G)) - Hgt(G)}$|$ $<$\\
 & \quad\quad\quad\quad\quad $|$\textrm{Environment::Wdt(Target(G)) - Wdt(G)})$|$)\\
 & \quad\quad \textbf{implies} \textrm{Behaviour(G)} $=$ \textbf{Down} \\
+
+%inv
+& \textrm{Environment::CellNature(Envi(G),Wdt(G),Hgt(G))} $=$ \textbf{LAD} \\
+& \quad\quad \textbf{and} \textrm{Wdt(G)} $<$ \textrm{Character::Wdt(Target(G))} \\
+& \quad\quad \textbf{and} (\textrm{Environment::CellNature(Envi(G),Wdt(G),Hgt(G)-1)} \textbf{not in} \{\textbf{PLT}, \textbf{MTL}  \} \\
+& \quad\quad\quad\quad \textbf{or} \textbf{exists} \textrm{Character} c \textbf{in} \textrm{Environment::CellContent(Envi(G),Wdt(G),Hgt(G)-1)} \\
+& \quad\quad\quad\quad \textbf{implies} $|$\textrm{Environment::Hgt(Target(G)) - Hgt(G)}$|$ $>$\\
+& \quad\quad\quad\quad\quad $|$\textrm{Environment::Wdt(Target(G)) - Wdt(G)})$|$)\\
+& \quad\quad \textbf{implies} \textrm{Behaviour(G)} $=$ \textbf{Left} \\
+
+%inv
+& \textrm{Environment::CellNature(Envi(G),Wdt(G),Hgt(G))} $=$ \textbf{LAD} \\
+& \quad\quad \textbf{and} \textrm{Wdt(G)} $>$ \textrm{Character::Wdt(Target(G))} \\
+& \quad\quad \textbf{and} (\textrm{Environment::CellNature(Envi(G),Wdt(G),Hgt(G)-1)} \textbf{not in} \{\textbf{PLT}, \textbf{MTL}  \} \\
+& \quad\quad\quad\quad \textbf{or} \textbf{exists} \textrm{Character} c \textbf{in} \textrm{Environment::CellContent(Envi(G),Wdt(G),Hgt(G)-1)} \\
+& \quad\quad\quad\quad \textbf{implies} $|$\textrm{Environment::Hgt(Target(G)) - Hgt(G)}$|$ $<$\\
+& \quad\quad\quad\quad\quad $|$\textrm{Environment::Wdt(Target(G)) - Wdt(G)})$|$)\\
+& \quad\quad \textbf{implies} \textrm{Behaviour(G)} $=$ \textbf{Right} \\
+
+%inv left
+& \textrm{Environment::CellNature(Envi(G),Wdt(G),Hgt(G))} \textbf{in} \textbf{ \{HOL,HDR\}} \textbf{or}  \\
+& \quad \textrm{Environment::CellNature(Envi(G),Wdt(G),Hgt(G)-1)} \textbf{in} \textbf{\{MTL,PLT,LAD\}} \textbf{or}  \\
+& \quad \textbf{or} \textbf{exists} \textrm{Character} c \textbf{in} \textrm{Environment::CellContent(Envi(G),Wdt(G),Hgt(G)-1)} ) \\\
+
+& \quad\quad \textbf{and} \textrm{Wdt(G)} $>$ \textrm{Character::Wdt(Target(G))} \\
+& \quad\quad \textbf{and} (\textrm{Environment::CellNature(Envi(G),Wdt(G)-1,Hgt(G))} \textbf{not in} \{\textbf{PLT}, \textbf{MTL}  \} \\
+& \quad\quad\quad\quad \textbf{or} \textbf{not exists} \textrm{Character} c \textbf{in} \textrm{Environment::CellContent(Envi(G),Wdt(G)-1,Hgt(G))} \\
+& \quad\quad \textbf{implies} \textrm{Behaviour(G)} $=$ \textbf{Left} \\
+
+
+%inv right
+& \textrm{Environment::CellNature(Envi(G),Wdt(G),Hgt(G))} \textbf{in} \textbf{ \{HOL,HDR\}} \textbf{or}  \\
+
+& \quad \textrm{Environment::CellNature(Envi(G),Wdt(G),Hgt(G)-1)} \textbf{in} \textbf{\{MTL,PLT,LAD\}} \textbf{or}  \\
+
+& \quad \textbf{or} \textbf{exists} \textrm{Character} c \textbf{in} \textrm{Environment::CellContent(Envi(G),Wdt(G),Hgt(G)-1)} ) \\\
+
+& \quad\quad \textbf{and} \textrm{Wdt(G)} $>$ \textrm{Character::Wdt(Target(G))} \\
+& \quad\quad \textbf{and} (\textrm{Environment::CellNature(Envi(G),Wdt(G)+1,Hgt(G))} \textbf{not in} \{\textbf{PLT}, \textbf{MTL}  \} \\
+& \quad\quad\quad\quad \textbf{or} \textbf{not exists} \textrm{Character} c \textbf{in} \textrm{Environment::CellContent(Envi(G),Wdt(G)+1,Hgt(G))} \\
+& \quad\quad \textbf{implies} \textrm{Behaviour(G)} $=$ \textbf{Right} \\
+
+
+
+\end{tabular}
+
+
+\begin{tabular}{rl}
+\textrm{[invariant]}: 
+& \textrm{Environment::CellNature(Envi(G),Wdt(G),Hgt(G))} \textbf{in} \textbf{ \{HOL,HDR\}} \textbf{or}  \\
+
+& \quad \textrm{Environment::CellNature(Envi(G),Wdt(G),Hgt(G)-1)} \textbf{in} \textbf{\{MTL,PLT,LAD\}} \textbf{or}  \\
+
+& \quad \textbf{or} \textbf{exists} \textrm{Character} c \textbf{in} \textrm{Environment::CellContent(Envi(G),Wdt(G),Hgt(G)-1)} ) \\\
+
+& \quad\quad \textbf{and} \textrm{Wdt(G)} $=$ \textrm{Character::Wdt(Target(G))} \\
+
+& \quad\quad \textbf{implies} \textrm{Behaviour(G)} $=$ \textbf{Neutral} \\
+
+%inv left
+& \textrm{Environment::CellNature(Envi(G),Wdt(G),Hgt(G))} $=$ \textbf{LAD} \\
+& \quad \textbf{and}  \textrm{Hgt(G)} $<$ \textrm{Character::Hgt(Target(G))} \\
+& \quad \textbf{implies} \textrm{Behaviour(G)} $=$ \textbf{Up} \\
+
+%inv left
+& \textrm{Environment::CellNature(Envi(G),Wdt(G),Hgt(G))} $=$ \textbf{LAD} \\
+& \quad
+\textbf{and}  \textrm{Hgt(G)} $>$ \textrm{Character::Hgt(Target(G))} \\
+& \quad \textbf{implies} \textrm{Behaviour(G)} $=$ \textbf{Down} \\
+
+%inv left
+& \textrm{Environment::CellNature(Envi(G),Wdt(G),Hgt(G))} $=$ \textbf{LAD}  \\
+& \quad
+\textbf{and}  \textrm{Hgt(G)} $=$ \textrm{Character::Hgt(Target(G))} \\
+& \quad \textbf{implies} \textrm{Behaviour(G)} $=$ \textbf{Neutral} \\
 
 %init
 \textrm{[init]}:
 & \textrm{Target(G)} = \textrm{p}\\
-
 
 %Climb Left
 \textrm{[ClimbLeft]}: 
@@ -265,13 +344,34 @@
 (\textrm{Environment::CellNature(Envi(G),Wdt(G),Hgt(G))} = \textrm{HOL} \textbf{and} \\
 & \quad\quad \textrm{TimeInHole $=$ 5} \textbf{and} \textrm{Behavior = Neutral}) \\
 
-& \textbf{WillGoLeft}\texttt{(G)} \textbf{defined by}  \textrm{Behavior(G)  = Left}\\
+& \textbf{WillGoLeft}\texttt{(G)} \textbf{defined by}  \textrm{Behavior(G)  = Left} \textbf{and}\\
 
-& \textbf{WillGoRight}\texttt{(G)} \textbf{defined by}  \textrm{Behavior(G)  = Right} \\
+& \quad (\textrm{Wdt(G)} $\neq$ 0) \textbf{and} \textrm{Environment::CellNature(Envi(G),Wdt(P)-1,Hgt(G))} \textbf{not in} \{\textbf{MTL}, \textbf{PLT}\} \\
+& \quad\quad \textbf{and} (\textrm{Environment::CellNature(Envi(G),Wdt(G),Hgt(G))} \textbf{in} \{\textbf{LAD}, \textbf{HDR}\} \\
+& \quad\quad\quad\quad \textbf{or} \textrm{Environment::CellNature(Envi(G),Wdt(G),Hgt(G)-1)} \textbf{in} \{\textbf{PLT}, \textbf{MTL}, \textbf{LAD}\} \\
+& \quad\quad\quad\quad \textbf{or} \textbf{exists} \textrm{Character} c \textbf{in} \textrm{Environment::CellContent(Envi(G),Wdt(G),Hgt(G)-1)} ) \\
+& \quad\quad \textbf{and} \textbf{not} (\textbf{exists} \textrm{Character} c \textbf{in} \textrm{Environment::CellContent(Envi(G),Wdt(G)-1,Hgt(G))}) \\
 
-& \textbf{WillGoUp}\texttt{(G)} \textbf{defined by}  \textrm{Behavior(G)  = Up} \\
+& \textbf{WillGoRight}\texttt{(G)} \textbf{defined by}  \textrm{Behavior(G)  = Right} \textbf{and}\\
+
+&  \quad (\textrm{Wdt(P)} $\neq$ \textrm{Environement::Height(Envi(P))} \\ & \textrm{Environment::CellNature(Envi(P),Wdt(P)+1,Hgt(P))} \textbf{not in} \{\textbf{MTL}, \textbf{PLT}\} \\
+& \quad\quad \textbf{and} (\textrm{Environment::CellNature(Envi(P),Wdt(P),Hgt(P))} \textbf{in} \{\textbf{LAD}, \textbf{HDR}\} \\
+& \quad\quad\quad\quad \textbf{or} \textrm{Environment::CellNature(Envi(P),Wdt(P),Hgt(P)-1)} \textbf{in} \{\textbf{PLT}, \textbf{MTL}, \textbf{LAD}\} \\
+& \quad\quad\quad\quad \textbf{or} \textbf{exists} \textrm{Character} c \textbf{in} \textrm{Environment::CellContent(Envi(P),Wdt(P),Hgt(P)-1)} ) \\
+& \quad\quad \textbf{and} \textbf{not} (\textbf{exists} \textrm{Character} c \textbf{in} \textrm{Environment::CellContent(Envi(P),Wdt(P)+1,Hgt(P))}) \\
+& \textbf{WillGoUp}\texttt{(G)} \textbf{defined by}  \textrm{Behavior(G)  = Up} \textbf{and}\\
+
+&  \quad\textrm{Hgt(P)} $\neq$ \textrm{Environment::Height(Envi(P))} \\
+& \quad \textbf{and} (
+    \textrm{Environment::CellNature(Envi(P),Wdt(P),Hgt(P)+1} = \textbf{LAD} \\
+& \quad\quad  \textrm{Environment::CellNature(Envi(P),Wdt(P),Hgt(P)+1} \textbf{not in } \textbf{ \{ MTL,PLT \}} \\
+& \quad \textbf{and} \textrm{Environment::CellNature(Envi(P),Wdt(P),Hgt(P))} = \textbf{LAD} \\
+& \quad \textbf{and} \textbf{not exists} \textrm{Character} c \textbf{in} \textrm{Environment::CellNature(Envi(P),Wdt(P),Hgt(P)+1)} \\
 
 & \textbf{WillGoDown}\texttt{(G)} \textbf{defined by}  \textrm{Behavior(G)  = Down} \\
+& \quad  \textbf{and} \textrm{Hgt(P)} $\neq$ 0 \\
+& \quad \textbf{and} \textrm{Environment::CellNature(Envi(P),Wdt(P),Hgt(P)-1)} \textrm{in} \textbf{ \{ MTL,PLT \} } \\
+& \quad \textbf{and} \textbf{not exists} \textrm{Character} c \textbf{ not in} \textrm{Environment::CellNature(Envi(P),Wdt(P),Hgt(P)-1)} \\
 
 &\textbf{WillFall}\texttt{(G)} \textbf{implies} \textbf{GoDown}\texttt{(G)} \\
 
@@ -317,13 +417,36 @@
 & \quad\quad \textbf{and} \textbf{not exists} \textrm{Character} c \textbf{in} \textrm{Environment::CellContent(Envi(G),Wdt(P),Hgt(P)-1)} \\
 & \quad\quad \textbf{and} \textrm{Environment::CellNature(Envi(P),Wdt(P),Hgt(P))} \textbf{not in} \{\textbf{LAD}, \textbf{HDR} \} ) \\
 
-& \textbf{WillGoLeft}\texttt{(P)} \textbf{defined by}  \textrm{Engine::NextCommand(Engine(P))  = Left}\\
+& \textbf{WillGoLeft}\texttt{(P)} \textbf{defined by}  \textrm{Engine::NextCommand(Engine(P))  = Left} \textbf{and}\\
 
-& \textbf{WillGoRight}\texttt{(P)} \textbf{defined by}   \textrm{Engine::NextCommand(Engine(P))  = Right}\\
+& \quad (\textrm{Wdt(P)} $\neq$ 0) \textbf{and} \textrm{Environment::CellNature(Envi(P),Wdt(P)-1,Hgt(P))} \textbf{not in} \{\textbf{MTL}, \textbf{PLT}\} \\
+& \quad\quad \textbf{and} (\textrm{Environment::CellNature(Envi(P),Wdt(P),Hgt(P))} \textbf{in} \{\textbf{LAD}, \textbf{HDR}\} \\
+& \quad\quad\quad\quad \textbf{or} \textrm{Environment::CellNature(Envi(P),Wdt(P),Hgt(P)-1)} \textbf{in} \{\textbf{PLT}, \textbf{MTL}, \textbf{LAD}\} \\
+& \quad\quad\quad\quad \textbf{or} \textbf{exists} \textrm{Character} c \textbf{in} \textrm{Environment::CellContent(Envi(P),Wdt(P),Hgt(P)-1)} ) \\
+& \quad\quad \textbf{and} \textbf{not} (\textbf{exists} \textrm{Character} c \textbf{in} \textrm{Environment::CellContent(Envi(P),Wdt(P)-1,Hgt(P))}) \\
 
-& \textbf{WillGoUp}\texttt{(P)} \textbf{defined by}   \textrm{Engine::NextCommand(Engine(P))  = Up}\\
+& \textbf{WillGoRight}\texttt{(P)} \textbf{defined by}   \textrm{Engine::NextCommand(Engine(P))  = Right} \textbf{and}\\
+
+&  \quad (\textrm{Wdt(P)} $\neq$ \textrm{Environement::Height(Envi(P))} \\ & \textrm{Environment::CellNature(Envi(P),Wdt(P)+1,Hgt(P))} \textbf{not in} \{\textbf{MTL}, \textbf{PLT}\} \\
+& \quad\quad \textbf{and} (\textrm{Environment::CellNature(Envi(P),Wdt(P),Hgt(P))} \textbf{in} \{\textbf{LAD}, \textbf{HDR}\} \\
+& \quad\quad\quad\quad \textbf{or} \textrm{Environment::CellNature(Envi(P),Wdt(P),Hgt(P)-1)} \textbf{in} \{\textbf{PLT}, \textbf{MTL}, \textbf{LAD}\} \\
+& \quad\quad\quad\quad \textbf{or} \textbf{exists} \textrm{Character} c \textbf{in} \textrm{Environment::CellContent(Envi(P),Wdt(P),Hgt(P)-1)} ) \\
+& \quad\quad \textbf{and} \textbf{not} (\textbf{exists} \textrm{Character} c \textbf{in} \textrm{Environment::CellContent(Envi(P),Wdt(P)+1,Hgt(P))}) \\
+
+& \textbf{WillGoUp}\texttt{(P)} \textbf{defined by}   \textrm{Engine::NextCommand(Engine(P))  = Up} \textbf{and}\\
+
+&  \quad\textrm{Hgt(P)} $\neq$ \textrm{Environment::Height(Envi(P))} \\
+& \quad \textbf{and} (
+    \textrm{Environment::CellNature(Envi(P),Wdt(P),Hgt(P)+1} = \textbf{LAD} \\
+& \quad\quad  \textrm{Environment::CellNature(Envi(P),Wdt(P),Hgt(P)+1} \textbf{not in } \textbf{ \{ MTL,PLT \}} \\
+& \quad \textbf{and} \textrm{Environment::CellNature(Envi(P),Wdt(P),Hgt(P)} = \textbf{LAD} \\
+& \quad \textbf{and} \textbf{not exists} \textrm{Character} c \textbf{in} \textrm{Environment::CellNature(Envi(P),Wdt(P),Hgt(P)+1} \\
 
 & \textbf{WillGoDown}\texttt{(P)} \textbf{defined by}  \textrm{Engine::NextCommand(Engine(P))  = Down}\\
+
+& \quad  \textbf{and} \textrm{Hgt(P)} $\neq$ 0 \\
+& \quad \textbf{and} \textrm{Environment::CellNature(Envi(P),Wdt(P),Hgt(P)-1)} \textrm{in} \textbf{ \{ MTL,PLT \} } \\
+& \quad \textbf{and} \textbf{not exists} \textrm{Character} c \textbf{ not in} \textrm{Environment::CellNature(Envi(P),Wdt(P),Hgt(P)-1} \\
 
 &\textbf{WillDigL}\texttt{(P)} \textbf{defined by}  \textrm{Engine::NextCommand(Engine(P))  = DigL}\\
 %case non libre
@@ -340,13 +463,17 @@
 & \quad \textbf{and} \textrm{Environment::CellNature(Envi(P),Wdt(P)+1,Hgt(P)+1)} = \textrm{PLT} \\
 
 %post
-& \textbf{WillGoLeft}\texttt{(P)}  \textbf{implies} \textrm{GoLeft} \texttt{(P)}\\ 
+& \textbf{WillGoLeft}\texttt{(P)}  \textbf{implies}  \textrm{Wdt(P)} $=$ \textrm{Wdt(GoLeft(P))}\\ 
+& \quad \textbf{and} \textrm{Hgt(P)} $=$ \textrm{Hgt(GoLeft(P))}\\
 
-& \textbf{WillGoRight}\texttt{(P)}  \textbf{implies} \textrm{GoRight} \texttt{(P)}\\ 
+& \textbf{WillGoRight}\texttt{(P)}  \textbf{implies} \textrm{Wdt(P)} $=$ \textrm{Wdt(GoRight(P))}\\ 
+& \quad \textbf{and} \textrm{Hgt(P)} $=$ \textrm{Hgt(GoRight(P))}\\
 
-& \textbf{WillGoUp}\texttt{(P)}  \textbf{implies} \textrm{GoUp} \texttt{(P)}\\ 
+& \textbf{WillGoUp}\texttt{(P)}  \textbf{implies}  \textrm{Wdt(P)} $=$ \textrm{Wdt(GoUp(P))}\\ 
+& \quad \textbf{and} \textrm{Hgt(P)} $=$ \textrm{Hgt(GoUp(P))}\\
 
-& \textbf{WillGoDown}\texttt{(P)}  \textbf{implies} \textrm{GoDown} \texttt{(P)}\\
+& \textbf{WillGoDown}\texttt{(P)}  \textbf{implies}  \textrm{Wdt(P)} $=$ \textrm{Wdt(GoDown(P))}\\ 
+& \quad \textbf{and} \textrm{Hgt(P)} $=$ \textrm{Hgt(GoDown(P))}\\
 
 & \textbf{WillDigL}\texttt{(P)} \textbf{implies}
 \textrm{Environment::Dig(Envi(P),Wdt(P)-1,Hgt(P)-1)}\\
@@ -363,70 +490,75 @@
 
 \begin{tabular}{rl}
 \textbf{Service}: & \textrm{Engine} \\
-\textbf{Observators}: & \texttt{Environment}: \textrm{[Engine]} $\rightarrow$ \textrm{Environment}  \\
+\textbf{Observators}: & \texttt{Environment}: \textrm{[Engine]} $\rightarrow$ \textrm{Env}  \\
   & \texttt{Player}: \textrm{[Engine]} $\rightarrow$  \textrm{Player}   \\
  & \texttt{Guards}: \textrm{[Engine]} $\rightarrow$ \textrm{Set \{Guard\}}  \\
-  & \texttt{Treasure}: \textrm{[Engine]} $\rightarrow$  \textrm{Set \{Treasure\}}   \\
+  & \texttt{Treasures}: \textrm{[Engine]} $\rightarrow$  \textrm{Set \{Item\}}   \\
    & \texttt{Status}: \textrm{[Engine]} $\rightarrow$ \textrm{Status}  \\
    &  \texttt{NextCommand}: \textrm{[Engine]} $\rightarrow$ \textrm{NextCommand}  \\
       &  \texttt{Holes}: \textrm{[Engine]} $\rightarrow$ \textrm{Triplet \{int $\times$ int $\times$ int \}}  \\
       
 \textbf{Operators}:
-& \texttt{init}: \textrm{EditableScreen} $\times$ \textrm{int} $\times$ \textrm{int} $\times$ \textrm{Pair \{int  $\times$ int \}} $\times$ \textrm{Pair\{int  $\times$ int \}} $\rightarrow$ \textrm{[Player]} \\
-& \quad \textbf{pre } \texttt{init(S,x,y,G,T)} \textbf{ requires } \textrm{Environment::CellNature(S,x,y)} $=$ \textbf{EMP} \\
+& \texttt{init}: \textrm{EditableScreen} $\times$ \textrm{Player} $\times$ \textrm{int} $\times$ \textrm{List \{Guard\}} $\times$ \textrm{List\{Item\}} $\rightarrow$ \textrm{[Engine]} \\
+& \quad \textbf{pre } \texttt{init(S,P,G,T)} \textbf{ requires } \textrm{Environment::CellNature(S,Character::Wdt(P),} \\
+& \quad\quad \textrm{Character::Hgt(P))} $=$ \textbf{EMP} \\
+& \quad \quad \textbf{and} \textrm{Environment::CellNature(S,Character::Wdt(P),}  \textrm{Character::Hgt(P)-1)} \\
+& \quad\quad \textbf{in} \textbf{ \{PLT,MTL\}} \\
+
+& \quad \textbf{and} \textbf{forall} $g$ \textbf{in} G,\\ & \quad \quad \texttt{(Environment::CellNature(S,Character::Wdt(g),Character::Hgt(g))} $=$ \textbf{EMP} \\
+& \quad \quad \textbf{and} \texttt{Environment::CellNature(S,Character::Wdt(g),Character::Hgt(g)-1)} \\
+& \quad\quad \textbf{in} \textbf{ \{PLT,MTL\})} \\
+
+
+& \quad \textbf{and} \textbf{forall} $t$ \textbf{in} T, \texttt{Environment::CellNature(S,Item::Wdt(t),Item::Hgt(t)))} $=$ \textbf{EMP} \\
+& \quad \quad \textbf{and} \texttt{(Environment::CellNature(S,Item::Wdt(t),Item::Hgt(t)-1)} \textbf{in} \textbf{ \{PLT,MTL\})} \\
+& \quad \textbf{and} \textrm{EditableScreen::Playable(S)} \\
 
 & \texttt{Step}: \textrm{[Engine]} $\rightarrow$ \textrm{[Engine]}\\
 \textbf{Observations}: & \\
 
+
+
+\textrm{[invariant]}:
+
+%synchronisation
+& \textrm{Player(E)} \in \textrm{Environment::CellContent(Env(E),Character::Wdt(Player(E)),}\\
+
+& \quad \textrm{Character::Hgt(Player(E))))} \\
+
+& \textbf{forall} $g$ \textbf{in} \textrm{Guards(E)},\\
+& \quad \textrm{g} \in \textrm{Environment::CellContent(Env(E),Character::Wdt(g),Character::Hgt(g)))} \\
+
+& \textbf{forall} $t$ \textbf{in} \textrm{Treasures(E)},\\
+& \quad \textrm{t} \in \textrm{Environment::CellContent(Env(E),Character::Wdt(t),Character::Hgt(t)))} \\
+
+
+
+\textrm{[init]}: 
+
+& \textrm{Status(E)} $=$ \textrm{Playing} \\
+& \textrm{Character::Wdt(Player(E))} $=$ \textrm{x} \textbf{and} \textrm{Character::Hgt(Player(E))} $=$ \textrm{y} \\
+& \textbf{forall} $(t,ct)$ \textbf{in} \textrm{Treasures}\texttt{(E)} $\times$ T, 
+\textrm{Item::Wdt(t)} $=$ \textrm{Pair::L(ct)} \textbf{and} \\
+& \quad \textrm{Item::Hgt(t)} $=$ \textrm{Pair::R(ct)}  \\
+& \textbf{forall} $(g,cg)$ \textbf{in} \textrm{Guards}\texttt{(E)} $\times$ T, 
+\textrm{Character::Wdt(g)} $=$ \textrm{Pair::L(ct)} \textbf{and} \\
+& \quad \textrm{Character::Hgt(g)} $=$ \textrm{Pair::R(cg)}  \\
+
+
 %step
-%init
-\textrm{[init]}:
-& \textbf{Engine(P)} = \textrm{e}\\
-
 \textrm{[Step]}:
-& \textbf{WillFall}\texttt{(P)} \textbf{defined by} (\textrm{Environment::CellNature(Envi(P),Wdt(P),Hgt(P)-1)} \\
-& \quad\quad \textbf{in} \{\textbf{HOL}, \textbf{EMP} \}  \\
-& \quad\quad \textbf{and} \textbf{not exists} \textrm{Character} c \textbf{in} \textrm{Environment::CellContent(Envi(G),Wdt(P),Hgt(P)-1)} \\
-& \quad\quad \textbf{and} \textrm{Environment::CellNature(Envi(P),Wdt(P),Hgt(P))} \textbf{not in} \{\textbf{LAD}, \textbf{HDR} \} ) \\
 
-& \textbf{WillGoLeft}\texttt{(P)} \textbf{defined by}  \textrm{Engine::NextCommand(Engine(P))  = Left}\\
+&  \textbf{exists} \textrm{Treasures t} \textbf{in}  \textrm{Environment::CellContent(Env(E),Character::Wdt(Player(E)),} \\
 
-& \textbf{WillGoRight}\texttt{(P)} \textbf{defined by}   \textrm{Engine::NextCommand(Engine(P))  = Right}\\
+& \quad \textrm{Character::Hgt(Player(E)))} \textbf{implies} $t$ \textbf{not exists in} \\
+& \quad \textrm{Environment::CellContent(Env(E),Character::Wdt(Player(E)),Character::Hgt(Player(E)))} \\
 
-& \textbf{WillGoUp}\texttt{(P)} \textbf{defined by}   \textrm{Engine::NextCommand(Engine(P))  = Up}\\
+& \textrm{Treasures(E)} $=$ \emptyset \textbf{ implies } \textrm{Status(E)} $=$ \textrm{Win} \\
 
-& \textbf{WillGoDown}\texttt{(P)} \textbf{defined by}  \textrm{Engine::NextCommand(Engine(P))  = Down}\\
+& \textrm{Guard g} \in  \textrm{(Environment::CellContent(Env(E),Character::Wdt(Player(E)),} \\
+& \quad \textrm{Character::Hgt(Player(E))))}  \textbf{implies}  \textrm{Status(E)} $=$ \textrm{Loss} \\
 
-&\textbf{WillDigL}\texttt{(P)} \textbf{defined by}  \textrm{Engine::NextCommand(Engine(P))  = DigL}\\
-%case non libre
-& \quad \textbf{and} ( \textrm{Environment::CellNature(Envi(P),Wdt(P),Hgt(P)-1)} \textbf{in} \{\textbf{PLT}, \textbf{MTL}, \textbf{LAD}\} \\
-& \quad\quad\quad\quad \textbf{or} \textbf{exists} \textrm{Character} c \textbf{in} \textrm{Environment::CellContent(Envi(P),Wdt(P),Hgt(P)-1)} ) \\
-& \quad \textbf{and} \textrm{Environment::CellNature(Envi(P),Wdt(P)-1,Hgt(P))} \textbf{not in} \{\textbf{PLT}, \textbf{MTL}\} \\
-& \quad \textbf{and} \textrm{Environment::CellNature(Envi(P),Wdt(P)-1,Hgt(P)-1)} = \textrm{PLT} \\
-
-&\textbf{WillDigR}\texttt{(P)} \textbf{defined by}  \textrm{Engine::NextCommand(Engine(P))  = DigR}\\
-%case non libre
-& \quad \textbf{and} ( \textrm{Environment::CellNature(Envi(P),Wdt(P),Hgt(P)-1)} \textbf{in} \{\textbf{PLT}, \textbf{MTL}, \textbf{LAD}\} \\
-& \quad\quad\quad\quad \textbf{or} \textbf{exists} \textrm{Character} c \textbf{in} \textrm{Environment::CellContent(Envi(P),Wdt(P),Hgt(P)-1)} ) \\
-& \quad \textbf{and} \textrm{Environment::CellNature(Envi(P),Wdt(P)+1,Hgt(P))} \textbf{not in} \{\textbf{PLT}, \textbf{MTL}\} \\
-& \quad \textbf{and} \textrm{Environment::CellNature(Envi(P),Wdt(P)+1,Hgt(P)+1)} = \textrm{PLT} \\
-
-%post
-& \textbf{WillGoLeft}\texttt{(P)}  \textbf{implies} \textrm{GoLeft} \texttt{(P)}\\ 
-
-& \textbf{WillGoRight}\texttt{(P)}  \textbf{implies} \textrm{GoRight} \texttt{(P)}\\ 
-
-& \textbf{WillGoUp}\texttt{(P)}  \textbf{implies} \textrm{GoUp} \texttt{(P)}\\ 
-
-& \textbf{WillGoDown}\texttt{(P)}  \textbf{implies} \textrm{GoDown} \texttt{(P)}\\
-
-& \textbf{WillDigL}\texttt{(P)} \textbf{implies}
-\textrm{Environment::Dig(Envi(P),Wdt(P)-1,Hgt(P)-1)}\\
-& \quad \textbf{and} \textrm{Environment::CellNature(Envi(P),Wdt(P)-1,Hgt(P)-1)} = \textrm{HOL} \\
-
-& \textbf{WillDigR}\texttt{(P)} \textbf{implies} \textrm{Environment::Dig(Envi(P),Wdt(P)+1,Hgt(P)+1)}\\
-
-& \quad \textbf{and} \textrm{Environment::CellNature(Envi(P),Wdt(P)+1,Hgt(P)+1)} = \textrm{HOL} \\
 
 \end{tabular}
 
