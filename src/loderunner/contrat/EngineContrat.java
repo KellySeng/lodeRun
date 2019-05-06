@@ -144,7 +144,7 @@ public class EngineContrat extends EngineDecorator{
 		for(GuardService g : getGuards()) {
 			if(g.getHgt() == getPlayer().getHgt() && g.getWdt() == getPlayer().getWdt()) {
 				if(!(getStatus() == Status.Loss)) {
-					throw new PostconditionError("Game should be lost");
+					throw new PreconditionError("Game should be lost");
 				}
 			}
 		}
