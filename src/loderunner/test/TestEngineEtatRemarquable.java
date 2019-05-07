@@ -153,7 +153,7 @@ public class TestEngineEtatRemarquable extends AbstractJeuTest{
 	 * le player est tomber dans un trou pendant 15 step, le trou est rebouche, le jeu est perdu
 	 */
 	@Test
-	public void testLossByTrouRebouche() {
+	public void testPlayerPerdVieByTrouRebouche() {
 
 		drawMap();
 		//créer un player qui est en position (3,2)
@@ -183,10 +183,9 @@ public class TestEngineEtatRemarquable extends AbstractJeuTest{
 			engine.setCmd(Command.Neutral);
 			engine.step();
 		}
-	
-//		assertEquals(engine.getStatus(), Status.Loss);
-//		assertEquals(engine.getEnvironment().getCellNature(engine.getPlayer().getWdt(), 
-//				engine.getPlayer().getHgt()), Cell.PLT);
+		assertEquals(engine.getPlayer().getVie(), 2);
+
+		assertEquals(engine.getEnvironment().getCellNature(2, 1), Cell.PLT);
 
 
 	}

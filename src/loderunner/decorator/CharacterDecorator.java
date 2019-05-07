@@ -43,6 +43,11 @@ public class CharacterDecorator implements CharacterService{
 	public void goDown() {
 		delegate.goDown();
 	}
+	@Override
+	public void setPos(int x, int y) {
+		delegate.setPos(x, y);
+		
+	}
 
 	
 

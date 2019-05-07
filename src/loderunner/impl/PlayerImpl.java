@@ -34,15 +34,7 @@ public class PlayerImpl extends CharacterImpl implements PlayerService {
 		return score;
 	}
 	
-	public void setPos(int x,int y) {
-
-		getEnvi().getCellContent(wdt, hgt).remove(this);
-
-		this.hgt = y;
-		this.wdt = x;
-		getEnvi().getCellContent(x, y).add(this);
-
-	}
+	
 	
 	@Override
 	public void increScore() {		

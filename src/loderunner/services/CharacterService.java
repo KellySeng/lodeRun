@@ -15,7 +15,7 @@ public interface CharacterService extends CellContent{
 	public EnvironmentService getEnvi();
 	public int getHgt();
 	public int getWdt();
-	
+	public void setPos(int x,int y);
 	/*
 	 * Constructors
 	 */

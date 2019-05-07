@@ -31,6 +31,15 @@ public class CharacterImpl implements CharacterService{
 		return wdt;
 	}
 
+	public void setPos(int x,int y) {
+
+		getEnvi().getCellContent(wdt, hgt).remove(this);
+
+		this.hgt = y;
+		this.wdt = x;
+		getEnvi().getCellContent(x, y).add(this);
+
+	}
 	@Override
 	public void init(ScreenService screen,int x, int y) {
 		hgt = y;

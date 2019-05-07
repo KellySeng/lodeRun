@@ -10,7 +10,6 @@ public interface PlayerService extends CharacterService{
 	public void increScore();
 	public int getVie();
 	public void decreVie();
-	public void setPos(int x,int y) ;
 	
 	//Constructors
 	

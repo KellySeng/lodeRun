@@ -222,10 +222,6 @@ public class PlayerContrat extends PlayerDecorator {
 	}
 	
 	@Override
-	public void setPos(int x,int y) {
-		super.setPos(x, y);
-	}
-	@Override
 	public void increScore() {
 
 		//capture 
@@ -248,6 +244,22 @@ public class PlayerContrat extends PlayerDecorator {
 		if(getVie() != vie_pre - 1) {
 			throw new PostconditionError("getVie() != vie_pre - 1");
 		}
+	}
+	@Override
+	public void setPos(int x,int y) {
+
+		super.setPos(x, y);
+		
+		//	post : getHgt = y 
+		if(!(getHgt()==y)) {
+			throw new PostconditionError("getHgt()!=y");
+		}
+		
+		//	post : getWdt = x
+		if(!(getWdt()==x)) {
+			throw new PostconditionError("getWdt()!=x");
+		}
+		
 	}
 
 }

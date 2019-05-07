@@ -32,7 +32,6 @@ public interface GuardService extends CharacterService {
 	public Move getBehavior();
 	public CharacterService getTarget();
 	public int getTimeInHole();
-	public void setPos(int x, int y);
 	
 	
 	

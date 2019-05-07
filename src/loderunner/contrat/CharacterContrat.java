@@ -355,4 +355,23 @@ public void goLeft() {
 				}
 				
 	}
+	
+	@Override
+	public void setPos(int x,int y) {
+		checkInvariant();
+
+		super.setPos(x, y);
+		checkInvariant();
+		
+		//	post : getHgt = y 
+		if(!(getHgt()==y)) {
+			throw new PostconditionError("getHgt()!=y");
+		}
+		
+		//	post : getWdt = x
+		if(!(getWdt()==x)) {
+			throw new PostconditionError("getWdt()!=x");
+		}
+		
+	}
 }

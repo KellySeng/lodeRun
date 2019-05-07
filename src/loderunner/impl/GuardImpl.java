@@ -263,17 +263,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 	}
 
 
-	@Override
-	public void setPos(int x, int y) {
-		getEnvi().getCellContent(wdt, hgt).remove(this);
-
-		hgt = y;
-		wdt = x;
-		getEnvi().getCellContent(wdt, hgt).add(this);
-
-		
-	}
-
+	
 	
 
 	
