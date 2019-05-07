@@ -72,8 +72,9 @@
 \\ \textbf{Observators} : & \texttt{CellContent}:
 \textrm{int} $\times$ \textrm{int} $\rightarrow$
 \textrm{Set\{Character + Item\}} \\
-& \quad \textbf{pre } \texttt{CellContent(E,x,y)} \textbf{ requires } 0 $\leq$ \texttt{y} $<$ \texttt{Height(S)} \textbf{ and } 0 $\leq$ \texttt{x} $<$ \texttt{Width(S)}\\
+& \quad \textbf{pre } \texttt{CellContent(E,x,y)} \textbf{ requires } 0 $\leq$ \texttt{y} $<$ \texttt{Height(E)} \textbf{ and } 0 $\leq$ \texttt{x} $<$ \texttt{Width(E)}\\
 \textbf{Constructors}: & \texttt{init}: \textrm{EditableScreen} $\rightarrow$ \textrm{Environment} \\
+
 \textbf{Observations}: \\
 \texttt{[invariant]}: & \textbf{forall} $(\mathtt{x},\mathtt{y})$ \textbf{in} \texttt{[0;Width(E)[}$\times$ \texttt{[0;Height(E)[},~\\ & \quad\quad \textbf{forall} \textrm{Character} \texttt{c1}, \texttt{c2} \textbf{in} \texttt{CellContent(E,x,y)}$^2$, \texttt{c1} $=$ \texttt{c2} \\
 & \textbf{forall} $(\mathtt{x},\mathtt{y})$ \textbf{in} \texttt{[0;Width(E)[}$\times$ \texttt{[0;Height(E)[},~\\ & \quad\quad \texttt{CellNature(E,x,y)} \textbf{in} \{\textbf{MTL}, \textbf{PLR}\} \textbf{implies} \texttt{CellContent(x,y)} $=$ $\emptyset$  \\
@@ -499,7 +500,7 @@
       &  \texttt{Holes}: \textrm{[Engine]} $\rightarrow$ \textrm{Triplet \{int $\times$ int $\times$ int \}}  \\
       
 \textbf{Operators}:
-& \texttt{init}: \textrm{EditableScreen} $\times$ \textrm{Player} $\times$ \textrm{int} $\times$ \textrm{List \{Guard\}} $\times$ \textrm{List\{Item\}} $\rightarrow$ \textrm{[Engine]} \\
+& \texttt{init}: \textrm{EditableScreen} $\times$ \textrm{Player}  $\times$ \textrm{List \{Guard\}} $\times$ \textrm{List\{Item\}} $\rightarrow$ \textrm{[Engine]} \\
 & \quad \textbf{pre } \texttt{init(S,P,G,T)} \textbf{ requires } \textrm{Environment::CellNature(S,Character::Wdt(P),} \\
 & \quad\quad \textrm{Character::Hgt(P))} $=$ \textbf{EMP} \\
 & \quad \quad \textbf{and} \textrm{Environment::CellNature(S,Character::Wdt(P),}  \textrm{Character::Hgt(P)-1)} \\

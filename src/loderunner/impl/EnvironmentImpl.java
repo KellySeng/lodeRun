@@ -41,11 +41,5 @@ public class EnvironmentImpl extends ScreenImpl  implements EnvironmentService{
 		return cell_content[x][y];
 	}
 
-	@Override
-	public void addCellContent(int x, int y, CellContent cell) {
-		cell_content[x][y].add(cell);		
-	}
-	
-
 	
 }

@@ -48,13 +48,7 @@ public class EnvironmentDecorator implements EnvironmentService{
 	public void fill(int x, int y) {
 		delegate.fill(x, y);
 	}
-
-	@Override
-	public void addCellContent(int x, int y, CellContent cell) {
-		 delegate.addCellContent(x, y,cell);
-		
-	}
-
+	
 	@Override
 	public void init(int h, int w, EditableScreenService e) {
 		delegate.init(h, w, e);

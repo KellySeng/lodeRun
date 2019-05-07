@@ -25,11 +25,6 @@ public interface EnvironmentService extends ScreenService {
 	public HashSet<CellContent> getCellContent(int x,int y);
 
 	/**
-	 * pre : 0 <= y && y <= getHeight() &&  0 <= x && x <= getWidth()   
-	 **/
-	public void addCellContent(int x,int y,CellContent cell);
-
-	/**
 	 * post :  \forall(x:Integer,y : Integer) \in [0;getWidth()[ x [0;getHeight()[,
 	 * 		getCellNature(x,y) == e.getCellNature(x,y)
 	 **/
