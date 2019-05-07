@@ -117,8 +117,6 @@ public class TestPlayer extends AbstractJeuTest{
 		PlayerImpl player = new PlayerImpl();
 		PlayerContrat playerContrat = new PlayerContrat(player);	
 		playerContrat.init(enviContrat, 4, 1);
-
-
 		//créer un guard qui est en pos (0,2)
 		GuardImpl guard = new GuardImpl();
 		GuardContrat guardContrat = new GuardContrat(guard);
