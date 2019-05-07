@@ -167,5 +167,70 @@ public class TestCharacter {
 			assertEquals(c.getWdt(), w-1);
 			assertEquals(c.getHgt(), 1);
 		}
-	
+		
+
+		@Test
+		public void test2GoRightPositif() {
+			c.init(env, 0, 1);
+			c.goRight();
+			assertEquals(c.getWdt(), 1);
+			assertEquals(c.getHgt(), 1);
+		}
+		
+		@Test
+		public void test3GoRightPositif() {
+			es.setNature(1, 1, Cell.PLT);
+			env.init(h,w,es);
+			c.init(env, 0, 1);
+			c.goRight();
+			assertEquals(c.getWdt(), 0);
+			assertEquals(c.getHgt(), 1);
+		}
+		
+		@Test
+		public void test4GoRightPositif() {
+			c.init(env, 2, 2);
+			c.goRight();
+			assertEquals(c.getWdt(), 2);
+			assertEquals(c.getHgt(), 2);
+		}
+		
+		
+		@Test
+		public void test5GoRightPositif() {
+			env.getCellContent(2,1).add(new CharacterImpl());
+			c.init(env, 2, 2);
+			c.goRight();
+			assertEquals(c.getWdt(), 3);
+			assertEquals(c.getHgt(), 2);
+		}
+		
+		@Test
+		public void test6GoRightPositif() {
+			es.setNature(3, 2, Cell.LAD);
+			es.setNature(2, 1, Cell.PLT);
+			env.init(h,w,es);
+			c.init(env, 2, 2);
+			c.goRight();
+			assertEquals(c.getWdt(), 3);
+			assertEquals(c.getHgt(), 2);
+			c.goRight();
+			assertEquals(c.getWdt(), 4);
+			assertEquals(c.getHgt(), 2);
+		}
+		
+		@Test
+		public void test7GoRightPositif() {
+			es.setNature(3, 2, Cell.HDR);
+			es.setNature(2, 1, Cell.PLT);
+			env.init(h,w,es);
+			c.init(env, 2, 2);
+			c.goRight();
+			assertEquals(c.getWdt(), 3);
+			assertEquals(c.getHgt(), 2);
+			c.goRight();
+			assertEquals(c.getWdt(), 4);
+			assertEquals(c.getHgt(), 2);
+		}
+		
 }
