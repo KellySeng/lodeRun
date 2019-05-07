@@ -27,13 +27,12 @@ public interface GuardService extends CharacterService {
 	
 	public void init(int x,int y, EnvironmentService env, CharacterService target);
 	public int getId();
-	public int getXInit();
-	public int getYInit();
+
 
 	public Move getBehavior();
 	public CharacterService getTarget();
 	public int getTimeInHole();
-	public void revientPosInitial();
+	public void setPos(int x, int y);
 	
 	
 	

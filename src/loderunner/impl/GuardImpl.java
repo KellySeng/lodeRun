@@ -13,9 +13,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 
 
 	private static int cmp = 0;
-	private int xInit;
-	private int yInit;
-
+	
 	CharacterService target;
 	int timeInHole = 1;
 	int id;
@@ -24,15 +22,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 	public int getId() {
 		return id;
 	}
-	@Override
-	public int getXInit() {
-		return xInit;
-	}
-
-	@Override
-	public int getYInit() {
-		return yInit;
-	}
+	
 	@Override
 	public Move getBehavior() {
 		
@@ -73,14 +63,18 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 			
 			//Behaviour renvoie Left si la cible du garde se trouve strictement plus a gauche que lui
 			if(target.getWdt() < wdt) {
+				
 				return Move.Left;
 			}
 			
 			//	Right si elle se trouve strictement plus a droite
 			else if(target.getWdt() > wdt) {
+				System.out.println("le guard va droite ");
 				return Move.Right;
 			} 
 			else {
+				System.out.println("le guard ne bouge pas  ");
+
 				return Move.Neutral;
 			}
 			
@@ -260,8 +254,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 
 	@Override
 	public void init(int x, int y, EnvironmentService env, CharacterService target) {
-		xInit = x;
-		yInit = y;
+	
 		hgt = y;
 		wdt = x;
 		this.env = env;
@@ -270,10 +263,11 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 		cmp++;
 	}
 
+
 	@Override
-	public void revientPosInitial() {
-		hgt = yInit;
-		wdt = xInit;
+	public void setPos(int x, int y) {
+		hgt = y;
+		wdt = x;
 		
 	}
 

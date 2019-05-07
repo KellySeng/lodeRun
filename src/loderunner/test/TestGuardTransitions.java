@@ -24,7 +24,7 @@ import loderunner.services.EngineService;
 import loderunner.services.GuardService;
 import loderunner.services.Pair;
 
-public class TestGuard extends AbstractJeuTest{
+public class TestGuardTransitions extends AbstractJeuTest{
 
 
 
@@ -78,12 +78,15 @@ public class TestGuard extends AbstractJeuTest{
 	}
 	
 	
+	/*Tests transitions*/
+
+	
 	/**
 	 * En initialisation, le player est en position (4,2), un seul guard est en position(0, 2)
 	 * le player ne bouge pas,  le guard va aller a droite
 	 */
 	@Test
-	public void testGuardGoRightPrePositif() {
+	public void testGuardGoRightTrans() {
 
 
 
@@ -96,7 +99,6 @@ public class TestGuard extends AbstractJeuTest{
 
 	}
 	
-	/*Tests transitions*/
 	/**
 	 * En initialisation, le player est  en position (4,2),un seul guard est en position(0, 2)
 	 * player fait DigL, et apres il fait rien pendant 3 step, le guard tombe dans le trou
@@ -162,7 +164,7 @@ public class TestGuard extends AbstractJeuTest{
 
 	}
 	
-	/* Etat remarquable : le guard revient à la position initiale
+	/* Test senario : le guard revient à la position initiale
 	 * au début, le player est  en position (4,2),un seul guard est en position(0, 2)
 	 * player va a gauche et fait DigL, puis il va droite et fait un DigL, puis il va droite et fait un DigL(Il a fait 3 trous au total)
 	 * apres il attend pendant 15 step, 
@@ -171,7 +173,7 @@ public class TestGuard extends AbstractJeuTest{
 	 * au bout d'un moment, le 3ème trou est rebouché, et le guard revient à la position initiale
 	 * */
 	@Test
-	public void testEtatRemarquable() {
+	public void testSenarioGuardRevientsPosInitial() {
 		initialisation();
 		engine.setCmd(Command.Left);
 		engine.step();

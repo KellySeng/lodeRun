@@ -82,20 +82,10 @@ public class GuardDecorator implements GuardService {
 	}
 
 	@Override
-	public void revientPosInitial() {
-		delegate.revientPosInitial();
-		
+	public void setPos(int x, int y) {
+		delegate.setPos(x, y);		
 	}
 
-	@Override
-	public int getXInit() {
-		return delegate.getXInit();
-	}
-
-	@Override
-	public int getYInit() {
-		return delegate.getYInit();
-	}
 
 
 }

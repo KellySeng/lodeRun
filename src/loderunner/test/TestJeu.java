@@ -24,7 +24,7 @@ import loderunner.services.GuardService;
 import loderunner.services.Pair;
 import loderunner.services.Status;
 
-public class TestEngine extends AbstractJeuTest{
+public class TestJeu extends AbstractJeuTest{
 
 
 
@@ -43,17 +43,12 @@ public class TestEngine extends AbstractJeuTest{
 		EditableScreenImpl screen = new EditableScreenImpl();
 		EditableScreenContrat  screenContrat = new EditableScreenContrat(screen);
 		screenContrat.init(5, 5);
-		for(int i = 0; i<5;i++)
+		for(int i = 0; i<5;i++) {
 			screenContrat.setNature(i, 0, Cell.MTL);
-		
+			screenContrat.setNature(i, 1, Cell.PLT);
+
+		}
 			
-
-		screenContrat.setNature(0, 1, Cell.PLT);
-		screenContrat.setNature(1, 1, Cell.PLT);
-		screenContrat.setNature(2, 1, Cell.PLT);
-		screenContrat.setNature(3, 1, Cell.PLT);
-		screenContrat.setNature(4, 1, Cell.PLT);
-
 		//créer un environment
 		EnvironmentImpl	envi = new EnvironmentImpl();
 		 enviContrat = new EnvironmentContrat(envi);
@@ -88,7 +83,7 @@ public class TestEngine extends AbstractJeuTest{
 	}
 	
 	/**
-	 * Test le cas ou le jeu est gagne
+	 *  Etat remarquable : le jeu est gagne
 	 * En initialisation, le player est en position (3,2), un seul tresor est en position(4, 2)
 	 * le player va aller a droite et recuperer le tresor
 	 */
@@ -111,7 +106,7 @@ public class TestEngine extends AbstractJeuTest{
 	}
 	
 	/**
-	 * Test le cas ou le jeu est perdu
+	 * Etat remarquable : le jeu est perdu car le joueur est attaqué par un guard
 	 * En initialisation, le player est en position (3,2), un seul guard est en position(0, 2)
 	 * le player ne bouge pas
 	 * le guard va rattraper le joueur et le jeu est perdu
@@ -123,17 +118,24 @@ public class TestEngine extends AbstractJeuTest{
 		assertEquals(engine.getStatus(), Status.Playing);
 		engine.setCmd(Command.Neutral);
 		engine.step();
+		System.out.println("pos guard wdt = "+ engine.getGuards().get(0).getWdt()+ "hgt = "+engine.getGuards().get(0).getHgt());
+
 		engine.setCmd(Command.Neutral);
 		engine.step();
+		System.out.println("pos guard wdt = "+ engine.getGuards().get(0).getWdt()+ "hgt = "+engine.getGuards().get(0).getHgt());
+
 		engine.setCmd(Command.Neutral);
 		engine.step();
-		engine.setCmd(Command.Neutral);
-		engine.step();
+	
+		System.out.println("pos guard wdt = "+ engine.getGuards().get(0).getWdt()+ "hgt = "+engine.getGuards().get(0).getHgt());
+
+//		engine.setCmd(Command.Neutral);
+//		engine.step();
 		assertEquals(engine.getStatus(), Status.Loss);
 	}
 	
 	/*
-	 * Test le cas ou le jeu est perdu
+	 * Etat remarquable : le jeu est perdu car le joueur est dans un trou qui rebouche
 	 * le player est tomber dans un trou pendant 15 step, le trou est rebouche, le jeu est perdu
 	 */
 	@Test

@@ -471,16 +471,5 @@ public class GuardContrat extends GuardDecorator{
 		}
 	}
 
-	@Override
-	public void revientPosInitial() {
-		super.revientPosInitial();
-		
-		//pos t:getWdt() == xInit && getHgt() == yInit
-		if(!(getWdt() == getXInit() && getHgt() == getYInit())) {
-			
-			throw new PostconditionError("le guard n'a pas réussi à revenir à sa position initiale");
-		}
-		
-		
-	}
+
 }

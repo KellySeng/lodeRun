@@ -29,7 +29,7 @@ public class EngineImpl implements EngineService {
 	HashSet<ItemService> treasures;
 	Status status;
 	EditableScreenService screen;
-
+ 	List<Pair<Integer, Integer>> listGuardsInitiaux;
 	List<Pair<Integer, Integer>> listTresors;
 	ArrayList<Triplet<Integer,Integer,Integer>> holes;
 
@@ -115,7 +115,15 @@ public class EngineImpl implements EngineService {
 		}
 
 
-	
+		//Si au debut dâ€™un tour, un garde est dans la meme case que le joueur, le jeu est perdu 		
+				for(GuardService guard : guards) {
+					if(guard.getWdt() == x && guard.getHgt() == y){
+						System.out.println("player est attaqué par un guard");
+
+						status = Status.Loss;
+					}
+				}
+				
 
 		//	le temps de chaque trou est incrementee
 		for(Triplet<Integer, Integer, Integer> h : holes) {
@@ -153,7 +161,11 @@ public class EngineImpl implements EngineService {
 					if(h.getFirst() == guard.getWdt() && h.getSecond() == guard.getHgt()) {
 						System.out.println("le trou est rebouché, le guard revient à la position initiale");
 					
-						guard.revientPosInitial();
+						int index = guards.indexOf(guard);
+						int guardX_init = listGuardsInitiaux.get(index).getL();
+						int guardY_init = listGuardsInitiaux.get(index).getR();
+						guard.setPos(guardX_init, guardY_init);
+						
 					}
 
 				}
@@ -164,17 +176,12 @@ public class EngineImpl implements EngineService {
 
 
 		//	Le jeu est gagnÃ© quand il nâ€™y a plus de trÃ©sors.
-		if(treasures.size() == 0) {			
+		if(treasures.size() == 0) {	
+			System.out.println("Le jeu est gagné");
 			status = Status.Win;
 		}
 
 		
-		//Si au debut dâ€™un tour, un garde est dans la meme case que le joueur, le jeu est perdu 		
-		for(GuardService guard : guards) {
-			if(guard.getWdt() == x && guard.getHgt() == y){
-				status = Status.Loss;
-			}
-		}
 		
 		
 
@@ -200,6 +207,12 @@ public class EngineImpl implements EngineService {
 
 
 		guards = listGuards;
+
+		//capture les pos initials pour les guards
+	  listGuardsInitiaux = new 	ArrayList<Pair<Integer, Integer>>();
+	  for(GuardService g :listGuards) {
+		  listGuardsInitiaux.add(new Pair(g.getWdt(),g.getHgt()));
+	  }
 
 		for(GuardService guard : guards) {
 			envi.getCellContent(guard.getWdt(), guard.getHgt()).add(guard);
