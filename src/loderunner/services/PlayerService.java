@@ -6,7 +6,8 @@ public interface PlayerService extends CharacterService{
 	 * Observators
 	 */
 	public EngineService getEngine();
-	
+	public int getScore();
+	public void increScore();
 	
 	//Constructors
 	

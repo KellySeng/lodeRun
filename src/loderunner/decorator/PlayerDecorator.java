@@ -61,4 +61,16 @@ public class PlayerDecorator implements PlayerService{
 		
 	}
 
+	@Override
+	public int getScore() {
+		
+		return delegate.getScore();
+	}
+
+	@Override
+	public void increScore() {
+		delegate.increScore();
+		
+	}
+
 }

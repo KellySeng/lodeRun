@@ -13,7 +13,7 @@ import loderunner.services.Triplet;
 public class PlayerImpl extends CharacterImpl implements PlayerService {
 
 	EngineService engine;
-	
+	private int score;
 
 
 	@Override
@@ -21,7 +21,13 @@ public class PlayerImpl extends CharacterImpl implements PlayerService {
 		return engine;
 	}
 
-	
+	public int getScore() {
+		return score;
+	}
+	@Override
+	public void increScore() {		
+		 score++;
+	}
 	@Override
 	public void step() {
 
@@ -127,9 +133,12 @@ public class PlayerImpl extends CharacterImpl implements PlayerService {
 		engine = e;
 		this.env = env;
 		this.hgt = y;
-		this.wdt = x; 
+		this.wdt = x;
+		score = 0;
 		
 	}
+
+	
 
 	
 }

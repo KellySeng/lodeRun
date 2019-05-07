@@ -3,10 +3,8 @@ package loderunner.impl;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Scanner;
 import java.util.Set;
 
-import loderunner.services.Cell;
 import loderunner.services.CellContent;
 import loderunner.services.Command;
 import loderunner.services.EditableScreenService;
@@ -108,6 +106,7 @@ public class EngineImpl implements EngineService {
 			if (c instanceof ItemService ) {
 				tresorARemove.add(c);
 				treasures.remove(c);
+				player.increScore();
 			}
 		}
 		set.removeAll(tresorARemove);
