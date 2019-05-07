@@ -132,16 +132,13 @@ public class CharacterImpl implements CharacterService{
 	public void goDown() {
 		ArrayList <CellContent> character_list_hgt_minus_1 = getCharacterList(getWdt(),getHgt()-1);	
 		
-		if((getHgt() != 0) && 
-		   (getEnvi().getCellNature(getWdt(),getHgt()-1) == Cell.LAD || 
-			getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.MTL ||
+		if((getHgt() != 0) 
+		  && (getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.MTL &&
 			getEnvi().getCellNature(getWdt(), getHgt()-1) != Cell.PLT )
-		    && !(character_list_hgt_minus_1.size() != 0)) {
+		    && character_list_hgt_minus_1.size() == 0) {
 			env.getCellContent(wdt, hgt).remove(this);
-
 			hgt = hgt-1;
 			env.getCellContent(wdt, hgt).add(this);
-
 		}
 		else {
 			return;
