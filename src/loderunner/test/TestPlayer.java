@@ -41,19 +41,20 @@ public class TestPlayer extends AbstractJeuTest{
 	public void drawMap() {
 		EditableScreenImpl screen = new EditableScreenImpl();
 		EditableScreenContrat  screenContrat = new EditableScreenContrat(screen);
-	
+
 		DrawMap.drawmap(screenContrat);
 
 		//créer un environment
 		EnvironmentImpl	envi = new EnvironmentImpl();
 		enviContrat = new EnvironmentContrat(envi);
+		System.out.println("screenContrat.getWidth() = "+screenContrat.getWidth());
 		enviContrat.init(screenContrat.getHeight(),screenContrat.getWidth(),screenContrat);
 
 	}
 
 	public void initialisation() {
 		drawMap();
-		
+
 		//créer un player qui est en pos (4,2)
 		PlayerImpl player = new PlayerImpl();
 		PlayerContrat playerContrat = new PlayerContrat(player);	
@@ -79,9 +80,61 @@ public class TestPlayer extends AbstractJeuTest{
 	@Test
 	public void testInitPrePositif() {
 
-		initialisation();
+		drawMap();
+
+		//créer un player qui est en pos (4,2)
+		PlayerImpl player = new PlayerImpl();
+		PlayerContrat playerContrat = new PlayerContrat(player);	
+		playerContrat.init(enviContrat, 4, 2);
+
+
+		//créer un guard qui est en pos (0,2)
+		GuardImpl guard = new GuardImpl();
+		GuardContrat guardContrat = new GuardContrat(guard);
+		guardContrat.init(100, 0, 2, enviContrat, playerContrat);
+		ArrayList<GuardService> guardsContrat = new ArrayList<GuardService>();
+		guardsContrat.add(guardContrat);	
+
+		//créer un tresor en pos(6,2)
+		List<Pair<Integer, Integer>> listTresors = new ArrayList<Pair<Integer, Integer>> ();
+		listTresors.add(new Pair(6,2));
+
+		//Initialiser engine
+		engine = getEngine();
+		engine.init(enviContrat,playerContrat, guardsContrat, listTresors);
+
 	}
 
+	/**
+	 *  pre init(S,x,y) requires Environment : :CellNature(S,x,y) = EMP
+	 *  test quand CellNature(S,x,y) = PLT
+	 */
+	@Test
+	public void testInitPreNegatif() {
+		drawMap();
+
+		//créer un player qui est en pos (4,1)
+		PlayerImpl player = new PlayerImpl();
+		PlayerContrat playerContrat = new PlayerContrat(player);	
+		playerContrat.init(enviContrat, 4, 1);
+
+
+		//créer un guard qui est en pos (0,2)
+		GuardImpl guard = new GuardImpl();
+		GuardContrat guardContrat = new GuardContrat(guard);
+		guardContrat.init(100, 0, 2, enviContrat, playerContrat);
+		ArrayList<GuardService> guardsContrat = new ArrayList<GuardService>();
+		guardsContrat.add(guardContrat);	
+
+		//créer un tresor en pos(6,2)
+		List<Pair<Integer, Integer>> listTresors = new ArrayList<Pair<Integer, Integer>> ();
+		listTresors.add(new Pair(6,2));
+
+		//Initialiser engine
+		engine = getEngine();
+		engine.init(enviContrat,playerContrat, guardsContrat, listTresors);
+
+	}
 
 	@Test
 	public void testPlayerGoRightPLTPositif() {
@@ -97,7 +150,10 @@ public class TestPlayer extends AbstractJeuTest{
 
 
 	}
-	
+
+	/**
+	 * On test le player goRight quand il est sur un handrail
+	 */
 	@Test
 	public void testPlayerGoRightHDRPositif() {
 
@@ -115,15 +171,15 @@ public class TestPlayer extends AbstractJeuTest{
 		engine.step();
 		engine.setCmd(Command.Right);
 		engine.step();
-		
+
 		engine.setCmd(Command.Right);
 		engine.step();
-		
+
 		engine.setCmd(Command.Right);
 		engine.step();
 		engine.setCmd(Command.Right);
 		engine.step();
-	
+
 		assertEquals(engine.getPlayer().getWdt(),7);
 		assertEquals(engine.getPlayer().getHgt(),6);
 
@@ -152,8 +208,8 @@ public class TestPlayer extends AbstractJeuTest{
 
 		// En initiale,le player en position (4,2), un seul guard est en position(0, 2)
 		initialisation();
-	
-		
+
+
 		engine.setCmd(Command.Left);
 		engine.step();
 		engine.setCmd(Command.Up);
@@ -167,7 +223,7 @@ public class TestPlayer extends AbstractJeuTest{
 	}
 	@Test
 	public void testPlayerFallPrePositif() {
-		
+
 		// En initiale,le player en position (4,2), un seul guard est en position(0, 2)
 		initialisation();
 
@@ -195,7 +251,7 @@ public class TestPlayer extends AbstractJeuTest{
 
 	@Test
 	public void testPlayerGoDownPrePositif() {
-		
+
 		// En initiale,le player en position (4,2), un seul guard est en position(0, 2)
 		initialisation();
 		engine.setCmd(Command.Left);
@@ -204,10 +260,10 @@ public class TestPlayer extends AbstractJeuTest{
 		engine.step();
 		engine.setCmd(Command.Down);
 		engine.step();
-		
+
 		assertEquals(engine.getPlayer().getHgt(),2);
 		assertEquals(engine.getPlayer().getWdt(),3);
-		
+
 
 	}
 
@@ -226,10 +282,10 @@ public class TestPlayer extends AbstractJeuTest{
 		engine.step();
 		assertEquals(engine.getEnvironment().getCellNature(2, 1), Cell.HOL);
 
-		
+
 		engine.setCmd(Command.Neutral);
 		engine.step();
-		
+
 		assertEquals(engine.getGuards().get(0).getWdt(), 2);
 		assertEquals(engine.getGuards().get(0).getHgt(), 1);
 
