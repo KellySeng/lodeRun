@@ -64,7 +64,6 @@ public class EditableScreenContrat extends EditableScreenDecorator{
 		
 		//pre : 0<x<getWidth()
 		
-		System.out.println("width = "+getWidth() );
 		if(!(x>=0 && x<getWidth())) {
 			throw new PreconditionError("EditableScreenContrat setNature pre : x = "+x+" pas entre 0 et getWidth() ");
 		}

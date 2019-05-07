@@ -385,6 +385,7 @@ public class GuardContrat extends GuardDecorator{
 				&& getWdt()!=0
 				&& getEnvi().getCellNature(getWdt()-1,getHgt()) != Cell.MTL
 				&& getEnvi().getCellNature(getWdt()-1,getHgt()) != Cell.PLT
+				&& getEnvi().getCellNature(getWdt(),getHgt()) != Cell.HOL
 				&& (getEnvi().getCellNature(getWdt(),getHgt()) == Cell.LAD
 				||getEnvi().getCellNature(getWdt(),getHgt()) == Cell.HDR
 				|| getEnvi().getCellNature(getWdt(),getHgt()-1) == Cell.PLT
@@ -399,6 +400,7 @@ public class GuardContrat extends GuardDecorator{
 				&& getWdt()< getEnvi().getWidth()
 				&& getEnvi().getCellNature(getWdt()+1,getHgt()) != Cell.MTL
 				&& getEnvi().getCellNature(getWdt()+1,getHgt()) != Cell.PLT
+				&& getEnvi().getCellNature(getWdt(),getHgt()) != Cell.HOL
 				&& (getEnvi().getCellNature(getWdt(),getHgt()) == Cell.LAD
 				||getEnvi().getCellNature(getWdt(),getHgt()) == Cell.HDR
 				|| getEnvi().getCellNature(getWdt(),getHgt()-1) == Cell.PLT

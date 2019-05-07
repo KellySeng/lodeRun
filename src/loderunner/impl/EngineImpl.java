@@ -152,6 +152,7 @@ public class EngineImpl implements EngineService {
 				//si un garde Ã©tait dedans, il revient a sa position initiale
 				for(GuardService guard : guards) {	
 					if(h.getFirst() == guard.getWdt() && h.getSecond() == guard.getHgt()) {
+						System.out.println("le trou est rebouché, le guard revient à la position initiale");
 						int index = guards.indexOf(guard);
 						int guardX_init = listGuards.get(index).getL();
 						int guardY_init = listGuards.get(index).getR();

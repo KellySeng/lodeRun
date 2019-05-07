@@ -42,12 +42,11 @@ public class TestPlayer extends AbstractJeuTest{
 		EditableScreenImpl screen = new EditableScreenImpl();
 		EditableScreenContrat  screenContrat = new EditableScreenContrat(screen);
 
-		DrawMap.drawmap(screenContrat);
+		DrawMap.drawmap(screenContrat,"mapTestPlayer.txt");
 
 		//créer un environment
 		EnvironmentImpl	envi = new EnvironmentImpl();
 		enviContrat = new EnvironmentContrat(envi);
-		System.out.println("screenContrat.getWidth() = "+screenContrat.getWidth());
 		enviContrat.init(screenContrat.getHeight(),screenContrat.getWidth(),screenContrat);
 
 	}

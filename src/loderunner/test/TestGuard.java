@@ -17,6 +17,7 @@ import loderunner.impl.EngineImpl;
 import loderunner.impl.EnvironmentImpl;
 import loderunner.impl.GuardImpl;
 import loderunner.impl.PlayerImpl;
+import loderunner.map.DrawMap;
 import loderunner.services.Cell;
 import loderunner.services.Command;
 import loderunner.services.EngineService;
@@ -27,6 +28,8 @@ public class TestGuard extends AbstractJeuTest{
 
 
 
+	private EnvironmentContrat enviContrat;
+
 
 	private EngineService engine ;
 	@Override
@@ -34,45 +37,39 @@ public class TestGuard extends AbstractJeuTest{
 
 		setEngine(new EngineContrat(new EngineImpl()));
 	}
-	
 
-	public void initialisation() {
-		
+	public void drawMap() {
 		EditableScreenImpl screen = new EditableScreenImpl();
 		EditableScreenContrat  screenContrat = new EditableScreenContrat(screen);
-		screenContrat.init(5, 5);
-		for(int i = 0; i<5;i++)
-			screenContrat.setNature(i, 0, Cell.MTL);
-		
-			
 
-		screenContrat.setNature(0, 1, Cell.PLT);
-		screenContrat.setNature(1, 1, Cell.PLT);
-		screenContrat.setNature(2, 1, Cell.PLT);
-		screenContrat.setNature(3, 1, Cell.PLT);
-		screenContrat.setNature(4, 1, Cell.PLT);
+		DrawMap.drawmap(screenContrat,"mapTestGuard.txt");
 
 		//créer un environment
 		EnvironmentImpl	envi = new EnvironmentImpl();
-		EnvironmentContrat enviContrat = new EnvironmentContrat(envi);
+		enviContrat = new EnvironmentContrat(envi);
 		enviContrat.init(screenContrat.getHeight(),screenContrat.getWidth(),screenContrat);
-				
-		//créer un player qui est en position (3,2)
+
+	}
+
+	public void initialisation() {
+		drawMap();
+
+		//créer un player qui est en pos (4,2)
 		PlayerImpl player = new PlayerImpl();
 		PlayerContrat playerContrat = new PlayerContrat(player);	
-		playerContrat.init(enviContrat, 3, 2);
-		
+		playerContrat.init(enviContrat, 4, 2);
 
-		//créer un guard qui est en position (0,2)
+
+		//créer un guard qui est en pos (0,2)
 		GuardImpl guard = new GuardImpl();
 		GuardContrat guardContrat = new GuardContrat(guard);
 		guardContrat.init(100, 0, 2, enviContrat, playerContrat);
 		ArrayList<GuardService> guardsContrat = new ArrayList<GuardService>();
 		guardsContrat.add(guardContrat);	
-		
-		//créer une liste de tresors 
+
+		//créer un tresor en pos(6,2)
 		List<Pair<Integer, Integer>> listTresors = new ArrayList<Pair<Integer, Integer>> ();
-		listTresors.add(new Pair(4,2));
+		listTresors.add(new Pair(6,2));
 
 		//Initialiser engine
 		engine = getEngine();
@@ -81,9 +78,8 @@ public class TestGuard extends AbstractJeuTest{
 	}
 	
 	
-	
 	/**
-	 * En initialisation, le player est en position (3,2), un seul guard est en position(0, 2)
+	 * En initialisation, le player est en position (4,2), un seul guard est en position(0, 2)
 	 * le player ne bouge pas,  le guard va aller a droite
 	 */
 	@Test
@@ -100,9 +96,10 @@ public class TestGuard extends AbstractJeuTest{
 
 	}
 	
+	/*Tests transitions*/
 	/**
-	 * En initialisation, le player est  en position (3,2),un seul guard est en position(0, 2)
-	 * player fait DigL, et apres il fait rien pendant 2 step, le guard tombe dans le trou
+	 * En initialisation, le player est  en position (4,2),un seul guard est en position(0, 2)
+	 * player fait DigL, et apres il fait rien pendant 3 step, le guard tombe dans le trou
 	 */
 	@Test
 	public void testGuardTomber() {
@@ -114,16 +111,18 @@ public class TestGuard extends AbstractJeuTest{
 		engine.step();
 		engine.setCmd(Command.Neutral);
 		engine.step();
-		assertEquals(engine.getEnvironment().getCellNature(2, 1), Cell.HOL);
-		assertEquals(engine.getGuards().get(0).getWdt(), 2);
+		engine.setCmd(Command.Neutral);
+		engine.step();
+		assertEquals(engine.getEnvironment().getCellNature(3, 1), Cell.HOL);
+		assertEquals(engine.getGuards().get(0).getWdt(), 3);
 		assertEquals(engine.getGuards().get(0).getHgt(), 1);
 
 	}
 	
 	/**
-	 * En initialisation, le player est  en position (3,2),un seul guard est en position(0, 2)
-	 * player fait DigL, et apres il fait rien pendant 2 step, le guard tombe dans le trou
-	 * et puis apres 3 step, le guard fait un ClimbRight
+	 * En initialisation, le player est  en position (4,2),un seul guard est en position(0, 2)
+	 * player fait DigL, puis il va gauche , apres il fait rien pendant 2 step, le guard tombe dans le trou
+	 * et puis apres 5 step, le guard fait un ClimbRight
 	 */
 	@Test
 	public void testGuardClimbRight() {
@@ -135,8 +134,13 @@ public class TestGuard extends AbstractJeuTest{
 		engine.step();
 		engine.setCmd(Command.Neutral);
 		engine.step();
-		assertEquals(engine.getEnvironment().getCellNature(2, 1), Cell.HOL);
-		assertEquals(engine.getGuards().get(0).getWdt(), 2);
+		engine.setCmd(Command.Neutral);
+		engine.step();
+		
+		assertEquals(engine.getEnvironment().getCellNature(3, 1), Cell.HOL);
+		assertEquals(engine.getPlayer().getWdt(), 5);
+		assertEquals(engine.getPlayer().getHgt(), 2);
+		assertEquals(engine.getGuards().get(0).getWdt(), 3);
 		assertEquals(engine.getGuards().get(0).getHgt(), 1);
 		engine.setCmd(Command.Neutral);
 		engine.step();
@@ -148,16 +152,45 @@ public class TestGuard extends AbstractJeuTest{
 		engine.step();
 		engine.setCmd(Command.Neutral);
 		engine.step();
-		
 		engine.setCmd(Command.Neutral);
 		engine.step();
-		
-		System.out.println(engine.getGuards().get(0).getTimeInHole());
+		System.out.println("TimeInHole = "+ engine.getGuards().get(0).getTimeInHole());
 
-		assertEquals(engine.getGuards().get(0).getWdt(), 3);
+		assertEquals(engine.getGuards().get(0).getWdt(), 4);
 		assertEquals(engine.getGuards().get(0).getHgt(), 2);
 		
 
+	}
+	
+	/* Etat remarquable : le guard revient à la position initiale
+	 * au début, le player est  en position (4,2),un seul guard est en position(0, 2)
+	 * player fait DigL, puis il va gauche , apres il fait rien pendant 2 step, le guard tombe dans le trou
+	 * et puis apres 5 step, le guard fait un ClimbRight
+	 * 
+	 * */
+	@Test
+	public void testEtatRemarquable() {
+		initialisation();
+		engine.setCmd(Command.Left);
+		engine.step();
+		engine.setCmd(Command.DigL);
+		engine.step();
+		engine.setCmd(Command.Right);
+		engine.step();
+		engine.setCmd(Command.DigL);
+		engine.step();
+		engine.setCmd(Command.Right);
+		engine.step();
+		engine.setCmd(Command.DigL);
+		engine.step();
+		
+		for(int i=0; i<15;i++) { 
+		engine.setCmd(Command.Neutral);
+		engine.step();
+		}
+	
+		
+		
 	}
 
 

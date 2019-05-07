@@ -190,9 +190,7 @@ public class PlayerContrat extends PlayerDecorator {
 		//Post: if willFall
 		if(willFall) {
 			if(!(getWdt() == wdt_pre && getHgt() == hgt_pre-1)) {
-				System.out.println("hgt = "+getHgt()+"wdt = "+getWdt());
-
-				System.out.println("hgt_pre = "+hgt_pre+"wdt_pre = "+wdt_pre);
+			
 				throw new PostconditionError("willFall error: player est en wdt "+ getWdt());
 			}
 		}
