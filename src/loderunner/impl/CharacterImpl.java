@@ -108,11 +108,13 @@ public class CharacterImpl implements CharacterService{
 	@Override
 	public void goUp() {
 		
-		ArrayList <CellContent> character_list_hgt_plus_1 = getCharacterList(getWdt(),getHgt()+1);	
+		ArrayList <CellContent> character_list_hgt_plus_1 = new ArrayList<CellContent>();	
+		if(getHgt() < env.getHeight()-1) character_list_hgt_plus_1 = getCharacterList(getWdt(),getHgt()+1);	
 		
-		if(hgt < env.getHeight() 
-		   && (env.getCellNature(wdt,hgt+1) == Cell.LAD || env.getCellNature(wdt,hgt+1) == Cell.EMP 
-		   || env.getCellNature(wdt,hgt+1) == Cell.HDR || env.getCellNature(wdt,hgt+1) == Cell.HOL )
+		if(hgt < env.getHeight() -1
+		   && env.getCellNature(wdt,hgt) == Cell.LAD
+		   && (env.getCellNature(wdt,hgt+1) != Cell.MTL 
+		   	  && env.getCellNature(wdt,hgt+1) != Cell.PLT)
 		   && character_list_hgt_plus_1.size() == 0) {
 			
 			env.getCellContent(wdt, hgt).remove(this);

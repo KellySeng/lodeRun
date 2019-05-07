@@ -262,7 +262,8 @@ public void goLeft() {
 		//Capture pour post-conditions
 		int getHgt_pre = getHgt();
 		int getWdt_pre = getWdt();
-		ArrayList <CellContent> character_list_hgt_plus_1 = getCharacterList(getWdt(),getHgt()+1);	
+		ArrayList <CellContent> character_list_hgt_plus_1 = new ArrayList<CellContent>();
+		if(getHgt() < getEnvi().getHeight()-1) character_list_hgt_plus_1 = getCharacterList(getWdt(),getHgt()+1);	
 		
 		checkInvariant();
 		
@@ -281,8 +282,10 @@ public void goLeft() {
 		}
 		
 		//post : getEnvi().getCellNature(getWdt(),getHgt()+1) \in {MLT,PLT} -> getHgt() == getHgt()@pre
-		if((getEnvi().getCellNature(getWdt(),getHgt()+1) == Cell.MTL || getEnvi().getCellNature(getWdt(),getHgt()+1) == Cell.PLT)) {
-			if(!(getHgt() == getHgt_pre)) throw new PostconditionError("CharacterContrat post goUp: getHgt() != getHgt_pre");
+		if(getHgt() < getEnvi().getHeight()-1) {
+			if((getEnvi().getCellNature(getWdt_pre,getHgt_pre+1) == Cell.MTL || getEnvi().getCellNature(getWdt_pre,getHgt_pre+1) == Cell.PLT)) {
+				if(!(getHgt() == getHgt_pre)) throw new PostconditionError("CharacterContrat post goUp: getHgt() != getHgt_pre");
+			}
 		}
 		
 		//post: c:Character \exists \in getEnvi.getCellContent(getWdt(),getHgt()+1) -> getHgt() == getHgt()@pre
@@ -296,7 +299,8 @@ public void goLeft() {
 				&& \not(c:Character \exists \in getEnvi.getCellContent(getWdt(),getHgt()+1)) -> getHgt() == getHgt()@pre + 1
 		*/
 		
-		if((getHgt() < getEnvi().getHeight()) && (getEnvi().getCellNature(getWdt(),getHgt()) == Cell.LAD)
+		if((getHgt_pre != getEnvi().getHeight()-1) && (getEnvi().getCellNature(getWdt_pre,getHgt_pre) == Cell.LAD) 
+			&& (getEnvi().getCellNature(getWdt_pre,getHgt_pre) != Cell.PLT && getEnvi().getCellNature(getWdt_pre,getHgt_pre) != Cell.MTL)
 			&& character_list_hgt_plus_1.size() == 0) {
 			if(!(getHgt() == getHgt_pre +1)) throw new PostconditionError("CharacterContrat post goUp: getHgt() != getHgt_pre +1 ");
 		}

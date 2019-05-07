@@ -233,4 +233,45 @@ public class TestCharacter {
 			assertEquals(c.getHgt(), 2);
 		}
 		
+		
+		//goUp
+		
+		@Test
+		public void test1GoUpPositif() {
+			c.init(env,0, 1);
+			c.goUp();
+			assertEquals(c.getWdt(), 0);
+			assertEquals(c.getHgt(), 1);
+		}
+		
+		@Test
+		public void test2GoUpPositif() {
+			es.setNature(0, 1, Cell.LAD);
+			es.setNature(0, 2, Cell.LAD);
+			es.setNature(0, 3, Cell.LAD);
+			env.init(h,w,es);
+			c.init(env, 1, 1);
+			c.goLeft();
+			c.goUp();//2
+			c.goUp();//3
+			c.goUp();//4
+			c.goUp(); //ne peut plus monter
+			assertEquals(c.getWdt(), 0);
+			assertEquals(c.getHgt(), 4);
+		}
+		
+		
+		@Test
+		public void test3GoUpPositif() {
+			es.setNature(0, 1, Cell.LAD);
+			es.setNature(0, 2, Cell.LAD);
+			es.setNature(0, 3, Cell.PLT);
+			env.init(h,w,es);
+			c.init(env, 1, 1);
+			c.goLeft();
+			c.goUp();//2
+			c.goUp();//3
+			assertEquals(c.getWdt(), 0);
+			assertEquals(c.getHgt(), 2);
+		}
 }
