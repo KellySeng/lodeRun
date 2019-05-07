@@ -103,16 +103,14 @@ public class EngineImpl implements EngineService {
 		//ce tresor disparait		
 		Set<CellContent> set = envi.getCellContent(x, y);
 
+		Set<CellContent> tresorARemove = new HashSet<CellContent>();
 		for(CellContent c :set) {
-			if (c instanceof ItemService ) {		
+			if (c instanceof ItemService ) {
+				tresorARemove.add(c);
 				treasures.remove(c);
 			}
 		}
-		for(ItemService c : treasures) {	
-			if(c.getCol() == x && c.getHgt() == y) {
-				envi.getCellContent(x, y).remove(c);
-			}
-		}
+		set.removeAll(tresorARemove);
 
 
 		//	le temps de chaque trou est incrementee

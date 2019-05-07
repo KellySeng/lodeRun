@@ -24,7 +24,7 @@ import loderunner.services.EngineService;
 import loderunner.services.GuardService;
 import loderunner.services.Pair;
 
-public class TestGuardTransitions extends AbstractJeuTest{
+public class TestEngineTransitions extends AbstractJeuTest{
 
 
 
@@ -104,7 +104,7 @@ public class TestGuardTransitions extends AbstractJeuTest{
 	 * player fait DigL, et apres il fait rien pendant 3 step, le guard tombe dans le trou
 	 */
 	@Test
-	public void testGuardTomber() {
+	public void testTrapperGuard() {
 	
 		initialisation();
 		engine.setCmd(Command.DigL);
@@ -123,7 +123,7 @@ public class TestGuardTransitions extends AbstractJeuTest{
 	
 	/**
 	 * En initialisation, le player est  en position (4,2),un seul guard est en position(0, 2)
-	 * player fait DigL, puis il va gauche , apres il fait rien pendant 2 step, le guard tombe dans le trou
+	 * player fait DigL, puis il va droite , apres il fait rien pendant 2 step, le guard tombe dans le trou
 	 * et puis apres 5 step, le guard fait un ClimbRight
 	 */
 	@Test
@@ -154,8 +154,7 @@ public class TestGuardTransitions extends AbstractJeuTest{
 		engine.step();
 		engine.setCmd(Command.Neutral);
 		engine.step();
-		engine.setCmd(Command.Neutral);
-		engine.step();
+	
 		System.out.println("TimeInHole = "+ engine.getGuards().get(0).getTimeInHole());
 
 		assertEquals(engine.getGuards().get(0).getWdt(), 4);
@@ -173,7 +172,7 @@ public class TestGuardTransitions extends AbstractJeuTest{
 	 * au bout d'un moment, le 3ème trou est rebouché, et le guard revient à la position initiale
 	 * */
 	@Test
-	public void testSenarioGuardRevientsPosInitial() {
+	public void testGuardRevientPosInit() {
 		initialisation();
 		engine.setCmd(Command.Left);
 		engine.step();

@@ -24,7 +24,7 @@ import loderunner.services.GuardService;
 import loderunner.services.Pair;
 import loderunner.services.Status;
 
-public class TestEngine extends AbstractJeuTest{
+public class TestEngineEtatRemarquable extends AbstractJeuTest{
 
 
 
@@ -99,8 +99,12 @@ public class TestEngine extends AbstractJeuTest{
 		engine.step();
 		engine.setCmd(Command.Neutral);
 		engine.step();
+		engine.setCmd(Command.Neutral);
+		engine.step();
 		assertEquals(engine.getStatus(), Status.Win);
 	
+		
+		assertEquals(engine.getEnvironment().getCellContent(4, 2).size(),1);
 
 
 	}
@@ -118,16 +122,16 @@ public class TestEngine extends AbstractJeuTest{
 		assertEquals(engine.getStatus(), Status.Playing);
 		engine.setCmd(Command.Neutral);
 		engine.step();
-		System.out.println("pos guard wdt = "+ engine.getGuards().get(0).getWdt()+ "hgt = "+engine.getGuards().get(0).getHgt());
 
 		engine.setCmd(Command.Neutral);
 		engine.step();
-		System.out.println("pos guard wdt = "+ engine.getGuards().get(0).getWdt()+ "hgt = "+engine.getGuards().get(0).getHgt());
 
 		engine.setCmd(Command.Neutral);
 		engine.step();
 	
-		System.out.println("pos guard wdt = "+ engine.getGuards().get(0).getWdt()+ "hgt = "+engine.getGuards().get(0).getHgt());
+//		System.out.println("pos guard wdt = "+ engine.getGuards().get(0).getWdt()+ "hgt = "+engine.getGuards().get(0).getHgt());
+		assertEquals(engine.getGuards().get(0).getWdt(), engine.getPlayer().getWdt());
+		assertEquals(engine.getGuards().get(0).getHgt(), engine.getPlayer().getHgt());
 
 		assertEquals(engine.getStatus(), Status.Loss);
 	}
@@ -169,7 +173,8 @@ public class TestEngine extends AbstractJeuTest{
 		}
 	
 		assertEquals(engine.getStatus(), Status.Loss);
-		assertEquals(engine.getEnvironment().getCellNature(2, 1), Cell.PLT);
+		assertEquals(engine.getEnvironment().getCellNature(engine.getPlayer().getWdt(), 
+				engine.getPlayer().getHgt()), Cell.PLT);
 
 
 	}
