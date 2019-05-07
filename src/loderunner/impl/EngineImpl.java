@@ -115,16 +115,6 @@ public class EngineImpl implements EngineService {
 		}
 
 
-		//Si au debut dâ€™un tour, un garde est dans la meme case que le joueur, le jeu est perdu 		
-				for(GuardService guard : guards) {
-					if(guard.getWdt() == x && guard.getHgt() == y){
-						System.out.println("player est attaqué par un guard");
-
-						status = Status.Loss;
-					}
-				}
-				
-
 		//	le temps de chaque trou est incrementee
 		for(Triplet<Integer, Integer, Integer> h : holes) {
 			int t = h.getThird();
@@ -181,7 +171,17 @@ public class EngineImpl implements EngineService {
 			status = Status.Win;
 		}
 
-		
+
+		//Si au debut dâ€™un tour, un garde est dans la meme case que le joueur, le jeu est perdu 		
+				for(GuardService guard : guards) {
+					if(guard.getWdt() == x && guard.getHgt() == y){
+						System.out.println("player est attaqué par un guard");
+
+						status = Status.Loss;
+					}
+				}
+				
+
 		
 		
 

@@ -24,7 +24,7 @@ import loderunner.services.GuardService;
 import loderunner.services.Pair;
 import loderunner.services.Status;
 
-public class TestJeu extends AbstractJeuTest{
+public class TestEngine extends AbstractJeuTest{
 
 
 
@@ -129,8 +129,6 @@ public class TestJeu extends AbstractJeuTest{
 	
 		System.out.println("pos guard wdt = "+ engine.getGuards().get(0).getWdt()+ "hgt = "+engine.getGuards().get(0).getHgt());
 
-//		engine.setCmd(Command.Neutral);
-//		engine.step();
 		assertEquals(engine.getStatus(), Status.Loss);
 	}
 	

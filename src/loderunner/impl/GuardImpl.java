@@ -69,7 +69,6 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 			
 			//	Right si elle se trouve strictement plus a droite
 			else if(target.getWdt() > wdt) {
-				System.out.println("le guard va droite ");
 				return Move.Right;
 			} 
 			else {
