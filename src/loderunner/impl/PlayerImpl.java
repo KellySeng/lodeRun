@@ -14,16 +14,36 @@ public class PlayerImpl extends CharacterImpl implements PlayerService {
 
 	EngineService engine;
 	private int score;
-
+	private int vie;
 
 	@Override
 	public EngineService getEngine() {
 		return engine;
 	}
+	@Override
+	public int getVie() {
+		return vie;
+	}
+	
 
+	@Override
+	public void decreVie() {
+		vie--;
+	}
 	public int getScore() {
 		return score;
 	}
+	
+	public void setPos(int x,int y) {
+
+		getEnvi().getCellContent(wdt, hgt).remove(this);
+
+		this.hgt = y;
+		this.wdt = x;
+		getEnvi().getCellContent(x, y).add(this);
+
+	}
+	
 	@Override
 	public void increScore() {		
 		 score++;
@@ -135,8 +155,11 @@ public class PlayerImpl extends CharacterImpl implements PlayerService {
 		this.hgt = y;
 		this.wdt = x;
 		score = 0;
+		vie = 3;
 		
 	}
+
+	
 
 	
 

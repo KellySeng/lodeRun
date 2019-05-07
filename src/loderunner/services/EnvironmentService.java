@@ -3,7 +3,7 @@ package loderunner.services;
 import java.util.HashSet;
 import java.util.List;
 
-public interface EnvironmentService extends ScreenService {
+public interface EnvironmentService extends ScreenService  {
 
 	/**
 	 * Invariants

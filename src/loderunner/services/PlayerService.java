@@ -8,6 +8,9 @@ public interface PlayerService extends CharacterService{
 	public EngineService getEngine();
 	public int getScore();
 	public void increScore();
+	public int getVie();
+	public void decreVie();
+	public void setPos(int x,int y) ;
 	
 	//Constructors
 	

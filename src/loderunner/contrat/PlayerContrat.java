@@ -135,16 +135,16 @@ public class PlayerContrat extends PlayerDecorator {
 				&& getEnvi().getCellNature(getWdt()+1,getHgt()) != Cell.MTL
 				&& getEnvi().getCellNature(getWdt()+1,getHgt()) != Cell.PLT
 				&& (getEnvi().getCellNature(getWdt(),getHgt()) == Cell.LAD
-					||getEnvi().getCellNature(getWdt(),getHgt()) == Cell.HDR
-					|| getEnvi().getCellNature(getWdt(),getHgt()-1) == Cell.PLT
-					|| getEnvi().getCellNature(getWdt(),getHgt()-1) == Cell.MTL
-					|| getEnvi().getCellNature(getWdt(),getHgt()-1) == Cell.LAD
-					|| haveCharacterEnbas				
-					)
+				||getEnvi().getCellNature(getWdt(),getHgt()) == Cell.HDR
+				|| getEnvi().getCellNature(getWdt(),getHgt()-1) == Cell.PLT
+				|| getEnvi().getCellNature(getWdt(),getHgt()-1) == Cell.MTL
+				|| getEnvi().getCellNature(getWdt(),getHgt()-1) == Cell.LAD
+				|| haveCharacterEnbas				
+						)
 				&& !haveCharacterEnDroite
 				);
-		
-		
+
+
 		super.step();
 
 		//		System.out.println("apres step : getWdt() = "+getWdt()+" getHgt()" + getHgt());
@@ -190,7 +190,7 @@ public class PlayerContrat extends PlayerDecorator {
 		//Post: if willFall
 		if(willFall) {
 			if(!(getWdt() == wdt_pre && getHgt() == hgt_pre-1)) {
-			
+
 				throw new PostconditionError("willFall error: player est en wdt "+ getWdt());
 			}
 		}
@@ -219,9 +219,35 @@ public class PlayerContrat extends PlayerDecorator {
 				throw new PostconditionError("goDown error");
 			}
 		}
-		
-		
+	}
+	
+	@Override
+	public void setPos(int x,int y) {
+		super.setPos(x, y);
+	}
+	@Override
+	public void increScore() {
 
+		//capture 
+		int score_pre = getScore();
+		super.increScore();
+
+		//post : getScore() = score_pre + 1
+		if(getScore() != score_pre + 1) {
+			throw new PostconditionError("getScore() != score_pre + 1");
+		}
+	}
+
+	@Override
+	public void decreVie() {
+		//capture 
+		int vie_pre = getVie();
+		super.decreVie();
+		
+		//post : getVie() = vie_pre - 1
+		if(getVie() != vie_pre - 1) {
+			throw new PostconditionError("getVie() != vie_pre - 1");
+		}
 	}
 
 }

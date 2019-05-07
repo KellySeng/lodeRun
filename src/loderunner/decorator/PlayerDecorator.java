@@ -73,4 +73,21 @@ public class PlayerDecorator implements PlayerService{
 		
 	}
 
+	@Override
+	public int getVie() {
+		return delegate.getVie();
+	}
+
+	@Override
+	public void decreVie() {
+		delegate.decreVie();
+		
+	}
+
+	@Override
+	public void setPos(int x, int y) {
+		delegate.setPos(x, y);
+		
+	}
+
 }

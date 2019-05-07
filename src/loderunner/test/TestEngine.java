@@ -231,7 +231,6 @@ public class TestEngine extends AbstractJeuTest{
 		engine.step();
 		assertEquals(engine.getEnvironment().getCellNature(4, 1), Cell.HOL);
 
-
 		for(int i=0; i<15;i++) { 
 			engine.setCmd(Command.Neutral);
 			engine.step();

@@ -27,10 +27,13 @@ public class EngineImpl implements EngineService {
 	HashSet<ItemService> treasures;
 	Status status;
 	EditableScreenService screen;
- 	List<Pair<Integer, Integer>> listGuardsInitiaux;
 	List<Pair<Integer, Integer>> listTresors;
 	ArrayList<Triplet<Integer,Integer,Integer>> holes;
 
+	
+ 	List<Pair<Integer, Integer>> listGuardsInitiaux;
+ 	int xPlayerInit;
+ 	int yPlayerInit;
 	Command nextCommand;
 
 
@@ -61,6 +64,18 @@ public class EngineImpl implements EngineService {
 	public Set<ItemService> getTreasures() {
 
 		return treasures;
+	}
+	
+	public void reinitialisePos() {
+		player.setPos(xPlayerInit, yPlayerInit);
+
+		for(GuardService guard : guards) {
+
+			int index = guards.indexOf(guard);
+			int guardX_init = listGuardsInitiaux.get(index).getL();
+			int guardY_init = listGuardsInitiaux.get(index).getR();
+			guard.setPos(guardX_init, guardY_init);
+		}
 	}
 
 	@Override
@@ -138,9 +153,14 @@ public class EngineImpl implements EngineService {
 				envi.fill(h.getFirst(), h.getSecond());
 				//	si le joueur etait dedans
 				if(h.getFirst() == player.getWdt() && h.getSecond() == player.getHgt()) {
+					player.decreVie();
+					reinitialisePos() ;
+					
 					//	le jeu est perdu
-					status = Status.Loss;
-					System.out.println("le joueur eÌ�tait dedans quand un trou est rebouche, le jeu est perdu." );
+					if(player.getVie()==0) {
+						status = Status.Loss;
+						System.out.println("le joueur eÌ�tait dedans quand un trou est rebouche, le jeu est perdu." );
+					}
 				}
 
 				//si un garde Ã©tait dedans, il revient a sa position initiale
@@ -173,8 +193,12 @@ public class EngineImpl implements EngineService {
 				for(GuardService guard : guards) {
 					if(guard.getWdt() == x && guard.getHgt() == y){
 						System.out.println("player est attaqué par un guard");
-
-						status = Status.Loss;
+						player.decreVie();	
+						reinitialisePos();
+						//	le jeu est perdu
+						if(player.getVie()==0) {
+							status = Status.Loss;
+						}
 					}
 				}
 				
@@ -199,6 +223,8 @@ public class EngineImpl implements EngineService {
 
 		envi = screen;
 
+		xPlayerInit =  joueur.getWdt();
+		yPlayerInit = joueur.getHgt();
 		player = joueur;
 		player.init(envi, joueur.getWdt(), joueur.getHgt(), this);
 
