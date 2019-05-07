@@ -25,7 +25,7 @@ public interface GuardService extends CharacterService {
 	 * Observators
 	 */
 	
-	public void init(int id,int x,int y, EnvironmentService env, CharacterService target);
+	public void init(int x,int y, EnvironmentService env, CharacterService target);
 	public int getId();
 	public Move getBehavior();
 	public CharacterService getTarget();

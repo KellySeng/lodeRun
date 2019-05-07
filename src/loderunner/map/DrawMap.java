@@ -38,7 +38,6 @@ public class DrawMap {
 					switch ((l.get(j).charAt(i))) {
 
 
-
 					case 'P' :
 						s.setNature(i, height-1-j, Cell.PLT);
 						break;
@@ -61,7 +60,6 @@ public class DrawMap {
 					}
 				}
 			}
-
 		}
 		
 //		for (int j = 0; j < height; j++) {

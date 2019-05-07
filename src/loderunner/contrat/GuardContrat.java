@@ -1,5 +1,6 @@
 package loderunner.contrat;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import loderunner.decorator.GuardDecorator;
@@ -18,7 +19,14 @@ public class GuardContrat extends GuardDecorator{
 
 	public void checkInvariant() {
 	
-			Set<CellContent> set_bas =  getEnvi().getCellContent(getWdt(), getHgt()-1);
+			Set<CellContent> set_bas = new HashSet<CellContent>();
+			Set<CellContent> set_haut = new HashSet<CellContent>();
+			Set<CellContent> set_left = new HashSet<CellContent>();
+			Set<CellContent> set_right =  new HashSet<CellContent>();
+			
+			
+			
+			if(getHgt() != 0) set_bas =  getEnvi().getCellContent(getWdt(), getHgt()-1);
 			boolean haveCharacter_bas = false;
 			for(CellContent c : set_bas) {
 				if(c instanceof CharacterService) {
@@ -27,7 +35,7 @@ public class GuardContrat extends GuardDecorator{
 			}
 	
 	
-			Set<CellContent> set_haut =  getEnvi().getCellContent(getWdt(), getHgt()+1);
+			if(getHgt() != getEnvi().getHeight()-1) set_haut =  getEnvi().getCellContent(getWdt(), getHgt()+1);
 			boolean haveCharacter_haut = false;
 			for(CellContent c : set_haut) {
 				if(c instanceof CharacterService) {
@@ -35,7 +43,7 @@ public class GuardContrat extends GuardDecorator{
 				}
 			}
 			
-			Set<CellContent> set_left =  getEnvi().getCellContent(getWdt()-1, getHgt());
+			if(getWdt() != 0) set_left =  getEnvi().getCellContent(getWdt()-1, getHgt());
 			boolean haveCharacter_left = false;
 			for(CellContent c : set_left) {
 				if(c instanceof CharacterService) {
@@ -43,7 +51,7 @@ public class GuardContrat extends GuardDecorator{
 				}
 			}
 			
-			Set<CellContent> set_right =  getEnvi().getCellContent(getWdt()+1, getHgt());
+			if(getWdt() != getEnvi().getWidth()-1) set_right =  getEnvi().getCellContent(getWdt()+1, getHgt());
 			boolean haveCharacter_right = false;
 			for(CellContent c : set_right) {
 				if(c instanceof CharacterService) {
@@ -449,8 +457,17 @@ public class GuardContrat extends GuardDecorator{
 	}
 
 	@Override
-	public void init(int id, int x, int y, EnvironmentService env, CharacterService target) {
-		super.init(id, x, y, env, target);
-
+	public void init(int x, int y, EnvironmentService env, CharacterService target) {
+		
+		if(!(env.getCellNature(x, y) == Cell.EMP)) {
+			throw new PreconditionError("error init precondition");
+		}
+		
+		super.init(x, y, env, target);
+		
+		
+		if(!(getTarget() == target)) {
+			throw new PostconditionError("error init post");
+		}
 	}
 }
