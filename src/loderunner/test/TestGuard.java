@@ -63,7 +63,7 @@ public class TestGuard extends AbstractJeuTest{
 		//créer un guard qui est en pos (0,2)
 		GuardImpl guard = new GuardImpl();
 		GuardContrat guardContrat = new GuardContrat(guard);
-		guardContrat.init(100, 0, 2, enviContrat, playerContrat);
+		guardContrat.init( 0, 2, enviContrat, playerContrat);
 		ArrayList<GuardService> guardsContrat = new ArrayList<GuardService>();
 		guardsContrat.add(guardContrat);	
 
@@ -164,9 +164,11 @@ public class TestGuard extends AbstractJeuTest{
 	
 	/* Etat remarquable : le guard revient à la position initiale
 	 * au début, le player est  en position (4,2),un seul guard est en position(0, 2)
-	 * player fait DigL, puis il va gauche , apres il fait rien pendant 2 step, le guard tombe dans le trou
-	 * et puis apres 5 step, le guard fait un ClimbRight
-	 * 
+	 * player va a gauche et fait DigL, puis il va droite et fait un DigL, puis il va droite et fait un DigL(Il a fait 3 trous au total)
+	 * apres il attend pendant 15 step, 
+	 * le guard tombe dans le premier trou et puis apres 5 step, le guard fait un ClimbRight, et puis il tombe dans le deuxieme trou 
+	 * apres 5 step, le guard fait un ClimbRight et tombe dans la 3ème trou
+	 * au bout d'un moment, le 3ème trou est rebouché, et le guard revient à la position initiale
 	 * */
 	@Test
 	public void testEtatRemarquable() {
@@ -175,19 +177,32 @@ public class TestGuard extends AbstractJeuTest{
 		engine.step();
 		engine.setCmd(Command.DigL);
 		engine.step();
+		assertEquals(engine.getEnvironment().getCellNature(2, 1), Cell.HOL);
+
 		engine.setCmd(Command.Right);
 		engine.step();
 		engine.setCmd(Command.DigL);
 		engine.step();
+		assertEquals(engine.getEnvironment().getCellNature(3, 1), Cell.HOL);
+
 		engine.setCmd(Command.Right);
 		engine.step();
 		engine.setCmd(Command.DigL);
 		engine.step();
+		assertEquals(engine.getEnvironment().getCellNature(4, 1), Cell.HOL);
+
 		
 		for(int i=0; i<15;i++) { 
 		engine.setCmd(Command.Neutral);
 		engine.step();
 		}
+		assertEquals(engine.getEnvironment().getCellNature(2, 1), Cell.PLT);
+		assertEquals(engine.getEnvironment().getCellNature(3, 1), Cell.PLT);
+		assertEquals(engine.getEnvironment().getCellNature(4, 1), Cell.PLT);
+
+		assertEquals(engine.getGuards().get(0).getWdt(), 0);
+		assertEquals(engine.getGuards().get(0).getHgt(), 2);
+		
 	
 		
 		

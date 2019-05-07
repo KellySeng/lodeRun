@@ -63,7 +63,7 @@ public class TestPlayer extends AbstractJeuTest{
 		//créer un guard qui est en pos (0,2)
 		GuardImpl guard = new GuardImpl();
 		GuardContrat guardContrat = new GuardContrat(guard);
-		guardContrat.init(100, 0, 2, enviContrat, playerContrat);
+		guardContrat.init( 0, 2, enviContrat, playerContrat);
 		ArrayList<GuardService> guardsContrat = new ArrayList<GuardService>();
 		guardsContrat.add(guardContrat);	
 
@@ -90,7 +90,7 @@ public class TestPlayer extends AbstractJeuTest{
 		//créer un guard qui est en pos (0,2)
 		GuardImpl guard = new GuardImpl();
 		GuardContrat guardContrat = new GuardContrat(guard);
-		guardContrat.init(100, 0, 2, enviContrat, playerContrat);
+		guardContrat.init(0, 2, enviContrat, playerContrat);
 		ArrayList<GuardService> guardsContrat = new ArrayList<GuardService>();
 		guardsContrat.add(guardContrat);	
 
@@ -119,7 +119,7 @@ public class TestPlayer extends AbstractJeuTest{
 		//créer un guard qui est en pos (0,2)
 		GuardImpl guard = new GuardImpl();
 		GuardContrat guardContrat = new GuardContrat(guard);
-		guardContrat.init(100, 0, 2, enviContrat, playerContrat);
+		guardContrat.init(0, 2, enviContrat, playerContrat);
 		ArrayList<GuardService> guardsContrat = new ArrayList<GuardService>();
 		guardsContrat.add(guardContrat);	
 
