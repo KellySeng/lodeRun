@@ -12,9 +12,10 @@ import loderunner.services.Move;
 public class GuardImpl extends CharacterImpl implements GuardService {
 
 
-	int id = 0;
+	private static int cmp = 0;
 	CharacterService target;
-	int timeInHole = 0;
+	int timeInHole = 1;
+	int id;
 
 	@Override
 	public int getId() {
@@ -23,7 +24,6 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 
 	@Override
 	public Move getBehavior() {
-		
 		
 		Set<CellContent> set =  getEnvi().getCellContent(wdt, hgt-1);
 		boolean haveCharacterEnBas = false;
@@ -108,15 +108,8 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 			}else {
 				return Move.Neutral;
 			}
-			
-			
 		}
-			
 		return null;
-	
-	
-	
-	
 	}
 
 	@Override
@@ -133,7 +126,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 
 	@Override
 	public void climbLeft() {
-		System.out.println("guard climbLeft");
+//		System.out.println("guard climbLeft");
 
 		int x = getWdt();
 		int y = getHgt();
@@ -159,7 +152,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 
 	@Override
 	public void climbRight() {
-		System.out.println("guard climbRight");
+		//System.out.println("guard climbRight");
 		int x = getWdt();
 		int y = getHgt();
 
@@ -211,7 +204,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 			hgt = hgt-1;
 			getEnvi().getCellContent(wdt, hgt).add(this);
 
-			System.out.println("le guarde tomber ");
+			System.out.println("le garde tombe ");
 
 		}
 		//Si le garde se trouve dans un trou et que TimeInHole est strictement infeÌ�rieur a 5	 
@@ -255,13 +248,13 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 	
 
 	@Override
-	public void init(int i, int x, int y, EnvironmentService env, CharacterService target) {
-		id = i;
+	public void init(int x, int y, EnvironmentService env, CharacterService target) {
 		hgt = y;
 		wdt = x;
 		this.env = env;
 		this.target = target;
-		
+		this.id = cmp;
+		cmp++;
 	}
 
 	
