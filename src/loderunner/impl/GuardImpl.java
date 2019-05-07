@@ -13,6 +13,9 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 
 
 	private static int cmp = 0;
+	private int xInit;
+	private int yInit;
+
 	CharacterService target;
 	int timeInHole = 1;
 	int id;
@@ -21,7 +24,15 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 	public int getId() {
 		return id;
 	}
+	@Override
+	public int getXInit() {
+		return xInit;
+	}
 
+	@Override
+	public int getYInit() {
+		return yInit;
+	}
 	@Override
 	public Move getBehavior() {
 		
@@ -249,6 +260,8 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 
 	@Override
 	public void init(int x, int y, EnvironmentService env, CharacterService target) {
+		xInit = x;
+		yInit = y;
 		hgt = y;
 		wdt = x;
 		this.env = env;
@@ -256,6 +269,15 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 		this.id = cmp;
 		cmp++;
 	}
+
+	@Override
+	public void revientPosInitial() {
+		hgt = yInit;
+		wdt = xInit;
+		
+	}
+
+	
 
 	
 

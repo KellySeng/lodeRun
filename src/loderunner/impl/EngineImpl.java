@@ -30,7 +30,6 @@ public class EngineImpl implements EngineService {
 	Status status;
 	EditableScreenService screen;
 
-	List<Pair<Integer, Integer>> listGuards;
 	List<Pair<Integer, Integer>> listTresors;
 	ArrayList<Triplet<Integer,Integer,Integer>> holes;
 
@@ -153,10 +152,8 @@ public class EngineImpl implements EngineService {
 				for(GuardService guard : guards) {	
 					if(h.getFirst() == guard.getWdt() && h.getSecond() == guard.getHgt()) {
 						System.out.println("le trou est rebouché, le guard revient à la position initiale");
-						int index = guards.indexOf(guard);
-						int guardX_init = listGuards.get(index).getL();
-						int guardY_init = listGuards.get(index).getR();
-						guard.init(screen, guardX_init, guardY_init);
+					
+						guard.revientPosInitial();
 					}
 
 				}
@@ -197,8 +194,6 @@ public class EngineImpl implements EngineService {
 		int id =0;
 
 		envi = screen;
-
-
 
 		player = joueur;
 		player.init(envi, joueur.getWdt(), joueur.getHgt(), this);
