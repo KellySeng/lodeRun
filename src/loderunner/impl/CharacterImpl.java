@@ -35,15 +35,11 @@ public class CharacterImpl implements CharacterService{
 		wdt = x;
 		env = (EnvironmentService)screen;
 		env.getCellContent(x, y).add(this);
-
-		
 	}
 	
 	private ArrayList<CellContent> getCharacterList(int w, int h) {
 		ArrayList <CellContent> list = new ArrayList<>();	
 		for(CellContent c : getEnvi().getCellContent(w,h)) {
-			
-
 			if(c instanceof CharacterService) list.add(c);
 		}
 		return list;
@@ -52,28 +48,28 @@ public class CharacterImpl implements CharacterService{
 	@Override
 	public void goLeft() {
 		
-		ArrayList <CellContent> character_list_wdt_minus_1 = getCharacterList(getWdt()-1,getHgt());	
-		ArrayList <CellContent> character_list_hgt_minus_1 = getCharacterList(getWdt(),getHgt()-1);	
+		ArrayList <CellContent> character_list_wdt_minus_1 = new ArrayList<CellContent>();	
+		ArrayList <CellContent> character_list_hgt_minus_1 = new ArrayList<CellContent>();	
+		
+		if(getWdt() >0) character_list_wdt_minus_1 = getCharacterList(getWdt()-1,getHgt());	
+		if(getHgt() >0) character_list_hgt_minus_1 = getCharacterList(getWdt(),getHgt()-1);	
+		
+		
 		
 		if( wdt!= 0 
-			&& env.getCellNature(getWdt()-1,getHgt()) !=  Cell.MTL && env.getCellNature(getWdt()-1,getHgt()) !=  Cell.PLT 
+			&& env.getCellNature(getWdt()-1,getHgt()) !=  Cell.MTL 
+			&& env.getCellNature(getWdt()-1,getHgt()) !=  Cell.PLT 
 			&&(	(env.getCellNature(getWdt(),getHgt()) ==  Cell.LAD || env.getCellNature(getWdt(),getHgt()) ==  Cell.HDR) 
-				   || (env.getCellNature(getWdt(),getHgt()-1) ==  Cell.PLT || env.getCellNature(getWdt(),getHgt()-1) ==  Cell.MTL ||
-					   env.getCellNature(getWdt(),getHgt()-1) ==  Cell.LAD ) 
+				   || (env.getCellNature(getWdt(),getHgt()-1) ==  Cell.PLT || env.getCellNature(getWdt(),getHgt()-1) ==  Cell.MTL 
+				   		||
+					   env.getCellNature(getWdt(),getHgt()-1) ==  Cell.LAD) 
 				   || (character_list_hgt_minus_1.size() > 0)
 			   )
-		    && character_list_wdt_minus_1.size() ==0 ) {
-			
-			
-			 
+		    && character_list_wdt_minus_1.size() ==0) {
 			env.getCellContent(wdt, hgt).remove(this);
-
 			wdt = wdt-1;
-			
 			env.getCellContent(wdt, hgt).add(this);
-			
-			
-			
+	
 		}
 		else {
 			return;
@@ -83,33 +79,32 @@ public class CharacterImpl implements CharacterService{
 	@Override
 	public void goRight() {
 		
-
-		ArrayList <CellContent> character_list_wdt_plus_1 = getCharacterList(getWdt()+1,getHgt());	
-		ArrayList <CellContent> character_list_hgt_minus_1 = getCharacterList(getWdt(),getHgt()-1);	
+		ArrayList <CellContent> character_list_wdt_plus_1 = new ArrayList<CellContent>();	
+		ArrayList <CellContent> character_list_hgt_minus_1 = new ArrayList<CellContent>();	
 		
-
-		if(wdt != env.getWidth()
-				   && (env.getCellNature(getWdt()+1,getHgt()) !=  Cell.MTL || env.getCellNature(getWdt()+1,getHgt()) !=  Cell.PLT) 
-				   || (env.getCellNature(getWdt(),getHgt()) ==  Cell.LAD || env.getCellNature(getWdt(),getHgt()) !=  Cell.HDR) 
-				   || (env.getCellNature(getWdt(),getHgt()-1) !=  Cell.PLT || env.getCellNature(getWdt(),getHgt()-1) !=  Cell.MTL ||
-					   env.getCellNature(getWdt(),getHgt()-1) !=  Cell.LAD ) 
-				   || (character_list_hgt_minus_1.size() != 0)
-				   && !(character_list_wdt_plus_1.size() !=0) ) {
-			
+		if(getWdt() < env.getWidth()-1 ) character_list_wdt_plus_1 = getCharacterList(getWdt()+1,getHgt());	
+		if(getHgt() >0) character_list_hgt_minus_1 = getCharacterList(getWdt(),getHgt()-1);	
+		
+				
+		if( wdt!= env.getWidth()-1
+			&& env.getCellNature(getWdt()+1,getHgt()) !=  Cell.MTL 
+			&& env.getCellNature(getWdt()+1,getHgt()) !=  Cell.PLT 
+			&&(	(env.getCellNature(getWdt(),getHgt()) ==  Cell.LAD || env.getCellNature(getWdt(),getHgt()) ==  Cell.HDR) 
+				   || (env.getCellNature(getWdt(),getHgt()-1) ==  Cell.PLT || env.getCellNature(getWdt(),getHgt()-1) ==  Cell.MTL 
+				   		||
+					   env.getCellNature(getWdt(),getHgt()-1) ==  Cell.LAD) 
+				   || (character_list_hgt_minus_1.size() > 0)
+			   )
+		    && character_list_wdt_plus_1.size() ==0) {
 			env.getCellContent(wdt, hgt).remove(this);
 			wdt = wdt+1;
 			env.getCellContent(wdt, hgt).add(this);
-
-
-			
-			
 		}
 		else {
 			return;
 		}
-		
 	}
-
+	
 	@Override
 	public void goUp() {
 		

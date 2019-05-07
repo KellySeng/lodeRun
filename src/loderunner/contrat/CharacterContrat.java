@@ -19,8 +19,7 @@ public class CharacterContrat extends CharacterDecorator{
 		//	inv : getEnvi().getCellNature(getWdt(),getHgt()) in {MLT,HOL,LAD,HDR}
 	
 		Cell cell = getEnvi().getCellNature(getWdt(),getHgt()) ;
-		if(!(cell == Cell.MTL || cell == Cell.HOL || cell == Cell.LAD || cell == Cell.HDR)) {
-			
+		if(!(cell == Cell.EMP || cell == Cell.HOL || cell == Cell.LAD || cell == Cell.HDR)) {
 			throw new InvariantError("cell nature error");
 		}
 	
@@ -30,12 +29,12 @@ public class CharacterContrat extends CharacterDecorator{
 	public void init(ScreenService s, int x,int y) {
 		
 		//	pre : getEnvi().getCellNature(x,y) == EMP
-		if(getEnvi().getCellNature(x,y) != Cell.EMP) {
+		if(s.getCellNature(x,y) != Cell.EMP) {
 			throw new PreconditionError("getEnvi().getCellNature(x,y) != Cell.EMP");
 
 		}
 		
-		checkInvariant();
+		//checkInvariant();
 		
 		super.init(s,x,y);
 		
@@ -50,7 +49,12 @@ public class CharacterContrat extends CharacterDecorator{
 		//	post : getWdt = x
 		if(!(getWdt()==x)) {
 			throw new PostconditionError("getWdt()!=x");
-		}		
+		}
+		
+//		post : getEnvi = s
+		if(!(getEnvi() == s)) {
+			throw new PostconditionError("getEnvi() != s");
+		}
 	}
 	
 	private ArrayList<CellContent> getCharacterList(int w, int h) {
@@ -61,15 +65,113 @@ public class CharacterContrat extends CharacterDecorator{
 		return list;
 	}
 	
-	public void goLeft() {
-		
+	public void goRight() {
 		
 		//Capture
 		int getHgt_pre = getHgt();
 		int getWdt_pre = getWdt();
+		ArrayList <CellContent> character_list_wdt_plus_1 = new ArrayList<CellContent>();
+		ArrayList <CellContent> character_list_hgt_minus_1 = new ArrayList<CellContent>();
 		
-		ArrayList <CellContent> character_list_wdt_minus_1 = getCharacterList(getWdt()-1,getHgt());	
-		ArrayList <CellContent> character_list_hgt_minus_1 = getCharacterList(getWdt(),getHgt()-1);	
+		if(getWdt_pre < getEnvi().getWidth()-1) character_list_wdt_plus_1 = getCharacterList(getWdt()+1,getHgt());	
+		
+		if(getHgt_pre> 0) character_list_hgt_minus_1 = getCharacterList(getWdt(),getHgt()-1);	
+	
+		checkInvariant();
+		
+		super.goRight();
+		
+		checkInvariant();
+		
+		
+		//	post : getHgt() == getHgt()@pre
+		if(!(getHgt() == getHgt_pre)) {
+			throw new PostconditionError("CharacterContrat post goRight: getHgt() != getHgt_pre");
+		}
+		
+		//	post : getWdt()@pre==0 -> getWdt() == getWdt()@pre
+		if(getWdt_pre == getEnvi().getWidth()) {
+			if(!(getWdt() == getWdt_pre)) {
+				throw new PostconditionError("CharacterContrat post goRight");
+			}
+		}
+		
+		
+		if(getWdt_pre != getEnvi().getWidth()-1) {
+			if(getEnvi().getCellNature(getWdt_pre+1,getHgt_pre) == Cell.MTL ||
+			   getEnvi().getCellNature(getWdt_pre+1,getHgt_pre) == Cell.PLT){
+				if(!(getWdt() == getWdt_pre)) {
+					throw new PostconditionError("CharacterContrat post goRight");
+				}
+			}
+		}
+		
+			
+		
+		/*post : getEnvi().getCellNature(getWdt(),getHgt()) \notin {LAD,HDR} &&
+			  getEnvi().getCellNature(getWdt(),getHgt()-1) \in {PLT,MTL} &&
+		 	  c:Character \not \exists \in getEnvi().getCellContent(getWdt()-1,getHgt())
+		      -> getWdt() == getWdt()@pre */
+		
+		if(getWdt_pre != getEnvi().getWidth()-1 && getHgt_pre !=0) {
+			if((getEnvi().getCellNature(getWdt_pre,getHgt_pre) != Cell.LAD &&
+			    getEnvi().getCellNature(getWdt_pre,getHgt_pre) != Cell.HDR ) &&
+			   (getEnvi().getCellNature(getWdt_pre,getHgt_pre-1) != Cell.PLT && 
+			    getEnvi().getCellNature(getWdt_pre,getHgt_pre-1) != Cell.MTL && 
+			    getEnvi().getCellNature(getWdt_pre,getHgt_pre-1) != Cell.LAD) &&
+			   character_list_hgt_minus_1.size() == 0
+			   ){
+				if(!(getWdt() == getWdt_pre)) {
+					throw new PostconditionError("CharacterContrat post goLeft: getWdt() != getWdt_pre");
+				}
+			}
+		}
+		
+		
+		// post : c:Character \exists \in getEnvi.getCellContent(getWdt()-1,getHgt()) -> getWdt() == getWdt()@pre
+		
+		if(character_list_wdt_plus_1.size() != 0) {
+			if(!(getWdt() == getWdt_pre)) {
+				throw new PostconditionError("CharacterContrat post goLeft: getWdt() != getWdt_pre");
+			}
+		}
+		
+		
+		/*
+		post : getWdt() != 0  
+			   && getEnvi().getCellNature(getWdt()-1,getHgt()) \notin  {MTL,PLT}
+			   || getEnvi().getCellNature(getWdt(),getHgt()) \in {LAD,HDR}
+			   || getEnvi().getCellNature(getWdt(),getHgt()-1) \in {PLT,MTL,LAD}
+			   || c:Character \exists \in getEnvi().getCellContent(getWdt(),getHgt()-1)
+			   && \not(c:Character \exists \in getEnvi().getCellContent(getWdt()-1,getHgt())) -> getWdt() == getWdt()@pre -1
+			   */
+		
+		if(getWdt_pre != getEnvi().getWidth()-1 && getHgt_pre !=0
+		   && getEnvi().getCellNature(getWdt_pre+1,getHgt_pre) !=  Cell.MTL
+		   && getEnvi().getCellNature(getWdt_pre+1,getHgt_pre) !=  Cell.PLT
+		   &&( (getEnvi().getCellNature(getWdt_pre,getHgt_pre) ==  Cell.LAD || getEnvi().getCellNature(getWdt_pre,getHgt_pre) ==  Cell.HDR) 
+		   || (getEnvi().getCellNature(getWdt_pre,getHgt_pre-1) ==  Cell.PLT || getEnvi().getCellNature(getWdt_pre,getHgt_pre-1) ==  Cell.MTL ||
+			   getEnvi().getCellNature(getWdt_pre,getHgt_pre-1) ==  Cell.LAD ) 
+		   || (character_list_hgt_minus_1.size() != 0))
+		   && !(character_list_wdt_plus_1.size() !=0) ){
+			if(!(getWdt() == getWdt_pre+1)) {
+				throw new PostconditionError("CharacterContrat post goLeft: getWdt() != getWdt_pre -1");
+			}
+			
+		}
+	}
+	
+public void goLeft() {
+		
+		//Capture
+		int getHgt_pre = getHgt();
+		int getWdt_pre = getWdt();
+		ArrayList <CellContent> character_list_wdt_minus_1 = new ArrayList<CellContent>();
+		ArrayList <CellContent> character_list_hgt_minus_1 = new ArrayList<CellContent>();
+		
+		if(getWdt_pre > 0) character_list_wdt_minus_1 = getCharacterList(getWdt()-1,getHgt());	
+		
+		if(getHgt_pre> 0) character_list_hgt_minus_1 = getCharacterList(getWdt(),getHgt()-1);	
 	
 		checkInvariant();
 		
@@ -77,42 +179,47 @@ public class CharacterContrat extends CharacterDecorator{
 		
 		checkInvariant();
 		
+		
 		//	post : getHgt() == getHgt()@pre
 		if(!(getHgt() == getHgt_pre)) {
 			throw new PostconditionError("CharacterContrat post goLeft: getHgt() != getHgt_pre");
 		}
 		
-		//	post : getWdt()==0 -> getWdt() == getWdt()@pre
-		if(!( getWdt()!=0 || getWdt() == getWdt_pre)) {
-			throw new PostconditionError("CharacterContrat post goLeft: getWdt()==0 && getWdt() != getWdt_pre");
-		}
-		
-		
-		//post : getEnvi().getCellNature(getWdt()-1,getHgt()) \in {MTL,PLT,LAD} -> getWdt() == getWdt()@pre
-		if(getEnvi().getCellNature(getWdt()-1,getHgt()) == Cell.MTL ||
-		   getEnvi().getCellNature(getWdt()-1,getHgt()) == Cell.PLT ||
-		   getEnvi().getCellNature(getWdt()-1,getHgt()) == Cell.LAD ){
+		//	post : getWdt()@pre==0 -> getWdt() == getWdt()@pre
+		if(getWdt_pre == 0) {
 			if(!(getWdt() == getWdt_pre)) {
-				throw new PostconditionError("CharacterContrat post goLeft: getWdt() != getWdt_pre");
+				throw new PostconditionError("CharacterContrat post goLeft: getWdt()==0 && getWdt() != getWdt_pre");
 			}
 		}
 		
-	
 		
+		if(getWdt_pre !=0) {
+			if(getEnvi().getCellNature(getWdt_pre-1,getHgt_pre) == Cell.MTL ||
+			   getEnvi().getCellNature(getWdt_pre-1,getHgt_pre) == Cell.PLT){
+				if(!(getWdt() == getWdt_pre)) {
+					throw new PostconditionError("CharacterContrat post goLeft: getWdt() != getWdt_pre");
+				}
+			}
+		}
+		
+			
 		
 		/*post : getEnvi().getCellNature(getWdt()-1,getHgt()) \notin {LAD,HDR} &&
 			  getEnvi().getCellNature(getWdt(),getHgt()-1) \in {PLT,MTL} &&
 		 	  c:Character \not \exists \in getEnvi().getCellContent(getWdt()-1,getHgt())
 		      -> getWdt() == getWdt()@pre */
 		
-		if((getEnvi().getCellNature(getWdt()-1,getHgt()) != Cell.LAD ||
-		    getEnvi().getCellNature(getWdt()-1,getHgt()) != Cell.HDR ) &&
-		   (getEnvi().getCellNature(getWdt(),getHgt()-1) == Cell.PLT || 
-		    getEnvi().getCellNature(getWdt(),getHgt()-1) == Cell.MTL) &&
-		   character_list_wdt_minus_1.size() == 0
-		   ){
-			if(!(getWdt() == getWdt_pre)) {
-				throw new PostconditionError("CharacterContrat post goLeft: getWdt() != getWdt_pre");
+		if(getWdt_pre !=0 && getHgt_pre !=0) {
+			if((getEnvi().getCellNature(getWdt_pre,getHgt_pre) != Cell.LAD &&
+			    getEnvi().getCellNature(getWdt_pre,getHgt_pre) != Cell.HDR ) &&
+			   (getEnvi().getCellNature(getWdt_pre,getHgt_pre-1) != Cell.PLT && 
+			    getEnvi().getCellNature(getWdt_pre,getHgt_pre-1) != Cell.MTL && 
+			    getEnvi().getCellNature(getWdt_pre,getHgt_pre-1) != Cell.LAD) &&
+			   character_list_hgt_minus_1.size() == 0
+			   ){
+				if(!(getWdt() == getWdt_pre)) {
+					throw new PostconditionError("CharacterContrat post goLeft: getWdt() != getWdt_pre");
+				}
 			}
 		}
 		
@@ -135,102 +242,16 @@ public class CharacterContrat extends CharacterDecorator{
 			   && \not(c:Character \exists \in getEnvi().getCellContent(getWdt()-1,getHgt())) -> getWdt() == getWdt()@pre -1
 			   */
 		
-		if(getWdt() != 0 
-		   && (getEnvi().getCellNature(getWdt()-1,getHgt()) !=  Cell.MTL || getEnvi().getCellNature(getWdt()-1,getHgt()) !=  Cell.PLT) 
-		   || (getEnvi().getCellNature(getWdt(),getHgt()) ==  Cell.LAD || getEnvi().getCellNature(getWdt(),getHgt()) !=  Cell.HDR) 
-		   || (getEnvi().getCellNature(getWdt(),getHgt()-1) !=  Cell.PLT || getEnvi().getCellNature(getWdt(),getHgt()-1) !=  Cell.MTL ||
-			   getEnvi().getCellNature(getWdt(),getHgt()-1) !=  Cell.LAD ) 
-		   || (character_list_hgt_minus_1.size() != 0)
+		if(getWdt_pre != 0 && getHgt_pre !=0
+		   && getEnvi().getCellNature(getWdt_pre-1,getHgt_pre) !=  Cell.MTL
+		   && getEnvi().getCellNature(getWdt_pre-1,getHgt_pre) !=  Cell.PLT
+		   &&( (getEnvi().getCellNature(getWdt_pre,getHgt_pre) ==  Cell.LAD || getEnvi().getCellNature(getWdt_pre,getHgt_pre) ==  Cell.HDR) 
+		   || (getEnvi().getCellNature(getWdt_pre,getHgt_pre-1) ==  Cell.PLT || getEnvi().getCellNature(getWdt_pre,getHgt_pre-1) ==  Cell.MTL ||
+			   getEnvi().getCellNature(getWdt_pre,getHgt_pre-1) ==  Cell.LAD ) 
+		   || (character_list_hgt_minus_1.size() != 0))
 		   && !(character_list_wdt_minus_1.size() !=0) ){
 			if(!(getWdt() == getWdt_pre-1)) {
-				throw new PostconditionError("CharacterContrat post goLeft: getWdt() != getWdt_pre");
-			}
-			
-		}
-	}
-	
-	public void goRight() {
-
-		//Capture
-		int getHgt_pre = getHgt();
-		int getWdt_pre = getWdt();
-		
-		ArrayList <CellContent> character_list_wdt_plus_1 = getCharacterList(getWdt()+1,getHgt());	
-		ArrayList <CellContent> character_list_hgt_minus_1 = getCharacterList(getWdt(),getHgt()-1);	
-	
-		checkInvariant();
-		
-		super.goLeft();
-		
-		checkInvariant();
-		
-		//	post : getHgt() == getHgt()@pre
-		if(!(getHgt() == getHgt_pre)) {
-			throw new PostconditionError("CharacterContrat post goRight: getHgt() != getHgt_pre");
-		}
-		
-		//	post : getWdt()==getWdt()=getEnvi.getWidth()-> getWdt() == getWdt()@pre
-		if(!( getWdt()!=getEnvi().getWidth() || getWdt() == getWdt_pre)) {
-			throw new PostconditionError("CharacterContrat post goRight: getWdt()==0 && getWdt() != getWdt_pre");
-		}
-		
-		
-		//post : getEnvi().getCellNature(getWdt()-1,getHgt()) \in {MTL,PLT,LAD} -> getWdt() == getWdt()@pre
-		if(getEnvi().getCellNature(getWdt()+1,getHgt()) == Cell.MTL ||
-		   getEnvi().getCellNature(getWdt()+1,getHgt()) == Cell.PLT ||
-		   getEnvi().getCellNature(getWdt()+1,getHgt()) == Cell.LAD ){
-			if(!(getWdt() == getWdt_pre)) {
-				throw new PostconditionError("CharacterContrat post goRight: getWdt() != getWdt_pre");
-			}
-		}
-		
-	
-		
-		
-		/*post : getEnvi().getCellNature(getWdt()-1,getHgt()) \notin {LAD,HDR} &&
-			  getEnvi().getCellNature(getWdt(),getHgt()-1) \in {PLT,MTL} &&
-		 	  c:Character \not \exists \in getEnvi().getCellContent(getWdt()-1,getHgt())
-		      -> getWdt() == getWdt()@pre */
-		
-		if((getEnvi().getCellNature(getWdt()+1,getHgt()) != Cell.LAD ||
-		    getEnvi().getCellNature(getWdt()+1,getHgt()) != Cell.HDR ) &&
-		   (getEnvi().getCellNature(getWdt(),getHgt()-1) == Cell.PLT || 
-		    getEnvi().getCellNature(getWdt(),getHgt()-1) == Cell.MTL) &&
-		   character_list_wdt_plus_1.size() == 0
-		   ){
-			if(!(getWdt() == getWdt_pre)) {
-				throw new PostconditionError("CharacterContrat post goRight: getWdt() != getWdt_pre");
-			}
-		}
-		
-		
-		// post : c:Character \exists \in getEnvi.getCellContent(getWdt()-1,getHgt()) -> getWdt() == getWdt()@pre
-		
-		if(character_list_wdt_plus_1.size() != 0) {
-			if(!(getWdt() == getWdt_pre)) {
-				throw new PostconditionError("CharacterContrat post goRight: getWdt() != getWdt_pre");
-			}
-		}
-		
-		
-		/*
-		post : getWdt() != 0  
-			   && getEnvi().getCellNature(getWdt()-1,getHgt()) \notin  {MTL,PLT}
-			   || getEnvi().getCellNature(getWdt(),getHgt()) \in {LAD,HDR}
-			   || getEnvi().getCellNature(getWdt(),getHgt()-1) \in {PLT,MTL,LAD}
-			   || c:Character \exists \in getEnvi().getCellContent(getWdt(),getHgt()-1)
-			   && \not(c:Character \exists \in getEnvi().getCellContent(getWdt()-1,getHgt())) -> getWdt() == getWdt()@pre + 1
-			   */
-		
-		if(getWdt() != 0 
-		   && (getEnvi().getCellNature(getWdt()+1,getHgt()) !=  Cell.MTL || getEnvi().getCellNature(getWdt()+1,getHgt()) !=  Cell.PLT) 
-		   || (getEnvi().getCellNature(getWdt(),getHgt()) ==  Cell.LAD || getEnvi().getCellNature(getWdt(),getHgt()) !=  Cell.HDR) 
-		   || (getEnvi().getCellNature(getWdt(),getHgt()-1) !=  Cell.PLT || getEnvi().getCellNature(getWdt(),getHgt()-1) !=  Cell.MTL ||
-			   getEnvi().getCellNature(getWdt(),getHgt()-1) !=  Cell.LAD ) 
-		   || (character_list_hgt_minus_1.size() != 0)
-		   && !(character_list_wdt_plus_1.size() !=0) ){
-			if(!(getWdt() == getWdt_pre+1)) {
-				throw new PostconditionError("CharacterContrat post goLeft: getWdt() != getWdt_pre");
+				throw new PostconditionError("CharacterContrat post goLeft: getWdt() != getWdt_pre -1");
 			}
 			
 		}
