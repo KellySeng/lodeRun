@@ -36,7 +36,11 @@ public class DrawMap {
 		int width = l.get(l.size()-1).length();
 		int height = l.size();
 
+		System.out.println("height = "+ height+"width = "+ width);
 		s.init(height, width);
+		System.out.println("getWidth = "+ s.getWidth());
+		System.out.println("getheight = "+ s.getHeight());
+
 
 		for (int j = 0; j < height; j++) {
 			for (int i = 0; i < l.get(j).length(); i++) {
@@ -70,14 +74,14 @@ public class DrawMap {
 
 		}
 		
-//		for (int j = 0; j < height; j++) {
-//			for (int i = 0; i < width; i++) {
-//				System.out.print(s.getCellNature(i, j));
-//			}
-//			System.out.println();
-//			
-//		}
-//		
+		for (int j = 0; j < height; j++) {
+			for (int i = 0; i < width; i++) {
+				System.out.print(s.getCellNature(i, j));
+			}
+			System.out.println();
+			
+		}
+		
 
 
 
