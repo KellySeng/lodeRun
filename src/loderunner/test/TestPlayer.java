@@ -23,6 +23,7 @@ import loderunner.services.Command;
 import loderunner.services.EngineService;
 import loderunner.services.GuardService;
 import loderunner.services.Pair;
+import loderunner.services.Triplet;
 
 public class TestPlayer extends AbstractJeuTest{
 
@@ -63,8 +64,8 @@ public class TestPlayer extends AbstractJeuTest{
 
 
 		//cr�er un guard qui est en pos (0,2)
-		List<Pair<Integer, Integer>> listGuards = new ArrayList<Pair<Integer, Integer>> ();
-		listGuards.add(new Pair<Integer, Integer>(0,2));
+		List<Triplet<Integer,Integer,Boolean>> listGuards = new ArrayList<Triplet<Integer,Integer,Boolean>> ();
+		listGuards.add(new Triplet<Integer,Integer,Boolean>(0,2,false));
 
 		//cr�er un tresor en pos(6,2)
 		List<Pair<Integer, Integer>> listTresors = new ArrayList<Pair<Integer, Integer>> ();
@@ -87,8 +88,8 @@ public class TestPlayer extends AbstractJeuTest{
 
 
 		//cr�er un guard qui est en pos (0,2)
-		List<Pair<Integer, Integer>> listGuards = new ArrayList<Pair<Integer, Integer>> ();
-		listGuards.add(new Pair<Integer, Integer>(0,2));
+		List<Triplet<Integer,Integer,Boolean>> listGuards = new ArrayList<Triplet<Integer,Integer,Boolean>> ();
+		listGuards.add(new Triplet<Integer,Integer,Boolean>(0,2,false));
 
 		//cr�er un tresor en pos(6,2)
 		List<Pair<Integer, Integer>> listTresors = new ArrayList<Pair<Integer, Integer>> ();
@@ -111,8 +112,8 @@ public class TestPlayer extends AbstractJeuTest{
 		Pair<Integer, Integer> player = new Pair<Integer, Integer>(4,1);
 
 		//cr�er un guard qui est en pos (0,2)
-		List<Pair<Integer, Integer>> listGuards = new ArrayList<Pair<Integer, Integer>> ();
-		listGuards.add(new Pair<Integer, Integer>(0,2));
+		List<Triplet<Integer,Integer,Boolean>> listGuards = new ArrayList<Triplet<Integer,Integer,Boolean>> ();
+		listGuards.add(new Triplet<Integer,Integer,Boolean>(0,2,false));
 
 		//cr�er un tresor en pos(6,2)
 		List<Pair<Integer, Integer>> listTresors = new ArrayList<Pair<Integer, Integer>> ();
@@ -245,11 +246,15 @@ public class TestPlayer extends AbstractJeuTest{
 		engine.step();
 		engine.setCmd(Command.Up);
 		engine.step();
+		assertEquals(engine.getPlayer().getHgt(),3);
+		assertEquals(engine.getPlayer().getWdt(),3);
+
 		engine.setCmd(Command.Down);
 		engine.step();
+		//player est attaqué par un guard
 
 		assertEquals(engine.getPlayer().getHgt(),2);
-		assertEquals(engine.getPlayer().getWdt(),3);
+		assertEquals(engine.getPlayer().getWdt(),4);
 
 
 	}

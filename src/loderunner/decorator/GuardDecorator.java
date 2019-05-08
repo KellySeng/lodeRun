@@ -76,14 +76,20 @@ public class GuardDecorator implements GuardService {
 	}
 
 	@Override
-	public void init(int x, int y, EnvironmentService env, CharacterService target) {
-		delegate.init(x, y, env, target);
+	public void init(int x, int y, EnvironmentService env, CharacterService target, boolean estSpec) {
+		delegate.init(x, y, env, target,estSpec);
 		
 	}
 
 	@Override
 	public void setPos(int x, int y) {
 		delegate.setPos(x, y);		
+	}
+
+	@Override
+	public boolean isSpecial() {
+		
+		return delegate.isSpecial();
 	}
 
 

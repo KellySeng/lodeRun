@@ -386,7 +386,8 @@ public class GuardContrat extends GuardDecorator{
 				&& getHgt() < getEnvi().getHeight() 
 				&& (getEnvi().getCellNature(getWdt(),getHgt()+1) == Cell.LAD || getEnvi().getCellNature(getWdt(),getHgt()+1) == Cell.EMP 
 				|| getEnvi().getCellNature(getWdt(),getHgt()+1) == Cell.HDR || getEnvi().getCellNature(getWdt(),getHgt()+1) == Cell.HOL )
-				& ! haveGuardEnHaut ) ;
+				&& ! haveGuardEnHaut ) ;
+		
 		boolean willGoDown = (getBehavior() == Move.Down
 				&& getHgt() != 0
 				&& (getEnvi().getCellNature(getWdt(),getHgt()-1) == Cell.LAD || getEnvi().getCellNature(getWdt(),getHgt()-1) == Cell.EMP 
@@ -461,17 +462,21 @@ public class GuardContrat extends GuardDecorator{
 	}
 
 	@Override
-	public void init(int x, int y, EnvironmentService env, CharacterService target) {
+	public void init(int x, int y, EnvironmentService env, CharacterService target, boolean estSpec) {
 		
 		if(!(env.getCellNature(x, y) == Cell.EMP)) {
 			throw new PreconditionError("error init precondition");
 		}
 		
-		super.init(x, y, env, target);
+		super.init(x, y, env, target,estSpec);
 		
-		
+		//post : getTarget() == target
 		if(!(getTarget() == target)) {
 			throw new PostconditionError("error init post");
+		}
+		//post : isSpecial()  = estSpec
+		if(!(isSpecial()  == estSpec)) {
+			throw new PostconditionError("isSpecial()  != estSpec");
 		}
 	}
 

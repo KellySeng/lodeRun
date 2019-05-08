@@ -14,6 +14,7 @@ import loderunner.services.ItemType;
 import loderunner.services.Pair;
 import loderunner.services.PlayerService;
 import loderunner.services.Status;
+import loderunner.services.Triplet;
 
 public class EngineContrat extends EngineDecorator{
 
@@ -79,7 +80,7 @@ public class EngineContrat extends EngineDecorator{
 
 
 	@Override
-	public void init(EnvironmentService envi, Pair<Integer, Integer> player, List<Pair<Integer, Integer>> listGuards,
+	public void init(EnvironmentService envi, Pair<Integer, Integer> player, List<Triplet<Integer, Integer, Boolean>> listGuards,
 			List<Pair<Integer, Integer>> listTresors) {
 
 
@@ -89,8 +90,8 @@ public class EngineContrat extends EngineDecorator{
 		}
 
 		//pre : forall g in listGuards, envi.getCellNature(g.getWdt(), g.getHgt()) == Cell.EMP
-		for(Pair<Integer, Integer> guard : listGuards) {
-			if(envi.getCellNature(guard.getL(),guard.getR())!=Cell.EMP) {
+		for(Triplet<Integer, Integer, Boolean> guard : listGuards) {
+			if(envi.getCellNature(guard.getFirst(),guard.getSecond())!=Cell.EMP) {
 				throw new PreconditionError("Engine init error , la case du guard n'est pas empty");
 
 			}
@@ -141,6 +142,7 @@ public class EngineContrat extends EngineDecorator{
 		//	Si au début d’un tour, un garde est dans la même case que le joueur, 
 		// le joueur perds une  vie
 		for(GuardService g : getGuards()) {
+		
 			if(g.getHgt() == getPlayer().getHgt() && g.getWdt() == getPlayer().getWdt()) {
 				if(vie_pre>0) {
 					if((getPlayer().getVie() != vie_pre-1)) {

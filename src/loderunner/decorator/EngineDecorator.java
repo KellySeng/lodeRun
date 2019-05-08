@@ -73,16 +73,19 @@ public class EngineDecorator implements EngineService{
 	}
 
 
-	@Override
-	public void init(EnvironmentService envi, Pair<Integer, Integer> player, List<Pair<Integer, Integer>> listGuards,
-			List<Pair<Integer, Integer>> listTresors) {
-		delegate.init(envi, player, listGuards, listTresors);
-	}
 
 
 	@Override
 	public void setEnTestMode() {
 		delegate.setEnTestMode();		
+	}
+
+
+	@Override
+	public void init(EnvironmentService envi, Pair<Integer, Integer> player,
+			List<Triplet<Integer, Integer, Boolean>> listGuards, List<Pair<Integer, Integer>> listTresors) {
+		delegate.init(envi, player, listGuards, listTresors);
+		
 	}
 
 
