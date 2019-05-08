@@ -1,13 +1,11 @@
 package loderunner.contrat;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
 import loderunner.decorator.EngineDecorator;
 import loderunner.services.Cell;
 import loderunner.services.CellContent;
-import loderunner.services.EditableScreenService;
 import loderunner.services.EngineService;
 import loderunner.services.EnvironmentService;
 import loderunner.services.GuardService;
@@ -27,7 +25,6 @@ public class EngineContrat extends EngineDecorator{
 
 		//	l’observateur Environment doit être synchronisé avec les observateurs 'Guards', Player et Treasure. Ainsi
 		//	si G ∈ Guards(E) est tel que Hgt(G)=4 et Col(G)=3, alors G ∈ CellContent(Environment(E),3,4).
-
 		if( getEnvironment()!=null) {
 
 			if(getPlayer()!=null) {
@@ -35,10 +32,10 @@ public class EngineContrat extends EngineDecorator{
 				HashSet<CellContent> player_cell_content = getEnvironment().getCellContent(getPlayer().getWdt(), getPlayer().getHgt());			
 				boolean containsPlayer = false;
 				for(CellContent c:  player_cell_content) {
-						if(c instanceof PlayerService) {
-							containsPlayer = true;
-						}
+					if(c instanceof PlayerService) {
+						containsPlayer = true;
 					}
+				}
 				if(!containsPlayer) {
 					throw new InvariantError("player not synchronized with env");
 				}
@@ -58,13 +55,13 @@ public class EngineContrat extends EngineDecorator{
 				boolean containsGuard = false;
 				int id_guard = -1 ;
 				for(CellContent c:  guard_cell_content) {
-						if(c instanceof GuardService) {
-							containsGuard = true;
-							id_guard = ((GuardService) c).getId();
-						}
+					if(c instanceof GuardService) {
+						containsGuard = true;
+						id_guard = ((GuardService) c).getId();
 					}
-				
-				
+				}
+
+
 				if(!(containsGuard && g.getId() ==id_guard )) {
 					throw new InvariantError("treasure not synchronized with env");
 				}
@@ -84,13 +81,13 @@ public class EngineContrat extends EngineDecorator{
 	@Override
 	public void init(EnvironmentService envi, Pair<Integer, Integer> player, List<Pair<Integer, Integer>> listGuards,
 			List<Pair<Integer, Integer>> listTresors) {
-		
-		
+
+
 		// pre : envi.getCellNature(player.getWdt(), player.getHgt()) == Cell.EMP
 		if(envi.getCellNature(player.getL(), player.getR())!= Cell.EMP) {
 			throw new PreconditionError("Engine init error , la case de player n'est pas empty");
 		}
-		
+
 		//pre : forall g in listGuards, envi.getCellNature(g.getWdt(), g.getHgt()) == Cell.EMP
 		for(Pair<Integer, Integer> guard : listGuards) {
 			if(envi.getCellNature(guard.getL(),guard.getR())!=Cell.EMP) {
@@ -98,7 +95,7 @@ public class EngineContrat extends EngineDecorator{
 
 			}
 		}
-		
+
 		// pre : forall t in listTresors, envi.getCellNature(t.getWdt(), t.getHgt()-1) == Cell.PLT
 		for(Pair<Integer, Integer> t :listTresors ) {
 			if(!(envi.getCellNature(t.getL(),t.getR()-1)== Cell.PLT
@@ -112,7 +109,7 @@ public class EngineContrat extends EngineDecorator{
 		super.init(envi, player, listGuards, listTresors);
 		checkInvariant();
 
-		
+
 	}
 
 	public void step() {
@@ -122,16 +119,9 @@ public class EngineContrat extends EngineDecorator{
 		//capture
 		HashSet<CellContent> t_cell_content_atpre = getEnvironment().getCellContent(getPlayer().getWdt(), getPlayer().getHgt());
 
-		//	Si au début d’un tour, un garde est dans la même case que le joueur, le jeu est perdu (cette règle nécessite de
-		//	modifier la régle qui interdit à une case de contenir plus d’un personnage.
-		for(GuardService g : getGuards()) {
-			if(g.getHgt() == getPlayer().getHgt() && g.getWdt() == getPlayer().getWdt()) {
-				if(!(getStatus() == Status.Loss)) {
-					throw new PostconditionError("Game should be lost");
-				}
-			}
-		}
-		
+		int vie_pre = getPlayer().getVie();
+
+
 		//Si au début d’un tour, le joueur se trouve sur une case contenant un trésor, ce trésor disparait.
 		for(CellContent t : t_cell_content_atpre) {
 			if(t== ItemType.Treasure) {
@@ -148,13 +138,23 @@ public class EngineContrat extends EngineDecorator{
 		}
 		super.step();
 
-
+		//	Si au début d’un tour, un garde est dans la même case que le joueur, 
+		// le joueur perds une  vie
+		for(GuardService g : getGuards()) {
+			if(g.getHgt() == getPlayer().getHgt() && g.getWdt() == getPlayer().getWdt()) {
+				if(vie_pre>0) {
+					if((getPlayer().getVie() != vie_pre-1)) {
+						throw new PostconditionError("player should lose a life");
+					}
+				}
+			}
+		}
 		checkInvariant();
-	
-		
 
-	
-		
+
+
+
+
 
 
 

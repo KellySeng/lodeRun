@@ -7,7 +7,7 @@ public interface PlayerService extends CharacterService{
 	 */
 	public EngineService getEngine();
 	public int getScore();
-	public void increScore();
+	public void setScore(int s);
 	public int getVie();
 	public void decreVie();
 	

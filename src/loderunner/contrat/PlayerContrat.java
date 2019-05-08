@@ -222,15 +222,14 @@ public class PlayerContrat extends PlayerDecorator {
 	}
 	
 	@Override
-	public void increScore() {
+	public void setScore(int s)  {
 
-		//capture 
-		int score_pre = getScore();
-		super.increScore();
+	
+		super.setScore( s) ;
 
-		//post : getScore() = score_pre + 1
-		if(getScore() != score_pre + 1) {
-			throw new PostconditionError("getScore() != score_pre + 1");
+		//post : getScore() = s
+		if(getScore() != s) {
+			throw new PostconditionError("getScore() != s");
 		}
 	}
 

@@ -156,10 +156,15 @@ public class CharacterImpl implements CharacterService{
 		/*quand il y a un guard a la case en haut, si c'est un player, il peut aller en haut, sinon il peut pas 
 		 * car une case ne peut contenir plus d’un garde,*/
 		boolean hasGuardEnHaut = false;
+		boolean hasPlayerEnHaut = false;
+
 		for(CellContent c :character_list_hgt_plus_1) {
 			if(c instanceof GuardService) {
 				hasGuardEnHaut = true;
+			}else if(c instanceof PlayerService) {
+				hasPlayerEnHaut = true;
 			}
+			
 			
 		}
 		boolean canGoUp = true;
@@ -179,6 +184,16 @@ public class CharacterImpl implements CharacterService{
 			hgt = hgt+1;
 			env.getCellContent(wdt, hgt).add(this);
 
+		  }else if(this instanceof GuardService 
+				  &&env.getCellNature(wdt,hgt) == Cell.HOL
+				  && hasPlayerEnHaut
+				  ) {  //gerer contrat
+			  
+				env.getCellContent(wdt, hgt).remove(this);
+
+				hgt = hgt+1;
+				env.getCellContent(wdt, hgt).add(this);
+			  
 		  }
 		else {
 			return;

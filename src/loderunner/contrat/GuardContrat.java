@@ -342,10 +342,10 @@ public class GuardContrat extends GuardDecorator{
 
 
 		Set<CellContent> setHaut =  getEnvi().getCellContent(getWdt(), getHgt()+1);
-		boolean haveCharacterEnHaut = false;
+		boolean haveGuardEnHaut = false;
 		for(CellContent c : setHaut) {
 			if(c instanceof CharacterService) {
-				haveCharacterEnHaut = true;
+				haveGuardEnHaut = true;
 			}
 		}
 
@@ -377,12 +377,16 @@ public class GuardContrat extends GuardDecorator{
 				&&  getEnvi().getCellNature(getWdt(), getHgt()) != Cell.LAD 
 				&&	getEnvi().getCellNature(getWdt(), getHgt()) != Cell.HDR ;
 
-		boolean willGoUp =(getBehavior() == Move.Up 
+		boolean willGoUp = ( 
+				( getBehavior() == Move.Up || ( getEnvi().getCellNature(getWdt(),getHgt()) == Cell.HOL
+						 && getTarget().getHgt() == getHgt() +1
+						 && getTarget().getWdt() == getWdt()
+						 && getTimeInHole() == 5)
+				) // gestion contrat
 				&& getHgt() < getEnvi().getHeight() 
 				&& (getEnvi().getCellNature(getWdt(),getHgt()+1) == Cell.LAD || getEnvi().getCellNature(getWdt(),getHgt()+1) == Cell.EMP 
 				|| getEnvi().getCellNature(getWdt(),getHgt()+1) == Cell.HDR || getEnvi().getCellNature(getWdt(),getHgt()+1) == Cell.HOL )
-				& ! haveCharacterEnHaut ) ;
-
+				& ! haveGuardEnHaut ) ;
 		boolean willGoDown = (getBehavior() == Move.Down
 				&& getHgt() != 0
 				&& (getEnvi().getCellNature(getWdt(),getHgt()-1) == Cell.LAD || getEnvi().getCellNature(getWdt(),getHgt()-1) == Cell.EMP 

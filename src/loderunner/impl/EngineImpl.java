@@ -129,7 +129,7 @@ public class EngineImpl implements EngineService {
 		}
 		
 		//le score gagne dans un niveau reinitialisé suite a un échec est perdu
-		
+		player.setScore(0);
 		
 	}
 
@@ -167,6 +167,8 @@ public class EngineImpl implements EngineService {
 
 		int x = player.getWdt();
 		int y = player.getHgt();
+		
+	
 
 
 		//Si au debut dâ€™un tour, le joueur se trouve sur une case contenant un tresor,
@@ -178,7 +180,7 @@ public class EngineImpl implements EngineService {
 			if (c instanceof ItemService ) {
 				tresorARemove.add(c);
 				treasures.remove(c);
-				player.increScore();
+				player.setScore(player.getScore()+1);
 			}
 		}
 		set.removeAll(tresorARemove);
@@ -246,21 +248,20 @@ public class EngineImpl implements EngineService {
 		}
 
 
-		//Si au debut dâ€™un tour, un garde est dans la meme case que le joueur, le jeu est perdu 		
-				for(GuardService guard : guards) {
-					if(guard.getWdt() == x && guard.getHgt() == y){
-						System.out.println("player est attaqué par un guard");
-						player.decreVie();	
-						reinitialisePos();
-						//	le jeu est perdu
-						if(player.getVie()==0) {
-							status = Status.Loss;
-						}
-					}
-				}
-				
-
+	
 		
+		//Si au debut dâ€™un tour, un garde est dans la meme case que le joueur, le jeu est perdu 		
+		for(GuardService guard : guards) {
+			if(guard.getWdt() == x && guard.getHgt() == y){
+				System.out.println("player est attaqué par un guard");
+				player.decreVie();	
+				reinitialisePos();
+				//	le jeu est perdu
+				if(player.getVie()==0) {
+					status = Status.Loss;
+				}
+			}
+		}
 		
 
 	}
