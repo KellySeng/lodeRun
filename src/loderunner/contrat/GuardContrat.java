@@ -375,7 +375,8 @@ public class GuardContrat extends GuardDecorator{
 		boolean willFall = (getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.EMP ||
 				getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.HOL ) && !haveCharacterEnbas
 				&&  getEnvi().getCellNature(getWdt(), getHgt()) != Cell.LAD 
-				&&	getEnvi().getCellNature(getWdt(), getHgt()) != Cell.HDR ;
+				&&	getEnvi().getCellNature(getWdt(), getHgt()) != Cell.HDR
+				&& !(isSpecial() && getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.HOL);
 
 		boolean willGoUp = ( 
 				( getBehavior() == Move.Up || ( getEnvi().getCellNature(getWdt(),getHgt()) == Cell.HOL
