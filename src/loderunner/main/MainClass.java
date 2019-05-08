@@ -32,7 +32,7 @@ public class MainClass {
 
 	public static void main(String[] args) {
 		
-		EngineService engine = new EngineImpl();
+		EngineService engine = new EngineContrat(new EngineImpl());
 		EditableScreenService screen =  new EditableScreenContrat(new EditableScreenImpl());
 		String filename = args[0];
 		DrawMap.drawmap(screen, filename);	

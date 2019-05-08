@@ -20,8 +20,8 @@ import loderunner.services.ItemType;
 public class TestEnvironment {
 	
 	EnvironmentService env;
-	private int h = 5;
-	private int w = 5;
+	private int h = 6;
+	private int w = 6;
 
 	@Before
 	public void beforeTests() {
@@ -37,14 +37,14 @@ public class TestEnvironment {
 	
 
 	@Test
-	public void test1InitPositif() {
+	public void test1InitPrePositif() {
 		EditableScreenService es = new EditableScreenImpl();
 		es.init(h, w);
 		env.init(es.getWidth(), es.getHeight(),es);
 	}
 	
 	@Test
-	public void test1InitNegatif() {
+	public void test1InitPreNegatif() {
 		EditableScreenService es = new EditableScreenImpl();
 		try {
 			env.init(5,2,es);
@@ -82,7 +82,7 @@ public class TestEnvironment {
 	
 	
 	@Test
-	public void test1CellContentPositif() {
+	public void test1CellContent() {
 		EditableScreenService es = new EditableScreenImpl();
 		es.init(h, w);
 		env.init(es.getWidth(), es.getHeight(),es);
@@ -90,7 +90,7 @@ public class TestEnvironment {
 	}
 	
 	@Test
-	public void test2CellContentPositif() {
+	public void test2CellContent() {
 		EditableScreenService es = new EditableScreenImpl();
 		es.init(h, w);
 		env.init(es.getWidth(), es.getHeight(),es);
@@ -100,7 +100,7 @@ public class TestEnvironment {
 	}
 	
 	@Test
-	public void test3CellContentPositif() {
+	public void test3CellContent() {
 		EditableScreenService es = new EditableScreenImpl();
 		es.init(h, w);
 		env.init(es.getWidth(), es.getHeight(),es);

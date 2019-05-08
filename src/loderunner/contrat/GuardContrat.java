@@ -144,8 +144,10 @@ public class GuardContrat extends GuardDecorator{
 				(getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.MTL ||
 				getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.PLT || 
 				getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.LAD) ||
-				haveCharacter_bas) 
-					&& 
+				haveCharacter_bas ||
+				(getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.HOL) && isSpecial()
+				) 
+				&& 
 				getWdt() > getTarget().getWdt()  &&(getEnvi().getCellNature(getWdt()-1, getHgt()) != Cell.MTL ||
 						getEnvi().getCellNature(getWdt()-1, getHgt()) != Cell.PLT) && !haveCharacter_left
 				) {
@@ -160,7 +162,9 @@ public class GuardContrat extends GuardDecorator{
 					(getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.MTL ||
 					getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.PLT || 
 					getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.LAD) ||
-					haveCharacter_bas) 
+					haveCharacter_bas||
+					(getEnvi().getCellNature(getWdt(), getHgt()-1) == Cell.HOL) && isSpecial()
+					) 
 						&& 
 					getWdt() < getTarget().getWdt()  &&(getEnvi().getCellNature(getWdt()+1, getHgt()) != Cell.MTL ||
 							getEnvi().getCellNature(getWdt()+1, getHgt()) != Cell.PLT) && !haveCharacter_right

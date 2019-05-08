@@ -11,13 +11,14 @@ import loderunner.contrat.PreconditionError;
 import loderunner.contrat.ScreenContrat;
 
 import loderunner.impl.ScreenImpl;
+import loderunner.services.Cell;
 import loderunner.services.ScreenService;
 
 public class TestScreen {
 
 	private ScreenService s ;
-	private int h = 5;
-	private int w = 5;
+	private int h = 6;
+	private int w = 6;
 	
 	@Before
 	public void beforeTests() {
@@ -35,7 +36,7 @@ public class TestScreen {
 	@Test
 	public void  test1InitPrePositif() {
 		try{
-			s.init(5, 5);
+			s.init(h, w);
 			assertTrue(true);
 		}catch(PreconditionError e) {
 			fail("init error");
@@ -100,5 +101,23 @@ public class TestScreen {
 		}	
 	}
 	
-	//PRE DIG / FILL : pas de tests car on ne peut modifier la nature d'un Cell dans ce service
+	//PRE DIG / FILL : pas de tests positifs car on ne peut modifier la nature d'un Cell dans ce service
+	
+	@Test
+	public void test1DigNegatif() {
+		try{
+			s.dig(0,5);
+		}catch(PreconditionError e) {
+			assertTrue(false);
+		}	
+	}
+	
+	@Test
+	public void test1FillNegatif() {
+		try{
+			s.fill(0,5);
+		}catch(PreconditionError e) {
+			assertTrue(false);
+		}	
+	}
 }

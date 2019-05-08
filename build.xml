@@ -36,6 +36,14 @@
 		             	<attribute name="Class-Path" value="${manifest.classpath}"/>
 		            </manifest>
 		        </jar>
+		
+        		<jar destfile="loderunnerbug.jar"  basedir="bin" includes="**/*.*">
+		            <manifest>
+		                <attribute name = "Main-Class" value = "loderunner.main.MainBugClass"/>
+		             	<attribute name="Class-Path" value="${manifest.classpath}"/>
+		            </manifest>
+		        </jar>
+
 	</target>
 
 	
