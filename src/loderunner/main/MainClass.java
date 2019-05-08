@@ -25,6 +25,7 @@ import loderunner.services.Pair;
 import loderunner.services.PlayerService;
 import loderunner.services.ScreenService;
 import loderunner.services.Status;
+import loderunner.services.Triplet;
 
 
 public class MainClass {
@@ -39,23 +40,23 @@ public class MainClass {
 		EnvironmentService env = new EnvironmentContrat(new EnvironmentImpl());
 		env.init( screen.getHeight(),screen.getWidth(), screen);
 		
-		List<Pair<Integer,Integer>> listGuards = new ArrayList<Pair<Integer,Integer>>();
+		List<Triplet<Integer,Integer,Boolean>> listGuards = new ArrayList<Triplet<Integer,Integer,Boolean>>();
 		List<Pair<Integer,Integer>> listTresors = new ArrayList<Pair<Integer,Integer>>();
 		Pair<Integer,Integer> player =null;	
 		switch(filename) {
 			case "mapTestEngine.txt" :  
-				listGuards.add(new Pair(0,2));
-				listTresors.add(new Pair(6,2));
+				listGuards.add(new Triplet<Integer,Integer,Boolean>(0,2,false));
+				listTresors.add(new Pair<Integer, Integer>(6,2));
 				player = new Pair<Integer, Integer>(4, 2);
 				break;
 			case "mapTestPlayer.txt" :  
-				listGuards.add(new Pair(0,2));
-				listTresors.add(new Pair(6,2));
+				listGuards.add(new Triplet<Integer,Integer,Boolean>(0,2,false));
+				listTresors.add(new Pair<Integer, Integer>(6,2));
 				player = new Pair<Integer, Integer>(4, 2);
 				break;
 			case "lvl1.txt" :
-				listGuards.add(new Pair(44,1));
-				listTresors.add(new Pair(46,1));
+				listGuards.add(new Triplet<Integer,Integer,Boolean>(44,1,false));
+				listTresors.add(new Pair<Integer, Integer>(46,1));
 				player = new Pair<Integer, Integer>(2, 1);
 				break;
 		}
