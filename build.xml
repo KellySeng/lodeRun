@@ -20,9 +20,16 @@
   <target name="compile" depends="init"
         description="compile the source " >
     <!-- Compile the java code from ${src} into ${build} -->
-    <javac debug="true" srcdir="${src}" excludes="" destdir="${build}" includeantruntime="false" />
+    <javac debug="true" srcdir="${src}" excludes="loderunner.test" destdir="${build}" includeantruntime="false" />
   </target>
+	
 
+	 <target name="run" depends="compile"
+	          description="run Game">
+	    <!--<echo>================ Run LodeRunner ================</echo>-->
+	    <java classname="loderunner.main.MainClass" classpath="${build}">
+	    </java>
+	  </target>
 
   <target name="dist" depends="init,clean"
         description="Generer la distribution" >
