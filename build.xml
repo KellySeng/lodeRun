@@ -14,22 +14,145 @@
     <!-- Create the time stamp -->
     <tstamp/>
     <!-- Create the build directory structure used by compile -->
-    <mkdir dir="${build}"/>
+    <mkdir dir="bin"/>
   </target>
 
   <target name="compile" depends="init"
         description="compile the source " >
     <!-- Compile the java code from ${src} into ${build} -->
-    <javac debug="true" srcdir="${src}" excludes="" destdir="${build}" includeantruntime="false" />
+    <javac debug="true" srcdir="${src}" destdir="bin" includeantruntime="false">
+    	 <classpath>
+    	    <path id="org.junit" location="jars/junit.jar" />
+    	  </classpath>
+    	</javac>
   </target>
+	
+	<target name="jar" depends="clean"
+		            description="Generer la distribution" >
+		        <delete file = "loderunner.jar"/>
+		        <jar destfile="loderunner.jar"  basedir="bin" includes="**/*.*">
+		            <manifest>
+		                <attribute name = "Main-Class" value = "loderunner.main.MainClass"/>
+		             	<attribute name="Class-Path" value="${manifest.classpath}"/>
+		            </manifest>
+		        </jar>
+	</target>
 
-
+	
   <target name="dist" depends="init,clean"
         description="Generer la distribution" >
     <!-- tout mettre dans l'archive -->
     <jar basedir="." jarfile="../LodeRunner-${nom1}-${nom2}-${DSTAMP}.jar" />
   </target>
 
+	  <target name="testScreen" depends="compile" description="test of screen">
+	    <echo>================ Run testScreen ================</echo>
+	    <junit printsummary="yes">
+	      <classpath>
+	        <pathelement location="${build}"/>
+	        <pathelement location="jars/junit.jar"/>
+	      </classpath>
+
+	      <formatter type="plain"/>
+
+	      <test name="loderunner.test.TestScreen"/>
+
+	    </junit>
+	  </target>	
+	
+	<target name="testEditableScreen" depends="compile" description="test of EditableScreen">
+		    <echo>================ Run testEditableScreen ================</echo>
+		    <junit printsummary="yes">
+		      <classpath>
+		        <pathelement location="${build}"/>
+		        <pathelement location="jars/junit.jar"/>
+		      </classpath>
+
+		      <formatter type="plain"/>
+
+		      <test name="loderunner.test.TestEditableScreen"/>
+
+		    </junit>
+	</target>
+	
+	
+	<target name="testEnvironment" depends="compile" description="test of Environment">
+				    <echo>================ Run testEnvironment ================</echo>
+				    <junit printsummary="yes">
+				      <classpath>
+				        <pathelement location="${build}"/>
+				        <pathelement location="jars/junit.jar"/>
+				      </classpath>
+
+				      <formatter type="plain"/>
+
+				      <test name="loderunner.test.TestEnvironment "/>
+
+				    </junit>
+			</target>
+	
+	<target name="testCharacter" depends="compile" description="test of Character">
+			    <echo>================ Run testCharacter================</echo>
+			    <junit printsummary="yes">
+			      <classpath>
+			        <pathelement location="${build}"/>
+			        <pathelement location="jars/junit.jar"/>
+			      </classpath>
+
+			      <formatter type="plain"/>
+
+			      <test name="loderunner.test.TestCharacter"/>
+
+			    </junit>
+		</target>
+	
+	<target name="testPlayer" depends="compile" description="test of Player">
+			    <echo>================ Run testPlayer================</echo>
+			    <junit printsummary="yes">
+			      <classpath>
+			        <pathelement location="${build}"/>
+			        <pathelement location="jars/junit.jar"/>
+			      </classpath>
+
+			      <formatter type="plain"/>
+
+			      <test name="loderunner.test.TestPlayer"/>
+
+			    </junit>
+		</target>
+
+	
+	<target name="testGuard" depends="compile" description="test of Guard">
+				    <echo>================ Run testGuard================</echo>
+				    <junit printsummary="yes">
+				      <classpath>
+				        <pathelement location="${build}"/>
+				        <pathelement location="jars/junit.jar"/>
+				      </classpath>
+
+				      <formatter type="plain"/>
+
+				      <test name="loderunner.test.TestGuard"/>
+
+				    </junit>
+			</target>
+	
+	<target name="testEngine" depends="compile" description="test of Engine">
+				    <echo>================ Run testEngine================</echo>
+				    <junit printsummary="yes">
+				      <classpath>
+				        <pathelement location="${build}"/>
+				        <pathelement location="jars/junit.jar"/>
+				      </classpath>
+
+				      <formatter type="plain"/>
+
+				      <test name="loderunner.test.TestEngine"/>
+
+				    </junit>
+			</target>
+	
+	
   <target name="clean"
         description="clean up" >	
 	<echo>================ Removing temporary files... ================</echo>

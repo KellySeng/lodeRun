@@ -25,7 +25,6 @@ import loderunner.services.Pair;
 import loderunner.services.PlayerService;
 import loderunner.services.ScreenService;
 import loderunner.services.Status;
-import loderunner.services.Triplet;
 
 
 public class MainClass {
@@ -34,34 +33,52 @@ public class MainClass {
 		
 		EngineService engine = new EngineImpl();
 		EditableScreenService screen =  new EditableScreenContrat(new EditableScreenImpl());
-		DrawMap.drawmap(screen, "mapTestEngine.txt");	
+		String filename = args[0];
+		DrawMap.drawmap(screen, filename);	
 	
 		EnvironmentService env = new EnvironmentContrat(new EnvironmentImpl());
 		env.init( screen.getHeight(),screen.getWidth(), screen);
 		
-		List<Triplet<Integer,Integer,Boolean>> listGuards = new ArrayList<Triplet<Integer,Integer,Boolean>>();
+		List<Pair<Integer,Integer>> listGuards = new ArrayList<Pair<Integer,Integer>>();
 		List<Pair<Integer,Integer>> listTresors = new ArrayList<Pair<Integer,Integer>>();
+		Pair<Integer,Integer> player =null;	
+		switch(filename) {
+			case "mapTestEngine.txt" :  
+				listGuards.add(new Pair(0,2));
+				listTresors.add(new Pair(6,2));
+				player = new Pair<Integer, Integer>(4, 2);
+				break;
+			case "mapTestPlayer.txt" :  
+				listGuards.add(new Pair(0,2));
+				listTresors.add(new Pair(6,2));
+				player = new Pair<Integer, Integer>(4, 2);
+				break;
+			case "lvl1.txt" :
+				listGuards.add(new Pair(44,1));
+				listTresors.add(new Pair(46,1));
+				player = new Pair<Integer, Integer>(2, 1);
+				break;
+		}
 		
-		listGuards.add(new Triplet<Integer,Integer,Boolean>(0,2,false));
-	//	listGuards.add(new Pair(46,1));
 		
-		listTresors.add(new Pair<Integer,Integer>(6,2));
 		
-		Pair<Integer,Integer> player = new Pair<Integer,Integer>(4,2);
 		engine.init(env, player, listGuards, listTresors);
 		
 		while(engine.getStatus() == Status.Playing) {
 			print(engine.getEnvironment());
+			System.out.println("Score :" + engine.getPlayer().getScore() + " Vies : "+engine.getPlayer().getVie());
 			System.out.println("Entrer une commande");
 			engine.step();
 		}
 		
 		if(engine.getStatus() == Status.Loss) {
 			System.out.println("Fin de la partie. Vous avez perdu");
+			System.out.println("Score final :" + engine.getPlayer().getScore()); 
 		}
 		
 		if(engine.getStatus() == Status.Win) {
-			System.out.println("Fin de la partie. Vous avez gagn�");
+			System.out.println("Fin de la partie. Vous avez gagné");
+			System.out.println("Score final :" + engine.getPlayer().getScore()); 
 		}
 	}
 	
