@@ -30,8 +30,6 @@ public abstract class AbstractJeuTest {
 	public abstract void beforeTests(); 
 
 	@After
-	public void afterTests() {
-		engine = null;
-	}
+	public abstract void afterTests();
 	
 }

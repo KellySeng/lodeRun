@@ -14,6 +14,7 @@ import loderunner.services.EditableScreenService;
 
 public class DrawMap {
 
+
 	public static void drawmap(EditableScreenService s, String filename) {
 		List<String> l = new ArrayList<String>();
 		Path source = Paths.get("src/loderunner/map/"+filename);
@@ -29,19 +30,15 @@ public class DrawMap {
 		int width = l.get(l.size()-1).length();
 		int height = l.size();
 
-//		System.out.println("height = "+ height+"width = "+ width);
 		s.init(height, width);
 	
 		for (int j = 0; j < height; j++) {
 			for (int i = 0; i < l.get(j).length(); i++) {
 				if(!l.get(j).isEmpty()) {
 					switch ((l.get(j).charAt(i))) {
-
-
 					case 'P' :
 						s.setNature(i, height-1-j, Cell.PLT);
 						break;
-
 
 					case 'L' : 
 						s.setNature(i, height-1-j, Cell.LAD);
@@ -54,10 +51,15 @@ public class DrawMap {
 					case 'M' :
 						s.setNature(i, height-1-j, Cell.MTL);	
 						break;
+						
+					case 'E' :
+						s.setNature(i, height-1-j, Cell.EMP);	
+						break;
 
 					default : 
 						break;
 					}
+					
 				}
 			}
 		}
@@ -67,7 +69,6 @@ public class DrawMap {
 //				System.out.print(s.getCellNature(i, j));
 //			}
 //			System.out.println();
-//			
 //		}
 //		
 
@@ -76,3 +77,5 @@ public class DrawMap {
 	}
 
 }
+
+

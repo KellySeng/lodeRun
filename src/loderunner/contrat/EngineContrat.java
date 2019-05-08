@@ -82,18 +82,18 @@ public class EngineContrat extends EngineDecorator{
 
 
 	@Override
-	public void init(EnvironmentService envi, PlayerService player, ArrayList<GuardService> listGuards,
+	public void init(EnvironmentService envi, Pair<Integer, Integer> player, List<Pair<Integer, Integer>> listGuards,
 			List<Pair<Integer, Integer>> listTresors) {
 		
 		
 		// pre : envi.getCellNature(player.getWdt(), player.getHgt()) == Cell.EMP
-		if(envi.getCellNature(player.getWdt(), player.getHgt())!= Cell.EMP) {
+		if(envi.getCellNature(player.getL(), player.getR())!= Cell.EMP) {
 			throw new PreconditionError("Engine init error , la case de player n'est pas empty");
 		}
 		
 		//pre : forall g in listGuards, envi.getCellNature(g.getWdt(), g.getHgt()) == Cell.EMP
-		for(GuardService guard : listGuards) {
-			if(envi.getCellNature(guard.getWdt(),guard.getHgt())!=Cell.EMP) {
+		for(Pair<Integer, Integer> guard : listGuards) {
+			if(envi.getCellNature(guard.getL(),guard.getR())!=Cell.EMP) {
 				throw new PreconditionError("Engine init error , la case du guard n'est pas empty");
 
 			}

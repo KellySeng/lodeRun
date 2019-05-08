@@ -3,8 +3,11 @@ package loderunner.impl;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Scanner;
 import java.util.Set;
 
+import loderunner.contrat.GuardContrat;
+import loderunner.contrat.PlayerContrat;
 import loderunner.services.CellContent;
 import loderunner.services.Command;
 import loderunner.services.EditableScreenService;
@@ -43,6 +46,48 @@ public class EngineImpl implements EngineService {
 	 */
 	public void setCmd(Command c) {
 		nextCommand = c;
+	}
+	
+	
+	@Override
+	public void init(EnvironmentService env,
+			     Pair<Integer,Integer> play, 
+			     List<Pair<Integer,Integer>> listGuards,
+			     List<Pair<Integer,Integer>> listTresors ) {
+		holes = new ArrayList<Triplet<Integer,Integer,Integer>>();
+		int id =0;
+
+		envi = env;
+
+		xPlayerInit =  play.getL();
+		yPlayerInit = play.getR();
+		player = new PlayerImpl();
+		player.init(envi, xPlayerInit,  yPlayerInit, this);
+
+
+		guards = new ArrayList<GuardService>();
+		listGuardsInitiaux = new ArrayList<Pair<Integer,Integer>>();
+
+		//capture les pos initials pour les guards	  
+	  for(Pair<Integer,Integer> g : listGuards) {
+			GuardService guard =  new GuardImpl();
+			guard.init(g.getL(), g.getR(), env, player);
+			listGuardsInitiaux.add(new Pair(g.getL(), g.getR()));
+			guards.add(guard);
+			id++;
+			envi.getCellContent(g.getL(), g.getR()).add(guard);
+		}
+
+		treasures = new HashSet<ItemService>();
+		for(Pair<Integer,Integer> l : listTresors) {
+			ItemImpl tresor = new ItemImpl(id, ItemType.Treasure, l.getL(), l.getR());
+			treasures.add(tresor);
+			id++;
+			envi.getCellContent(l.getL(), l.getR()).add(tresor);
+		}
+
+		holes = new ArrayList<Triplet<Integer,Integer,Integer>>();
+		status = Status.Playing;
 	}
 
 	@Override
@@ -83,21 +128,21 @@ public class EngineImpl implements EngineService {
 
 	@Override
 	public Command getNextCommand() {
-		//		String command ;
-		//		Scanner scanIn = new Scanner(System.in);
-		//		
-		//		command = scanIn.nextLine();
-		//		
-		//		switch(command) {
-		//		case "d" : return Command.Right;
-		//		case "q" : return Command.Left;
-		//		case "z" : return Command.Up;
-		//		case "s" : return Command.Down;
-		//		case "o" : return Command.DigL;
-		//		case "p" : return Command.DigR;
-		//		default :  return Command.Neutral;
-		//		}
-		//		
+				String command ;
+				Scanner scanIn = new Scanner(System.in);
+				
+				command = scanIn.nextLine();
+				
+				switch(command) {
+				case "d" : nextCommand =  Command.Right; break;
+				case "q" : nextCommand =   Command.Left; break;
+				case "z" : nextCommand =   Command.Up; break;
+				case "s" : nextCommand =   Command.Down; break;
+				case "o" : nextCommand =   Command.DigL; break;
+				case "p" : nextCommand =   Command.DigR; break;
+				default :  nextCommand =   Command.Neutral; break;
+				}
+				
 		return nextCommand;
 
 	}
@@ -213,52 +258,11 @@ public class EngineImpl implements EngineService {
 
 	@Override
 	public ArrayList<Triplet<Integer, Integer, Integer>> getHoles() {
-
 		return holes;
 	}
 
 
-	@Override
-	public void init(EnvironmentService screen, PlayerService joueur, ArrayList<GuardService> listGuards,
-			List<Pair<Integer, Integer>> listTresors) {
-		holes = new ArrayList<Triplet<Integer,Integer,Integer>>();
-		int id =0;
-
-		envi = screen;
-
-		xPlayerInit =  joueur.getWdt();
-		yPlayerInit = joueur.getHgt();
-		player = joueur;
-		player.init(envi, joueur.getWdt(), joueur.getHgt(), this);
-
-
-		guards = listGuards;
-
-		//capture les pos initials pour les guards
-	  listGuardsInitiaux = new 	ArrayList<Pair<Integer, Integer>>();
-	  for(GuardService g :listGuards) {
-		  listGuardsInitiaux.add(new Pair(g.getWdt(),g.getHgt()));
-	  }
-
-		for(GuardService guard : guards) {
-			envi.getCellContent(guard.getWdt(), guard.getHgt()).add(guard);
-
-		}
-
-
-		treasures = new HashSet<ItemService>();
-		for(Pair<Integer,Integer> l : listTresors) {
-			ItemImpl tresor = new ItemImpl(id, ItemType.Treasure, l.getL(), l.getR());
-			treasures.add(tresor);
-			id++;
-			envi.getCellContent(l.getL(), l.getR()).add(tresor);
-		}
-
-		holes = new ArrayList<Triplet<Integer,Integer,Integer>>();
-		status = Status.Playing;
-
-
-	}
+	
 
 
 

@@ -82,11 +82,8 @@ public class PlayerImpl extends CharacterImpl implements PlayerService {
 					goRight();
 					break;
 				case Left :
-					goLeft();
-					
-					
-					break;
-				
+					goLeft();					
+					break;				
 				case Up :
 					goUp();
 					break;
