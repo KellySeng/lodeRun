@@ -2,28 +2,20 @@ package loderunner.test;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
+
 import java.util.ArrayList;
 import java.util.List;
-
 import org.junit.Test;
-
 import loderunner.contrat.EditableScreenContrat;
 import loderunner.contrat.EngineContrat;
 import loderunner.contrat.EnvironmentContrat;
-import loderunner.contrat.GuardContrat;
-import loderunner.contrat.PlayerContrat;
 import loderunner.impl.EditableScreenImpl;
 import loderunner.impl.EngineImpl;
 import loderunner.impl.EnvironmentImpl;
-import loderunner.impl.GuardImpl;
-import loderunner.impl.PlayerImpl;
 import loderunner.map.DrawMap;
 import loderunner.services.Cell;
 import loderunner.services.Command;
 import loderunner.services.EngineService;
-import loderunner.services.GuardService;
 import loderunner.services.Pair;
 import loderunner.services.Status;
 
@@ -32,9 +24,11 @@ public class TestEngine extends AbstractJeuTest{
 
 
 	private EnvironmentContrat enviContrat;
-
-
 	private EngineService engine ;
+	private int playerXInit ;
+	private int playerYInit ;
+
+	
 	@Override
 	public void beforeTests() {
 
@@ -55,15 +49,17 @@ public class TestEngine extends AbstractJeuTest{
 	public void afterTests() {
 		enviContrat = null;
 		engine  = null;
-		
+
 	}
-	
-	
+
+
 	public void initialisation() {
 
 		//créer un player qui est en pos (4,2)
-		Pair<Integer, Integer> player = new Pair<Integer, Integer>(4,2);
-	
+		playerXInit = 4;
+		playerYInit = 2;		
+		Pair<Integer, Integer> player = new Pair<Integer, Integer>(playerXInit,playerYInit);
+
 
 
 		//créer un guard qui est en pos (0,2)
@@ -81,9 +77,95 @@ public class TestEngine extends AbstractJeuTest{
 
 
 	}
-
-
 	/*Tests transitions*/
+	
+	@Test
+	public void testExtensionContrat() {
+		initialisation();//player est en pos (4,2), un guard en pos (0,2)
+		engine.setCmd(Command.DigL);
+		engine.step();
+		for(int i = 0; i<3;i++) {
+			engine.setCmd(Command.Neutral);
+			engine.step();
+		}
+		
+		//guard tombe dans le trou 
+		assertEquals(engine.getGuards().get(0).getWdt(), 3);
+		assertEquals(engine.getGuards().get(0).getHgt(), 1);
+		
+		engine.setCmd(Command.Left);
+		engine.step();
+	
+		for(int i = 0; i<4;i++) {
+			engine.setCmd(Command.Neutral);
+			engine.step();
+		}
+		
+		assertEquals(engine.getPlayer().getVie(), 2);
+		// l'eran est reinitialise
+		assertEquals(engine.getPlayer().getWdt(), playerXInit);
+		assertEquals(engine.getPlayer().getHgt(), playerYInit);
+		assertEquals(engine.getGuards().get(0).getWdt(), 0);
+		assertEquals(engine.getGuards().get(0).getHgt(), 2);
+		assertEquals(engine.getPlayer().getScore(), 0);
+
+		
+		
+		
+
+		
+	}
+
+	@Test
+	public void testExtensionScore() {
+
+		//créer un player qui est en pos (4,2)
+		Pair<Integer, Integer> player = new Pair<Integer, Integer>(4,2);
+
+		//créer un guard qui est en pos (0,2)
+		List<Pair<Integer, Integer>> listGuards = new ArrayList<Pair<Integer, Integer>> ();
+		listGuards.add(new Pair<Integer, Integer>(0,2));
+		
+		//créer des tresors en pos (3,2) (6,2) (7,2) 
+		List<Pair<Integer, Integer>> listTresors = new ArrayList<Pair<Integer, Integer>> ();
+		listTresors.add(new Pair<Integer, Integer>(3,2));
+		listTresors.add(new Pair<Integer, Integer>(6,2));
+		listTresors.add(new Pair<Integer, Integer>(7,2));
+
+		//Initialiser engine
+		engine = getEngine();
+		engine.init(enviContrat,player, listGuards, listTresors);
+		engine.setEnTestMode();
+
+		engine.setCmd(Command.Left);
+		engine.step();
+		engine.setCmd(Command.Neutral);
+		engine.step();
+		assertEquals(engine.getPlayer().getScore(), 1);
+		engine.setCmd(Command.Neutral);
+		engine.step();
+
+		//	player est attrappe par un guard, il doit revenir au position initiale
+		assertEquals(engine.getPlayer().getScore(), 0);
+		assertEquals(engine.getPlayer().getWdt(), 4);
+		assertEquals(engine.getPlayer().getHgt(), 2);
+		
+		assertEquals(engine.getGuards().get(0).getWdt(), 0);
+		assertEquals(engine.getGuards().get(0).getHgt(), 2);
+		engine.setCmd(Command.Right);
+		engine.step();
+		engine.setCmd(Command.Right);
+		engine.step();
+		engine.setCmd(Command.Neutral);
+		engine.step();
+		assertEquals(engine.getPlayer().getScore(), 1);
+
+		
+
+
+
+	}
+
 	@Test
 	public void testRamasserTresors() {
 		//créer un player qui est en pos (4,2)
@@ -102,7 +184,7 @@ public class TestEngine extends AbstractJeuTest{
 		engine = getEngine();
 		engine.init(enviContrat,player, listGuards, listTresors);
 		engine.setEnTestMode();
-		
+
 		engine.setCmd(Command.Left);
 		engine.step();
 		engine.setCmd(Command.Right);
@@ -119,9 +201,7 @@ public class TestEngine extends AbstractJeuTest{
 		engine.setCmd(Command.Neutral);
 		engine.step();
 		assertEquals(engine.getPlayer().getScore(), 3);
-
-			
-
+		assertEquals(engine.getStatus(), Status.Win);
 
 	}
 	/**
@@ -130,8 +210,6 @@ public class TestEngine extends AbstractJeuTest{
 	 */
 	@Test
 	public void testGuardGoRightTrans() {
-
-
 
 		initialisation();
 		engine.setCmd(Command.Neutral);
@@ -208,6 +286,8 @@ public class TestEngine extends AbstractJeuTest{
 
 	}
 
+
+	
 	/* Test senario : le guard revient à la position initiale
 	 * au début, le player est  en position (4,2),un seul guard est en position(0, 2)
 	 * player va a gauche et fait DigL, puis il va droite et fait un DigL, puis il va droite et fait un DigL(Il a fait 3 trous au total)
@@ -252,7 +332,7 @@ public class TestEngine extends AbstractJeuTest{
 
 
 	}
-	
+
 	/********************************Tests Etats remarquables **********************************/
 	/**
 	 *  Etat remarquable : le jeu est gagne
@@ -271,19 +351,20 @@ public class TestEngine extends AbstractJeuTest{
 		engine.step();
 		engine.setCmd(Command.Right);
 		engine.step();
-		
+
 		assertEquals(engine.getEnvironment().getCellContent(6, 2).size(),2);
 
 		engine.setCmd(Command.Neutral);
 		engine.step();
+		assertEquals(engine.getPlayer().getScore(),1);
 		assertEquals(engine.getStatus(), Status.Win);
-	
-		
+
+
 		assertEquals(engine.getEnvironment().getCellContent(6, 2).size(),1);
 
 
 	}
-	
+
 	/**
 	 * Etat remarquable : le jeu est perdu car le joueur est attaqué par un guard
 	 * En initialisation, le player est en position (4,2), un seul guard est en position(0, 2)
@@ -295,35 +376,35 @@ public class TestEngine extends AbstractJeuTest{
 
 		initialisation();
 		assertEquals(engine.getStatus(), Status.Playing);
-		
+
 		for(int i = 0;i<4;i++) {
 			engine.setCmd(Command.Neutral);
 			engine.step();
 		}
 
-		
+
 		/* le guard doit revenir au pos initial et le player perd une vie */
 		assertEquals(engine.getGuards().get(0).getWdt(), 0);
 		assertEquals(engine.getGuards().get(0).getHgt(), 2);
 		assertEquals(engine.getPlayer().getWdt(), 4);
 		assertEquals(engine.getPlayer().getHgt(), 2);
 		assertEquals(engine.getPlayer().getVie(), 2);
-				
-		for(int i = 0;i<4;i++) {
-			engine.setCmd(Command.Neutral);
-			engine.step();
-		}
-	
-		assertEquals(engine.getPlayer().getVie(), 1);
-		
+
 		for(int i = 0;i<4;i++) {
 			engine.setCmd(Command.Neutral);
 			engine.step();
 		}
 
+		assertEquals(engine.getPlayer().getVie(), 1);
+
+		for(int i = 0;i<4;i++) {
+			engine.setCmd(Command.Neutral);
+			engine.step();
+		}
+		assertEquals(engine.getPlayer().getVie(), 0);
 		assertEquals(engine.getStatus(), Status.Loss);
 	}
-	
+
 	/*
 	 * Etat remarquable : le joueur perd une vie car il est dans un trou qui rebouche
 	 * le player est tombe dans un trou pendant 15 step, le trou est rebouche
@@ -335,11 +416,11 @@ public class TestEngine extends AbstractJeuTest{
 		//créer un player qui est en position (3,2)
 		Pair<Integer, Integer> player = new Pair<Integer, Integer>(3,2);
 
-		
+
 
 		//créer une liste vide de guard
 		List<Pair<Integer, Integer>> listGuards = new ArrayList<Pair<Integer, Integer>> ();
-		
+
 		//créer un tresor qui est en pos (4,2)
 		List<Pair<Integer, Integer>> listTresors = new ArrayList<Pair<Integer, Integer>> ();
 		listTresors.add(new Pair<Integer, Integer>(4,2));
@@ -360,6 +441,7 @@ public class TestEngine extends AbstractJeuTest{
 			engine.step();
 		}
 		assertEquals(engine.getPlayer().getVie(), 2);
+		assertEquals(engine.getPlayer().getScore(), 0);
 
 		assertEquals(engine.getEnvironment().getCellNature(2, 1), Cell.PLT);
 

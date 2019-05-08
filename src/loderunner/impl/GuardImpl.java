@@ -223,6 +223,10 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 				climbLeft();
 			}else if(getBehavior() == Move.Right) {
 				climbRight();
+			}//si il y a un joueur au dessus de trou //gerer Contact
+			else if(target.getHgt() == y + 1 && target.getWdt() == x){
+				System.out.println("guard go up to catch player");
+				goUp();
 			}
 
 		}else {		

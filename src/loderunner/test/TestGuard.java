@@ -243,7 +243,7 @@ public class TestGuard {
 		g1.step();
 		assertEquals(g1.getWdt(), 3);
 		g1.step();
-		assertEquals(g1.getWdt(), 3);
+		assertEquals(g1.getWdt(), 4);
 	}
 	
 	

@@ -37,8 +37,8 @@ public class PlayerImpl extends CharacterImpl implements PlayerService {
 	
 	
 	@Override
-	public void increScore() {		
-		 score++;
+	public void setScore(int s) {		
+		 score = s ;
 	}
 	@Override
 	public void step() {
