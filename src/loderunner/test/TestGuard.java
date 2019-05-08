@@ -180,7 +180,7 @@ public class TestGuard {
 		g1.goDown();
 		g1.climbRight();
 		
-		assertEquals(g1.getWdt(), 3);
+		assertEquals(g1.getWdt(), 2);
 		assertEquals(g1.getHgt(), 2);
 	}
 	
@@ -264,28 +264,4 @@ public class TestGuard {
 		assertEquals(g1.getHgt(), 4);
 	}
 	
-	@Test
-	public void test3StepPositif() {
-		
-		for (int i = 0; i < h; i++) {
-			es.setNature(i, 1, Cell.PLT);
-		}
-		
-		env.init(h, w, es);
-		env.dig(1, 1);
-		target.init(env, 4, 2);
-		g1.init(0, 2, env, target,false);
-		
-		int cmp = 0;
-		while(cmp <9) {
-			System.out.println(g1.getWdt() + " " + g1.getHgt()+ " " + cmp);
-			g1.step();
-			cmp++;
-			
-		}
-		
-		assertEquals(g1.getWdt(), w-2);
-		assertEquals(g1.getHgt(), 2);
-	}
-
 }
