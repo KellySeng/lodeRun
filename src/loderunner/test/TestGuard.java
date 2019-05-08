@@ -117,6 +117,43 @@ public class TestGuard {
 	
 	@Test
 	public void test1ClimbLeftPrePositif() {
+		try {
+			for (int i = 0; i < h; i++) {
+				es.setNature(i, 1, Cell.PLT);
+			}
+			
+			env.init(h, w, es);
+			env.dig(1, 1);
+		
+			g1.init(2, 2, env, target,false);
+			g1.goLeft();
+			g1.goDown();
+			g1.climbLeft();
+		}
+		catch(PreconditionError e) {
+			fail("error climbLeft");
+			assertTrue(false);
+		}
+		
+	}
+	
+
+
+	@Test
+	public void test1ClimbLeftPreNegatif() {
+		try {
+			g1.init(1, 1, env, target,false);
+			g1.climbLeft();
+			assertTrue(false);
+		} catch(PreconditionError e) {
+			fail("error climbLeft");
+			assertTrue(true);
+		}
+	}
+	
+	
+	@Test
+	public void test1ClimbLeftPositif() {
 		
 		for (int i = 0; i < h; i++) {
 			es.setNature(i, 1, Cell.PLT);
@@ -135,27 +172,51 @@ public class TestGuard {
 	}
 	
 	@Test
-	public void test2ClimbLeftPrePositif() {
+	public void test2ClimbLeftPositif() {
 		
+			for (int i = 0; i < h; i++) {
+				es.setNature(i, 1, Cell.PLT);
+			}
+			es.setNature(0, 2, Cell.PLT);
+			env.init(h, w, es);
+			env.dig(1, 1);
+			g1.init(2, 2, env, target,false);
+			g1.goLeft();
+			g1.goDown();
+			g1.climbLeft();
+			assertEquals(g1.getHgt(),1);
+			assertEquals(g1.getWdt(),1);
+	
+	}
+	
+	//climbRight
+	
+	@Test
+	public void test1ClimbRighttPrePositif() {
+		try {
 		for (int i = 0; i < h; i++) {
 			es.setNature(i, 1, Cell.PLT);
 		}
-		es.setNature(0, 2, Cell.PLT);
+		
 		env.init(h, w, es);
 		env.dig(1, 1);
-		g1.init(2, 2, env, target,false);
-		g1.goLeft();
+	
+		g1.init(0, 2, env, target,false);
+		g1.goRight();
 		g1.goDown();
-		g1.climbLeft();
-		assertEquals(g1.getWdt(), 1);
-		assertEquals(g1.getHgt(), 1);
+		g1.climbRight();
+		}catch(PreconditionError e) {
+			fail("error climbLeft");
+			assertTrue(false);
+		}
 	}
+	
 
 	@Test
-	public void test1ClimbLeftPreNegatif() {
+	public void test1ClimbRightPreNegatif() {
 		try {
-			g1.init(1, 1, env, target,false);
-			g1.climbLeft();
+			g1.init(0, 1, env, target,false);
+			g1.climbRight();
 			assertTrue(false);
 		} catch(PreconditionError e) {
 			fail("error climbLeft");
@@ -163,11 +224,8 @@ public class TestGuard {
 		}
 	}
 	
-	//climbRight
-	
 	@Test
-	public void test1ClimbRighttPrePositif() {
-		
+	public void test1ClimbRight() {
 		for (int i = 0; i < h; i++) {
 			es.setNature(i, 1, Cell.PLT);
 		}
@@ -185,7 +243,7 @@ public class TestGuard {
 	}
 	
 	@Test
-	public void test2ClimbRightPrePositif() {
+	public void test2ClimbRight() {
 		
 		for (int i = 0; i < h; i++) {
 			es.setNature(i, 1, Cell.PLT);
@@ -202,7 +260,7 @@ public class TestGuard {
 	}
 	
 	@Test
-	public void test3ClimbRightPrePositif() {
+	public void test3ClimbRight() {
 		
 		for (int i = 0; i < h; i++) {
 			es.setNature(i, 1, Cell.PLT);
@@ -217,18 +275,6 @@ public class TestGuard {
 		g1.climbRight();
 		assertEquals(g1.getWdt(), 1);
 		assertEquals(g1.getHgt(), 1);
-	}
-
-	@Test
-	public void test1ClimbRightPreNegatif() {
-		try {
-			g1.init(0, 1, env, target,false);
-			g1.climbRight();
-			assertTrue(false);
-		} catch(PreconditionError e) {
-			fail("error climbLeft");
-			assertTrue(true);
-		}
 	}
 	
 	//step

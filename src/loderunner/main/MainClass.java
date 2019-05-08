@@ -56,8 +56,9 @@ public class MainClass {
 				break;
 			case "lvl1.txt" :
 				listGuards.add(new Triplet<Integer,Integer,Boolean>(44,1,false));
+				listGuards.add(new Triplet<Integer,Integer,Boolean>(1,1,true));
 				listTresors.add(new Pair<Integer, Integer>(46,1));
-				player = new Pair<Integer, Integer>(2, 1);
+				player = new Pair<Integer, Integer>(5, 1);
 				break;
 		}
 		
@@ -92,7 +93,12 @@ public class MainClass {
 							System.out.print("@");break;
 						}
 						else if(c instanceof GuardService) {
-							System.out.print("!");break;
+							if(((GuardService) c).isSpecial()) {
+								System.out.print("&");break;
+							}
+							else {
+								System.out.print("!");break;
+							}
 						}
 						else if(c instanceof ItemService) {
 							System.out.print("?");break;
