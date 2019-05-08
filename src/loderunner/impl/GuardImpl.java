@@ -44,9 +44,6 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 			//Down si elle se trouve strictement plus basse
 			else if(target.getHgt() < hgt) {
 				return Move.Down;
-			}
-			else {//	 Neutral sinon
-				return Move.Neutral;
 			}	
 		}
 		
@@ -63,8 +60,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 			) {
 			
 			//Behaviour renvoie Left si la cible du garde se trouve strictement plus a gauche que lui
-			if(target.getWdt() < wdt) {
-				
+			if(target.getWdt() < wdt) {		
 				return Move.Left;
 			}
 			
@@ -72,13 +68,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 			else if(target.getWdt() > wdt) {
 				return Move.Right;
 			} 
-			else {
-				System.out.println("le guard ne bouge pas  ");
-
-				return Move.Neutral;
-			}
-			
-			
+					
 		}
 		
 		
@@ -99,22 +89,16 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 					return Move.Up;
 				}else if(target.getHgt() < hgt) {
 					return Move.Down;
-				}else {
-					return Move.Neutral;
-				}	
+				}
 			}else if (dis_vertical > dis_horizontal ) {
 				if(target.getWdt() < wdt) {
 					return Move.Left;
 				}else if(target.getWdt() > wdt) {
 					return Move.Right;
-				}else {
-					return Move.Neutral;
 				}
-			}else {
-				return Move.Neutral;
 			}
 		}
-		return null;
+		return Move.Neutral;
 	}
 
 	@Override
