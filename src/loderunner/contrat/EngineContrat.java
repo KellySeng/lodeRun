@@ -73,6 +73,12 @@ public class EngineContrat extends EngineDecorator{
 					throw new InvariantError("game is already won");
 				}
 			}
+			
+			if(getPlayer().getVie() == 0) {
+				if(!(getStatus() == Status.Loss)) {
+					throw new PostconditionError("player has no life left");
+				}
+			}
 
 		}
 	}
@@ -123,6 +129,25 @@ public class EngineContrat extends EngineDecorator{
 		int vie_pre = getPlayer().getVie();
 
 
+
+		super.step();
+
+		//	Si au début d’un tour, un garde est dans la même case que le joueur, 
+		// le joueur perds une  vie
+		for(GuardService g : getGuards()) {
+	
+			if(g.getHgt() == getPlayer().getHgt() && g.getWdt() == getPlayer().getWdt()) {
+				if(vie_pre>0) {
+					if((getPlayer().getVie() != vie_pre-1)) {
+						throw new PostconditionError("player should lose a life");
+					}
+				}
+	
+			}
+		}
+		
+		
+	
 		//Si au début d’un tour, le joueur se trouve sur une case contenant un trésor, ce trésor disparait.
 		for(CellContent t : t_cell_content_atpre) {
 			if(t== ItemType.Treasure) {
@@ -132,34 +157,15 @@ public class EngineContrat extends EngineDecorator{
 			}
 		}
 
+
 		if(getTreasures().isEmpty()) {
 			if(!(getStatus() == Status.Win)) {
 				throw new PostconditionError("Game should be Win");
 			}
 		}
-		super.step();
 
-		//	Si au début d’un tour, un garde est dans la même case que le joueur, 
-		// le joueur perds une  vie
-		for(GuardService g : getGuards()) {
-		
-			if(g.getHgt() == getPlayer().getHgt() && g.getWdt() == getPlayer().getWdt()) {
-				if(vie_pre>0) {
-					if((getPlayer().getVie() != vie_pre-1)) {
-						throw new PostconditionError("player should lose a life");
-					}
-				}
-			}
-		}
 		checkInvariant();
-
-
-
-
-
-
-
-
+	
 
 	}
 

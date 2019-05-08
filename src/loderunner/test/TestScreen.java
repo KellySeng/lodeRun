@@ -74,10 +74,15 @@ public class TestScreen {
 	}
 	
 	@Test
-	public void  testInitPositif() {
+	public void  test1Init() {
 			s.init(6, 6);
 			assertEquals(s.getWidth(),6);
 			assertEquals(s.getHeight(),6);
+			for (int i = 0; i < s.getWidth(); i++) {
+				for (int j = 0; j < s.getHeight(); j++) {
+					assertEquals(s.getCellNature(i, j),Cell.EMP);
+				}
+			}
 	}
 	
 	// PRE CELL NATURE
@@ -101,10 +106,21 @@ public class TestScreen {
 		}	
 	}
 	
+	
+	@Test
+	public void  test1CellNature() {
+		try{
+			s.getCellNature(0, 0);
+			assertEquals(s.getCellNature(0, 0),Cell.EMP);
+		}catch(PreconditionError e) {
+			
+		}	
+	}
+	
 	//PRE DIG / FILL : pas de tests positifs car on ne peut modifier la nature d'un Cell dans ce service
 	
 	@Test
-	public void test1DigNegatif() {
+	public void test1DigPreNegatif() {
 		try{
 			s.dig(0,5);
 		}catch(PreconditionError e) {
@@ -113,7 +129,7 @@ public class TestScreen {
 	}
 	
 	@Test
-	public void test1FillNegatif() {
+	public void test1FillPreNegatif() {
 		try{
 			s.fill(0,5);
 		}catch(PreconditionError e) {
