@@ -22,7 +22,7 @@ import loderunner.services.GuardService;
 import loderunner.services.Move;
 import loderunner.services.PlayerService;
 
-public class Test1Guard {
+public class TestGuard {
 	
 	GuardService g1;
 	GuardService g2;

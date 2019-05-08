@@ -29,7 +29,7 @@ public class PlayerContrat extends PlayerDecorator {
 		}
 
 		//pre :getCellNature(x, y) == Cell.EMP
-		if(getEnvi().getCellNature(x, y)!=Cell.EMP) {
+		if(env.getCellNature(x, y)!=Cell.EMP) {
 			throw new PreconditionError("la case d'initialisation n'est pas empty");
 
 		}

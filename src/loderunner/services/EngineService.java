@@ -34,7 +34,9 @@ public interface EngineService {
 	 * post : getTreasures() = t
 	 * @param screen
 	 */
-	public void init(EnvironmentService screen, PlayerService player, ArrayList<GuardService> listGuards,List<Pair<Integer,Integer>> listTresors );
+	
+	public void init(EnvironmentService envi,Pair<Integer,Integer> player, List<Pair<Integer,Integer>> listGuards ,List<Pair<Integer,Integer>> listTresors );
+
 
 
 	/*

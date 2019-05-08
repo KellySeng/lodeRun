@@ -44,7 +44,7 @@ public class TestPlayer extends AbstractJeuTest{
 
 		DrawMap.drawmap(screenContrat,"mapTestPlayer.txt");
 
-		//crÃ©er un environment
+		//créer un environment
 		EnvironmentImpl	envi = new EnvironmentImpl();
 		enviContrat = new EnvironmentContrat(envi);
 		enviContrat.init(screenContrat.getHeight(),screenContrat.getWidth(),screenContrat);
@@ -54,20 +54,20 @@ public class TestPlayer extends AbstractJeuTest{
 	public void initialisation() {
 		drawMap();
 
-		//crÃ©er un player qui est en pos (4,2)
+		//créer un player qui est en pos (4,2)
 		PlayerImpl player = new PlayerImpl();
 		PlayerContrat playerContrat = new PlayerContrat(player);	
 		playerContrat.init(enviContrat, 4, 2);
 
 
-		//crÃ©er un guard qui est en pos (0,2)
+		//créer un guard qui est en pos (0,2)
 		GuardImpl guard = new GuardImpl();
 		GuardContrat guardContrat = new GuardContrat(guard);
 		guardContrat.init( 0, 2, enviContrat, playerContrat);
 		ArrayList<GuardService> guardsContrat = new ArrayList<GuardService>();
 		guardsContrat.add(guardContrat);	
 
-		//crÃ©er un tresor en pos(6,2)
+		//créer un tresor en pos(6,2)
 		List<Pair<Integer, Integer>> listTresors = new ArrayList<Pair<Integer, Integer>> ();
 		listTresors.add(new Pair(6,2));
 
@@ -81,20 +81,20 @@ public class TestPlayer extends AbstractJeuTest{
 
 		drawMap();
 
-		//crÃ©er un player qui est en pos (4,2)
+		//créer un player qui est en pos (4,2)
 		PlayerImpl player = new PlayerImpl();
 		PlayerContrat playerContrat = new PlayerContrat(player);	
 		playerContrat.init(enviContrat, 4, 2);
 
 
-		//crÃ©er un guard qui est en pos (0,2)
+		//créer un guard qui est en pos (0,2)
 		GuardImpl guard = new GuardImpl();
 		GuardContrat guardContrat = new GuardContrat(guard);
 		guardContrat.init(0, 2, enviContrat, playerContrat);
 		ArrayList<GuardService> guardsContrat = new ArrayList<GuardService>();
 		guardsContrat.add(guardContrat);	
 
-		//crÃ©er un tresor en pos(6,2)
+		//créer un tresor en pos(6,2)
 		List<Pair<Integer, Integer>> listTresors = new ArrayList<Pair<Integer, Integer>> ();
 		listTresors.add(new Pair(6,2));
 
@@ -112,18 +112,18 @@ public class TestPlayer extends AbstractJeuTest{
 	public void testInitPreNegatif() {
 		drawMap();
 
-		//crÃ©er un player qui est en pos (4,1)
+		//créer un player qui est en pos (4,1)
 		PlayerImpl player = new PlayerImpl();
 		PlayerContrat playerContrat = new PlayerContrat(player);	
 		playerContrat.init(enviContrat, 4, 1);
-		//crÃ©er un guard qui est en pos (0,2)
+		//créer un guard qui est en pos (0,2)
 		GuardImpl guard = new GuardImpl();
 		GuardContrat guardContrat = new GuardContrat(guard);
 		guardContrat.init(0, 2, enviContrat, playerContrat);
 		ArrayList<GuardService> guardsContrat = new ArrayList<GuardService>();
 		guardsContrat.add(guardContrat);	
 
-		//crÃ©er un tresor en pos(6,2)
+		//créer un tresor en pos(6,2)
 		List<Pair<Integer, Integer>> listTresors = new ArrayList<Pair<Integer, Integer>> ();
 		listTresors.add(new Pair(6,2));
 
