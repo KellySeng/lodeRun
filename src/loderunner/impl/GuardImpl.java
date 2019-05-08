@@ -17,6 +17,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 	CharacterService target;
 	int timeInHole = 1;
 	int id;
+	boolean isSpecial ;
 
 	@Override
 	public int getId() {
@@ -51,14 +52,14 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 		
 		//Si le garde est dans un trou sur un rail ou au-dessus d’une case non-libre 
 		//ou au-dessus d’une case libre contenant un personnage
+		// ou c'est un guard special, et il est au-dessus une case HOL
 		if(getEnvi().getCellNature(wdt, hgt)==Cell.HOL				
 			||getEnvi().getCellNature(wdt, hgt)==Cell.HDR
-			||
-				(getEnvi().getCellNature(wdt, hgt-1)==Cell.MTL 
+			||(getEnvi().getCellNature(wdt, hgt-1)==Cell.MTL 
 				||getEnvi().getCellNature(wdt, hgt-1)==Cell.PLT
 				||getEnvi().getCellNature(wdt, hgt-1)==Cell.LAD
-				||haveCharacterEnBas
-					)
+				||haveCharacterEnBas)
+			||( getEnvi().getCellNature(wdt, hgt-1)==Cell.HOL && isSpecial())			
 			) {
 			
 			//Behaviour renvoie Left si la cible du garde se trouve strictement plus a gauche que lui
@@ -185,14 +186,41 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 		int x = getWdt();
 		int y = getHgt();
 
-		Set<CellContent> set =  getEnvi().getCellContent(x, y-1);
-		boolean havePersonnageEnBas = false;
-		for(CellContent c : set) {
-			if(c instanceof CharacterService) {
-				havePersonnageEnBas = true;
-			}
-		}		
 
+		Set<CellContent> setLeft = null;
+		boolean hasGuardLeft = false;
+
+		if(x>0) {
+			setLeft =  getEnvi().getCellContent(x-1, y);
+			for(CellContent c : setLeft) {
+				if(c instanceof GuardService) {
+					hasGuardLeft = true;
+				}
+			}	
+		}
+		
+		Set<CellContent> setRight = null;
+		boolean hasGuardRight = false;
+		if(x+1<getEnvi().getWidth()) {
+			setRight = getEnvi().getCellContent(x+1, y);
+			for(CellContent c : setRight) {
+				if(c instanceof GuardService) {
+					hasGuardRight = true;
+				}
+			}	
+		}
+		
+		Set<CellContent> setEnBas = null;
+		boolean havePersonnageEnBas = false;
+		if(y>0) {
+			setEnBas =  getEnvi().getCellContent(x, y-1);
+			for(CellContent c : setEnBas) {
+				if(c instanceof CharacterService) {
+					havePersonnageEnBas = true;
+				}
+			}	
+		}
+		
 		//Si le garde se trouve dans une case qui nâ€™est ni une echelle,ni un rail, ni un trou et
 		// que la case en dessous de lui est libre, le garde tombe.
 		if(getEnvi().getCellNature(x, y) != Cell.LAD
@@ -201,7 +229,12 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 				&& ( getEnvi().getCellNature(x, y-1) == Cell.EMP ||
 				getEnvi().getCellNature(x, y-1) == Cell.HDR ||
 				getEnvi().getCellNature(x, y-1) == Cell.HOL )
-				&& !havePersonnageEnBas ) {				 
+				&& !havePersonnageEnBas
+				//Si c'est un garde special,il peut passer au dessus des trous
+				&& (!(getEnvi().getCellNature(x, y-1) == Cell.HOL
+						&& isSpecial()))
+				
+				) {				 
 
 			getEnvi().getCellContent(wdt, hgt).remove(this);
 
@@ -229,19 +262,42 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 				goUp();
 			}
 
+				// si c'est un garde special et il est au-dessus un trou 
+		}else if(isSpecial() && getEnvi().getCellNature(x, y-1) == Cell.HOL) {
+			if(getBehavior() == Move.Right
+					&& env.getCellNature(getWdt()+1,getHgt()) !=  Cell.MTL 
+					&& env.getCellNature(getWdt()+1,getHgt()) !=  Cell.PLT 
+					&& wdt!= env.getWidth()-1
+					&& !hasGuardRight) {
+				env.getCellContent(wdt, hgt).remove(this);
+				wdt = wdt+1;
+				env.getCellContent(wdt, hgt).add(this);
+			}
+			if(getBehavior() == Move.Left
+					&& env.getCellNature(getWdt()-1,getHgt()) !=  Cell.MTL 
+					&& env.getCellNature(getWdt()-1,getHgt()) !=  Cell.PLT 
+					&& wdt!= 0
+					&& !hasGuardLeft) {
+				env.getCellContent(wdt, hgt).remove(this);
+				wdt = wdt-1;
+				env.getCellContent(wdt, hgt).add(this);
+			}
 		}else {		
 			switch(getBehavior()) {
 
 				case Right :
+
 					goRight();
 					break;
 				case Left :
+
 					goLeft();
 					break;
 				case Up :
 					goUp();
 					break;
 				case Down : 
+				
 					goDown();
 					break;
 				case Neutral :
@@ -256,14 +312,20 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 	
 
 	@Override
-	public void init(int x, int y, EnvironmentService env, CharacterService target) {
+	public void init(int x, int y, EnvironmentService env, CharacterService target, boolean estSpecial) {
 	
 		hgt = y;
 		wdt = x;
 		this.env = env;
 		this.target = target;
 		this.id = cmp;
+		isSpecial = estSpecial;
 		cmp++;
+	}
+
+	@Override
+	public boolean isSpecial() {
+		return isSpecial;
 	}
 
 

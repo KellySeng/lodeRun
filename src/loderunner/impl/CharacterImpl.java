@@ -82,7 +82,6 @@ public class CharacterImpl implements CharacterService{
 			}
 		}
 		
-		
 		if( wdt!= 0 
 			&& env.getCellNature(getWdt()-1,getHgt()) !=  Cell.MTL 
 			&& env.getCellNature(getWdt()-1,getHgt()) !=  Cell.PLT 

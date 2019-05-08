@@ -25,6 +25,7 @@ import loderunner.services.Pair;
 import loderunner.services.PlayerService;
 import loderunner.services.ScreenService;
 import loderunner.services.Status;
+import loderunner.services.Triplet;
 
 
 public class MainClass {
@@ -38,15 +39,15 @@ public class MainClass {
 		EnvironmentService env = new EnvironmentContrat(new EnvironmentImpl());
 		env.init( screen.getHeight(),screen.getWidth(), screen);
 		
-		List<Pair<Integer,Integer>> listGuards = new ArrayList<Pair<Integer,Integer>>();
+		List<Triplet<Integer,Integer,Boolean>> listGuards = new ArrayList<Triplet<Integer,Integer,Boolean>>();
 		List<Pair<Integer,Integer>> listTresors = new ArrayList<Pair<Integer,Integer>>();
 		
-		listGuards.add(new Pair(0,2));
+		listGuards.add(new Triplet<Integer,Integer,Boolean>(0,2,false));
 	//	listGuards.add(new Pair(46,1));
 		
-		listTresors.add(new Pair(6,2));
+		listTresors.add(new Pair<Integer,Integer>(6,2));
 		
-		Pair<Integer,Integer> player = new Pair(4,2);
+		Pair<Integer,Integer> player = new Pair<Integer,Integer>(4,2);
 		engine.init(env, player, listGuards, listTresors);
 		
 		while(engine.getStatus() == Status.Playing) {

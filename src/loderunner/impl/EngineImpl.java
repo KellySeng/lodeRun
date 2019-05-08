@@ -58,7 +58,7 @@ public class EngineImpl implements EngineService {
 	@Override
 	public void init(EnvironmentService env,
 			     Pair<Integer,Integer> play, 
-			     List<Pair<Integer,Integer>> listGuards,
+			     List<Triplet<Integer,Integer,Boolean>> listGuards,
 			     List<Pair<Integer,Integer>> listTresors ) {
 		holes = new ArrayList<Triplet<Integer,Integer,Integer>>();
 		int id =0;
@@ -75,13 +75,13 @@ public class EngineImpl implements EngineService {
 		listGuardsInitiaux = new ArrayList<Pair<Integer,Integer>>();
 
 		//capture les pos initials pour les guards	  
-	  for(Pair<Integer,Integer> g : listGuards) {
+	  for(Triplet<Integer,Integer,Boolean> g : listGuards) {
 			GuardService guard =  new GuardImpl();
-			guard.init(g.getL(), g.getR(), env, player);
-			listGuardsInitiaux.add(new Pair<Integer,Integer>(g.getL(), g.getR()));
+			guard.init(g.getFirst(), g.getSecond(), env, player,g.getThird());
+			listGuardsInitiaux.add(new Pair<Integer,Integer>(g.getFirst(), g.getSecond()));
 			guards.add(guard);
 			id++;
-			envi.getCellContent(g.getL(), g.getR()).add(guard);
+			envi.getCellContent(g.getFirst(), g.getSecond()).add(guard);
 		}
 
 		treasures = new HashSet<ItemService>();
@@ -246,13 +246,10 @@ public class EngineImpl implements EngineService {
 			System.out.println("Le jeu est gagné");
 			status = Status.Win;
 		}
-
-
-	
 		
 		//Si au debut dâ€™un tour, un garde est dans la meme case que le joueur, le jeu est perdu 		
 		for(GuardService guard : guards) {
-			if(guard.getWdt() == x && guard.getHgt() == y){
+			if(guard.getWdt() == player.getWdt() && guard.getHgt() == getPlayer().getHgt()){
 				System.out.println("player est attaqué par un guard");
 				player.decreVie();	
 				reinitialisePos();

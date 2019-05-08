@@ -18,6 +18,7 @@ import loderunner.services.Command;
 import loderunner.services.EngineService;
 import loderunner.services.Pair;
 import loderunner.services.Status;
+import loderunner.services.Triplet;
 
 public class TestEngine extends AbstractJeuTest{
 
@@ -63,8 +64,8 @@ public class TestEngine extends AbstractJeuTest{
 
 
 		//créer un guard qui est en pos (0,2)
-		List<Pair<Integer, Integer>> listGuards = new ArrayList<Pair<Integer, Integer>> ();
-		listGuards.add(new Pair<Integer, Integer>(0,2));
+		List<Triplet<Integer,Integer,Boolean>> listGuards = new ArrayList<Triplet<Integer,Integer,Boolean>> ();
+		listGuards.add(new Triplet<Integer,Integer,Boolean>(0,2,false));
 
 		//créer un tresor en pos(6,2)
 		List<Pair<Integer, Integer>> listTresors = new ArrayList<Pair<Integer, Integer>> ();
@@ -115,6 +116,42 @@ public class TestEngine extends AbstractJeuTest{
 
 		
 	}
+	
+	@Test
+	public void testExtensionGuardSpecial() {
+		
+		//créer un player qui est en pos (4,2)
+		Pair<Integer, Integer> player = new Pair<Integer, Integer>(4,2);
+
+		//créer un guard qui peut passer au dessus des trous  en pos (0,2)
+		List<Triplet<Integer,Integer,Boolean>> listGuards = new ArrayList<Triplet<Integer,Integer,Boolean>> ();
+		listGuards.add(new Triplet<Integer,Integer,Boolean>(0,2,true));
+		
+		//créer des tresors en pos (6,2) 
+		List<Pair<Integer, Integer>> listTresors = new ArrayList<Pair<Integer, Integer>> ();
+		listTresors.add(new Pair<Integer, Integer>(6,2));
+
+		//Initialiser engine
+		engine = getEngine();
+		engine.init(enviContrat,player, listGuards, listTresors);
+		engine.setEnTestMode();
+		
+		engine.setCmd(Command.DigL);
+		engine.step();
+		for(int i = 0; i<2;i++) {
+			engine.setCmd(Command.Neutral);
+			engine.step();
+		}
+		assertEquals(engine.getGuards().get(0).getWdt(), 3);
+		assertEquals(engine.getGuards().get(0).getHgt(), 2);
+		assertEquals(engine.getPlayer().getWdt(), 4);
+		assertEquals(engine.getPlayer().getHgt(), 2);
+		engine.setCmd(Command.Neutral);
+		engine.step();
+		assertEquals(engine.getGuards().get(0).getWdt(), 0);
+		assertEquals(engine.getGuards().get(0).getHgt(), 2);
+		
+	}
 
 	@Test
 	public void testExtensionScore() {
@@ -123,8 +160,8 @@ public class TestEngine extends AbstractJeuTest{
 		Pair<Integer, Integer> player = new Pair<Integer, Integer>(4,2);
 
 		//créer un guard qui est en pos (0,2)
-		List<Pair<Integer, Integer>> listGuards = new ArrayList<Pair<Integer, Integer>> ();
-		listGuards.add(new Pair<Integer, Integer>(0,2));
+		List<Triplet<Integer,Integer,Boolean>> listGuards = new ArrayList<Triplet<Integer,Integer,Boolean>> ();
+		listGuards.add(new Triplet<Integer,Integer,Boolean>(0,2,false));
 		
 		//créer des tresors en pos (3,2) (6,2) (7,2) 
 		List<Pair<Integer, Integer>> listTresors = new ArrayList<Pair<Integer, Integer>> ();
@@ -172,7 +209,7 @@ public class TestEngine extends AbstractJeuTest{
 		Pair<Integer, Integer> player = new Pair<Integer, Integer>(4,2);
 
 		//créer une liste de guard vide 
-		List<Pair<Integer, Integer>> listGuards = new ArrayList<Pair<Integer, Integer>> ();
+		List<Triplet<Integer,Integer,Boolean>> listGuards = new ArrayList<Triplet<Integer,Integer,Boolean>> ();
 
 		//créer des tresors en pos (3,2) (6,2) (7,2) 
 		List<Pair<Integer, Integer>> listTresors = new ArrayList<Pair<Integer, Integer>> ();
@@ -419,7 +456,7 @@ public class TestEngine extends AbstractJeuTest{
 
 
 		//créer une liste vide de guard
-		List<Pair<Integer, Integer>> listGuards = new ArrayList<Pair<Integer, Integer>> ();
+		List<Triplet<Integer,Integer,Boolean>> listGuards = new ArrayList<Triplet<Integer,Integer,Boolean>> ();
 
 		//créer un tresor qui est en pos (4,2)
 		List<Pair<Integer, Integer>> listTresors = new ArrayList<Pair<Integer, Integer>> ();

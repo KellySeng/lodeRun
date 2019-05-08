@@ -35,7 +35,8 @@ public interface EngineService {
 	 * @param screen
 	 */
 	
-	public void init(EnvironmentService envi,Pair<Integer,Integer> player, List<Pair<Integer,Integer>> listGuards ,List<Pair<Integer,Integer>> listTresors );
+	public void init(EnvironmentService envi,Pair<Integer,Integer> player, 
+			List<Triplet<Integer,Integer,Boolean>> listGuards ,List<Pair<Integer,Integer>> listTresors );
 
 
 

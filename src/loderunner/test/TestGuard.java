@@ -60,7 +60,7 @@ public class TestGuard {
 	@Test
 	public void test1InitPrePositif() {
 		try {
-			g1.init(0, 1, env, target);
+			g1.init(0, 1, env, target,false);
 			assertTrue(true);
 		}catch(PreconditionError e) {
 			fail("error init");
@@ -76,7 +76,7 @@ public class TestGuard {
 			es.setNature(0, 1, Cell.PLT);
 			env.init(es.getWidth(), es.getHeight(),es);
 			target.init(env, w-1, 1);
-			g1.init(0, 1, env, target);
+			g1.init(0, 1, env, target,false);
 			assertTrue(false);
 		}catch(PreconditionError e) {
 			fail("error init");
@@ -90,7 +90,7 @@ public class TestGuard {
 			es.setNature(0, 1, Cell.PLT);
 			env.init(es.getWidth(), es.getHeight(),es);
 			target.init(env, w-1, 1);
-			g1.init(0, 1, env, null);
+			g1.init(0, 1, env, null,false);
 			assertTrue(false);
 		}catch(PreconditionError e) {
 			fail("error init");
@@ -101,8 +101,8 @@ public class TestGuard {
 	@Test
 	public void test1InitPositif() {
 		try {
-			g1.init(0, 1, env, target);
-			g2.init(2, 1, env, target);
+			g1.init(0, 1, env, target,false);
+			g2.init(2, 1, env, target,false);
 			assertEquals(g1.getId(), 0);
 			assertEquals(g1.getWdt(), 0);
 			assertEquals(g1.getHgt(), 1);
@@ -125,7 +125,7 @@ public class TestGuard {
 		env.init(h, w, es);
 		env.dig(1, 1);
 	
-		g1.init(2, 2, env, target);
+		g1.init(2, 2, env, target,false);
 		g1.goLeft();
 		g1.goDown();
 		g1.climbLeft();
@@ -143,7 +143,7 @@ public class TestGuard {
 		es.setNature(0, 2, Cell.PLT);
 		env.init(h, w, es);
 		env.dig(1, 1);
-		g1.init(2, 2, env, target);
+		g1.init(2, 2, env, target,false);
 		g1.goLeft();
 		g1.goDown();
 		g1.climbLeft();
@@ -154,7 +154,7 @@ public class TestGuard {
 	@Test
 	public void test1ClimbLeftPreNegatif() {
 		try {
-			g1.init(1, 1, env, target);
+			g1.init(1, 1, env, target,false);
 			g1.climbLeft();
 			assertTrue(false);
 		} catch(PreconditionError e) {
@@ -175,7 +175,7 @@ public class TestGuard {
 		env.init(h, w, es);
 		env.dig(1, 1);
 	
-		g1.init(0, 2, env, target);
+		g1.init(0, 2, env, target,false);
 		g1.goRight();
 		g1.goDown();
 		g1.climbRight();
@@ -193,7 +193,7 @@ public class TestGuard {
 		es.setNature(2, 2, Cell.MTL);
 		env.init(h, w, es);
 		env.dig(1, 1);
-		g1.init(0, 2, env, target);
+		g1.init(0, 2, env, target,false);
 		g1.goRight();
 		g1.goDown();
 		g1.climbRight();
@@ -211,7 +211,7 @@ public class TestGuard {
 		env.init(h, w, es);
 		env.dig(1, 1);
 		target.init(env, 2, 2);
-		g1.init(0, 2, env, target);
+		g1.init(0, 2, env, target,false);
 		g1.goRight();
 		g1.goDown();
 		g1.climbRight();
@@ -222,7 +222,7 @@ public class TestGuard {
 	@Test
 	public void test1ClimbRightPreNegatif() {
 		try {
-			g1.init(0, 1, env, target);
+			g1.init(0, 1, env, target,false);
 			g1.climbRight();
 			assertTrue(false);
 		} catch(PreconditionError e) {
@@ -235,7 +235,7 @@ public class TestGuard {
 	
 	@Test	
 	public void test1StepPositif() {
-		g1.init(0, 1, env, target); 
+		g1.init(0, 1, env, target,false); 
 		g1.step();
 		assertEquals(g1.getWdt(), 1);
 		g1.step();
@@ -255,7 +255,7 @@ public class TestGuard {
 		es.setNature(2, 3, Cell.MTL);
 		env.init(h, w, es);
 		target.init(env, 2, 4);
-		g1.init(0, 1, env, target); 
+		g1.init(0, 1, env, target,false); 
 		g1.step();
 		g1.step();
 		g1.step();
@@ -274,7 +274,7 @@ public class TestGuard {
 		env.init(h, w, es);
 		env.dig(1, 1);
 		target.init(env, 4, 2);
-		g1.init(0, 2, env, target);
+		g1.init(0, 2, env, target,false);
 		
 		int cmp = 0;
 		while(cmp <9) {
