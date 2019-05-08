@@ -124,6 +124,7 @@ public class TestPlayer extends AbstractJeuTest{
 		engine.init(enviContrat,player, listGuards, listTresors);
 	}
 
+	
 	@Test
 	public void testPlayerGoRightPLT() {
 

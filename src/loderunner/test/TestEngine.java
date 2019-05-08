@@ -80,7 +80,7 @@ public class TestEngine extends AbstractJeuTest{
 	}
 
 
-	/*Tests ptrconditions*/
+	/*Tests preconditions*/
 	@Test
 	public void testInitPrePositif() {
 
@@ -101,6 +101,13 @@ public class TestEngine extends AbstractJeuTest{
 		//Initialiser engine
 		engine = getEngine();
 		engine.init(enviContrat,player, listGuards, listTresors);
+		
+		assertEquals(engine.getPlayer().getWdt(), 4);
+		assertEquals(engine.getPlayer().getHgt(), 2);
+		assertEquals(engine.getGuards().get(0).getWdt(), 0);
+		assertEquals(engine.getGuards().get(0).getHgt(), 2);
+		assertEquals(engine.getPlayer().getScore(), 0);
+		
 
 	}
 
@@ -458,17 +465,32 @@ public class TestEngine extends AbstractJeuTest{
 
 	/**
 	 * Etat remarquable : le jeu est perdu car le joueur est attaqué par un guard
-	 * En initialisation, le player est en position (4,2), un seul guard est en position(0, 2)
+	 * En initialisation, le player est en position (2,2), un seul guard est en position(0, 2)
 	 * le player ne bouge pas
-	 * le guard va rattraper le joueur et le jeu est perdu
+	 * le guard va rattraper le joueur et le joueur perd une vie
+	 * et ca se passe 3 fois, le jeu est perdu
 	 */
 	@Test
 	public void testLossByGuard() {
 
-		initialisation();
+		//créer un player qui est en pos (2,2)
+		Pair<Integer, Integer> player = new Pair<Integer, Integer>(2,2);
+
+		//créer une liste de guard vide 
+		List<Triplet<Integer,Integer,Boolean>> listGuards = new ArrayList<Triplet<Integer,Integer,Boolean>> ();
+		listGuards.add(new Triplet<Integer,Integer,Boolean>(0,2,false));
+		//créer des tresors en pos (6,2)  
+		List<Pair<Integer, Integer>> listTresors = new ArrayList<Pair<Integer, Integer>> ();
+		listTresors.add(new Pair<Integer, Integer>(6,2));
+
+		//Initialiser engine
+		engine = getEngine();
+		engine.init(enviContrat,player, listGuards, listTresors);
+		engine.setEnTestMode();
+		
 		assertEquals(engine.getStatus(), Status.Playing);
 
-		for(int i = 0;i<4;i++) {
+		for(int i = 0;i<2;i++) {
 			engine.setCmd(Command.Neutral);
 			engine.step();
 		}
@@ -477,18 +499,18 @@ public class TestEngine extends AbstractJeuTest{
 		/* le guard doit revenir au pos initial et le player perd une vie */
 		assertEquals(engine.getGuards().get(0).getWdt(), 0);
 		assertEquals(engine.getGuards().get(0).getHgt(), 2);
-		assertEquals(engine.getPlayer().getWdt(), 4);
+		assertEquals(engine.getPlayer().getWdt(), 2);
 		assertEquals(engine.getPlayer().getHgt(), 2);
 		assertEquals(engine.getPlayer().getVie(), 2);
 
-		for(int i = 0;i<4;i++) {
+		for(int i = 0;i<2;i++) {
 			engine.setCmd(Command.Neutral);
 			engine.step();
 		}
 
 		assertEquals(engine.getPlayer().getVie(), 1);
 
-		for(int i = 0;i<4;i++) {
+		for(int i = 0;i<2;i++) {
 			engine.setCmd(Command.Neutral);
 			engine.step();
 		}
@@ -506,8 +528,6 @@ public class TestEngine extends AbstractJeuTest{
 
 		//créer un player qui est en position (3,2)
 		Pair<Integer, Integer> player = new Pair<Integer, Integer>(3,2);
-
-
 
 		//créer une liste vide de guard
 		List<Triplet<Integer,Integer,Boolean>> listGuards = new ArrayList<Triplet<Integer,Integer,Boolean>> ();
