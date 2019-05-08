@@ -23,6 +23,7 @@ import loderunner.services.Command;
 import loderunner.services.EngineService;
 import loderunner.services.GuardService;
 import loderunner.services.Pair;
+import loderunner.services.Status;
 
 public class TestEngine extends AbstractJeuTest{
 
@@ -40,7 +41,7 @@ public class TestEngine extends AbstractJeuTest{
 		EditableScreenImpl screen = new EditableScreenImpl();
 		EditableScreenContrat  screenContrat = new EditableScreenContrat(screen);
 
-		DrawMap.drawmap(screenContrat,"mapTestGuard.txt");
+		DrawMap.drawmap(screenContrat,"mapTestEngine.txt");
 
 		//créer un environment
 		EnvironmentImpl	envi = new EnvironmentImpl();
@@ -246,6 +247,121 @@ public class TestEngine extends AbstractJeuTest{
 
 
 	}
+	
+	/********************************Tests Etats remarquables **********************************/
+	/**
+	 *  Etat remarquable : le jeu est gagne
+	 * En initialisation, le player est en position (4,2), un seul tresor est en position(6, 2)
+	 * le player va aller a droite et recuperer le tresor
+	 */
+	@Test
+	public void testWin() {
+
+
+
+		initialisation();
+		assertEquals(engine.getStatus(), Status.Playing);
+
+		engine.setCmd(Command.Right);
+		engine.step();
+		engine.setCmd(Command.Right);
+		engine.step();
+		
+		assertEquals(engine.getEnvironment().getCellContent(6, 2).size(),2);
+
+		engine.setCmd(Command.Neutral);
+		engine.step();
+		assertEquals(engine.getStatus(), Status.Win);
+	
+		
+		assertEquals(engine.getEnvironment().getCellContent(6, 2).size(),1);
+
+
+	}
+	
+	/**
+	 * Etat remarquable : le jeu est perdu car le joueur est attaqué par un guard
+	 * En initialisation, le player est en position (4,2), un seul guard est en position(0, 2)
+	 * le player ne bouge pas
+	 * le guard va rattraper le joueur et le jeu est perdu
+	 */
+	@Test
+	public void testLossByGuard() {
+
+		initialisation();
+		assertEquals(engine.getStatus(), Status.Playing);
+		
+		for(int i = 0;i<4;i++) {
+			engine.setCmd(Command.Neutral);
+			engine.step();
+		}
+
+		
+		/* le guard doit revenir au pos initial et le player perd une vie */
+		assertEquals(engine.getGuards().get(0).getWdt(), 0);
+		assertEquals(engine.getGuards().get(0).getHgt(), 2);
+		assertEquals(engine.getPlayer().getWdt(), 4);
+		assertEquals(engine.getPlayer().getHgt(), 2);
+		assertEquals(engine.getPlayer().getVie(), 2);
+				
+		for(int i = 0;i<4;i++) {
+			engine.setCmd(Command.Neutral);
+			engine.step();
+		}
+	
+		assertEquals(engine.getPlayer().getVie(), 1);
+		
+		for(int i = 0;i<4;i++) {
+			engine.setCmd(Command.Neutral);
+			engine.step();
+		}
+
+		assertEquals(engine.getStatus(), Status.Loss);
+	}
+	
+	/*
+	 * Etat remarquable : le joueur perd une vie car il est dans un trou qui rebouche
+	 * le player est tombe dans un trou pendant 15 step, le trou est rebouche
+	 * le joueur perd une vie et revient a sa position initiale
+	 */
+	@Test
+	public void testPlayerPerdVieByTrouRebouche() {
+
+		//créer un player qui est en position (3,2)
+		PlayerImpl player = new PlayerImpl();
+		PlayerContrat playerContrat = new PlayerContrat(player);	
+		playerContrat.init(enviContrat, 3, 2);
+		
+
+		//créer une liste vide de guard
+		ArrayList<GuardService> guardsContrat = new ArrayList<GuardService>();
+		
+		//créer un tresor qui est en pos (4,2)
+		List<Pair<Integer, Integer>> listTresors = new ArrayList<Pair<Integer, Integer>> ();
+		listTresors.add(new Pair(4,2));
+
+		//Initialiser engine
+		engine = getEngine();
+		engine.init(enviContrat,playerContrat, guardsContrat, listTresors);
+		
+		engine.setCmd(Command.DigL);
+		engine.step();
+		assertEquals(engine.getEnvironment().getCellNature(2, 1), Cell.HOL);
+
+		engine.setCmd(Command.Left);
+		engine.step();
+		for(int i =0;i<14;i++) {
+			engine.setCmd(Command.Neutral);
+			engine.step();
+		}
+		assertEquals(engine.getPlayer().getVie(), 2);
+
+		assertEquals(engine.getEnvironment().getCellNature(2, 1), Cell.PLT);
+
+
+	}
+	
+	
 
 
 

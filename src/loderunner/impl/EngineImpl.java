@@ -76,6 +76,9 @@ public class EngineImpl implements EngineService {
 			int guardY_init = listGuardsInitiaux.get(index).getR();
 			guard.setPos(guardX_init, guardY_init);
 		}
+		
+		//le score gagne dans un niveau reinitialisé suite a un échec est perdu
+		
 	}
 
 	@Override
@@ -155,11 +158,11 @@ public class EngineImpl implements EngineService {
 				if(h.getFirst() == player.getWdt() && h.getSecond() == player.getHgt()) {
 					player.decreVie();
 					reinitialisePos() ;
-					
+					System.out.println("le trou rebouche, le joueur perd une vie" );
+
 					//	le jeu est perdu
 					if(player.getVie()==0) {
 						status = Status.Loss;
-						System.out.println("le joueur eÌ�tait dedans quand un trou est rebouche, le jeu est perdu." );
 					}
 				}
 

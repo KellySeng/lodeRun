@@ -36,9 +36,7 @@ public class TestPlayer extends AbstractJeuTest{
 	public void beforeTests() {
 
 		setEngine(new EngineContrat(new EngineImpl()));
-	}
-
-	public void drawMap() {
+	
 		EditableScreenImpl screen = new EditableScreenImpl();
 		EditableScreenContrat  screenContrat = new EditableScreenContrat(screen);
 
@@ -52,7 +50,7 @@ public class TestPlayer extends AbstractJeuTest{
 	}
 
 	public void initialisation() {
-		drawMap();
+		
 
 		//créer un player qui est en pos (4,2)
 		PlayerImpl player = new PlayerImpl();
@@ -79,7 +77,6 @@ public class TestPlayer extends AbstractJeuTest{
 	@Test
 	public void testInitPrePositif() {
 
-		drawMap();
 
 		//créer un player qui est en pos (4,2)
 		PlayerImpl player = new PlayerImpl();
@@ -110,7 +107,6 @@ public class TestPlayer extends AbstractJeuTest{
 	 */
 	@Test
 	public void testInitPreNegatif() {
-		drawMap();
 
 		//créer un player qui est en pos (4,1)
 		PlayerImpl player = new PlayerImpl();
