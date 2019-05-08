@@ -1,20 +1,14 @@
 package loderunner.main;
 
-
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 import loderunner.contrat.EditableScreenContrat;
-import loderunner.contrat.EngineContrat;
 import loderunner.contrat.EnvironmentContrat;
-import loderunner.impl.EditableScreenImpl;
-import loderunner.impl.EngineImpl;
-import loderunner.impl.EnvironmentImpl;
-import loderunner.impl.PlayerImpl;
-import loderunner.impl.ScreenImpl;
+import loderunner.bug.EditableScreenImpl;
+import loderunner.bug.EngineImpl;
+import loderunner.bug.EnvironmentImpl;
 import loderunner.map.DrawMap;
-import loderunner.services.Cell;
 import loderunner.services.CellContent;
 import loderunner.services.EditableScreenService;
 import loderunner.services.EngineService;
@@ -23,15 +17,15 @@ import loderunner.services.GuardService;
 import loderunner.services.ItemService;
 import loderunner.services.Pair;
 import loderunner.services.PlayerService;
-import loderunner.services.ScreenService;
 import loderunner.services.Status;
 
+//Le jeu ne termine jamais
 
-public class MainClass {
+public class MainBugClass {
 
 	public static void main(String[] args) {
 		
-		EngineService engine = new EngineContrat(new EngineImpl());
+		EngineService engine = new EngineImpl();
 		EditableScreenService screen =  new EditableScreenContrat(new EditableScreenImpl());
 		String filename = args[0];
 		DrawMap.drawmap(screen, filename);	
