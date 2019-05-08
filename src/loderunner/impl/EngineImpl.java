@@ -38,6 +38,7 @@ public class EngineImpl implements EngineService {
  	int xPlayerInit;
  	int yPlayerInit;
 	Command nextCommand;
+	boolean testMode =false;
 
 
 
@@ -47,7 +48,12 @@ public class EngineImpl implements EngineService {
 	public void setCmd(Command c) {
 		nextCommand = c;
 	}
-	
+	/**
+	 * Metrre le moteur en mode test: ca veut dire qu'on peut donner les commandes par setCmd(c)
+	 */
+	public void setEnTestMode() {
+		testMode = true;
+	}
 	
 	@Override
 	public void init(EnvironmentService env,
@@ -63,7 +69,7 @@ public class EngineImpl implements EngineService {
 		yPlayerInit = play.getR();
 		player = new PlayerImpl();
 		player.init(envi, xPlayerInit,  yPlayerInit, this);
-
+		envi.getCellContent(play.getL(), play.getR()).add(player);
 
 		guards = new ArrayList<GuardService>();
 		listGuardsInitiaux = new ArrayList<Pair<Integer,Integer>>();
@@ -72,7 +78,7 @@ public class EngineImpl implements EngineService {
 	  for(Pair<Integer,Integer> g : listGuards) {
 			GuardService guard =  new GuardImpl();
 			guard.init(g.getL(), g.getR(), env, player);
-			listGuardsInitiaux.add(new Pair(g.getL(), g.getR()));
+			listGuardsInitiaux.add(new Pair<Integer,Integer>(g.getL(), g.getR()));
 			guards.add(guard);
 			id++;
 			envi.getCellContent(g.getL(), g.getR()).add(guard);
@@ -124,10 +130,12 @@ public class EngineImpl implements EngineService {
 		
 		//le score gagne dans un niveau reinitialisé suite a un échec est perdu
 		
+		
 	}
 
 	@Override
 	public Command getNextCommand() {
+		if(!testMode) {
 				String command ;
 				Scanner scanIn = new Scanner(System.in);
 				
@@ -142,7 +150,8 @@ public class EngineImpl implements EngineService {
 				case "p" : nextCommand =   Command.DigR; break;
 				default :  nextCommand =   Command.Neutral; break;
 				}
-				
+		}
+		
 		return nextCommand;
 
 	}

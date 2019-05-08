@@ -22,7 +22,7 @@ public interface EngineService {
 	public Status getStatus();
 	
 	public Command getNextCommand();
-	
+	public void setEnTestMode() ;
 	public ArrayList<Triplet<Integer,Integer,Integer>> getHoles(); 
 	
 	

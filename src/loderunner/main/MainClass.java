@@ -33,7 +33,7 @@ public class MainClass {
 		
 		EngineService engine = new EngineImpl();
 		EditableScreenService screen =  new EditableScreenContrat(new EditableScreenImpl());
-		DrawMap.drawmap(screen, "mapTestGuard.txt");	
+		DrawMap.drawmap(screen, "mapTestEngine.txt");	
 	
 		EnvironmentService env = new EnvironmentContrat(new EnvironmentImpl());
 		env.init( screen.getHeight(),screen.getWidth(), screen);
@@ -60,7 +60,7 @@ public class MainClass {
 		}
 		
 		if(engine.getStatus() == Status.Win) {
-			System.out.println("Fin de la partie. Vous avez gagné");
+			System.out.println("Fin de la partie. Vous avez gagnï¿½");
 		}
 	}
 	

@@ -80,6 +80,12 @@ public class EngineDecorator implements EngineService{
 	}
 
 
+	@Override
+	public void setEnTestMode() {
+		delegate.setEnTestMode();		
+	}
+
+
 	
 
 }

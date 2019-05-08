@@ -2,6 +2,8 @@ package loderunner.test;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,29 +51,34 @@ public class TestEngine extends AbstractJeuTest{
 		enviContrat.init(screenContrat.getHeight(),screenContrat.getWidth(),screenContrat);
 
 	}
-
+	@Override
+	public void afterTests() {
+		enviContrat = null;
+		engine  = null;
+		
+	}
+	
+	
 	public void initialisation() {
 
 		//créer un player qui est en pos (4,2)
-		PlayerImpl player = new PlayerImpl();
-		PlayerContrat playerContrat = new PlayerContrat(player);	
-		playerContrat.init(enviContrat, 4, 2);
+		Pair<Integer, Integer> player = new Pair<Integer, Integer>(4,2);
+	
 
 
 		//créer un guard qui est en pos (0,2)
-		GuardImpl guard = new GuardImpl();
-		GuardContrat guardContrat = new GuardContrat(guard);
-		guardContrat.init( 0, 2, enviContrat, playerContrat);
-		ArrayList<GuardService> guardsContrat = new ArrayList<GuardService>();
-		guardsContrat.add(guardContrat);	
+		List<Pair<Integer, Integer>> listGuards = new ArrayList<Pair<Integer, Integer>> ();
+		listGuards.add(new Pair<Integer, Integer>(0,2));
 
 		//créer un tresor en pos(6,2)
 		List<Pair<Integer, Integer>> listTresors = new ArrayList<Pair<Integer, Integer>> ();
-		listTresors.add(new Pair(6,2));
+		listTresors.add(new Pair<Integer, Integer>(6,2));
 
 		//Initialiser engine
 		engine = getEngine();
-		engine.init(enviContrat,playerContrat, guardsContrat, listTresors);
+		engine.init(enviContrat,player, listGuards, listTresors);
+		engine.setEnTestMode();
+
 
 	}
 
@@ -80,13 +87,10 @@ public class TestEngine extends AbstractJeuTest{
 	@Test
 	public void testRamasserTresors() {
 		//créer un player qui est en pos (4,2)
-		PlayerImpl player = new PlayerImpl();
-		PlayerContrat playerContrat = new PlayerContrat(player);	
-		playerContrat.init(enviContrat, 4, 2);
-
+		Pair<Integer, Integer> player = new Pair<Integer, Integer>(4,2);
 
 		//créer une liste de guard vide 
-		ArrayList<GuardService> guardsContrat = new ArrayList<GuardService>();
+		List<Pair<Integer, Integer>> listGuards = new ArrayList<Pair<Integer, Integer>> ();
 
 		//créer des tresors en pos (3,2) (6,2) (7,2) 
 		List<Pair<Integer, Integer>> listTresors = new ArrayList<Pair<Integer, Integer>> ();
@@ -96,7 +100,8 @@ public class TestEngine extends AbstractJeuTest{
 
 		//Initialiser engine
 		engine = getEngine();
-		engine.init(enviContrat,playerContrat, guardsContrat, listTresors);
+		engine.init(enviContrat,player, listGuards, listTresors);
+		engine.setEnTestMode();
 		
 		engine.setCmd(Command.Left);
 		engine.step();
@@ -328,22 +333,22 @@ public class TestEngine extends AbstractJeuTest{
 	public void testPlayerPerdVieByTrouRebouche() {
 
 		//créer un player qui est en position (3,2)
-		PlayerImpl player = new PlayerImpl();
-		PlayerContrat playerContrat = new PlayerContrat(player);	
-		playerContrat.init(enviContrat, 3, 2);
+		Pair<Integer, Integer> player = new Pair<Integer, Integer>(3,2);
+
 		
 
 		//créer une liste vide de guard
-		ArrayList<GuardService> guardsContrat = new ArrayList<GuardService>();
+		List<Pair<Integer, Integer>> listGuards = new ArrayList<Pair<Integer, Integer>> ();
 		
 		//créer un tresor qui est en pos (4,2)
 		List<Pair<Integer, Integer>> listTresors = new ArrayList<Pair<Integer, Integer>> ();
-		listTresors.add(new Pair(4,2));
+		listTresors.add(new Pair<Integer, Integer>(4,2));
 
 		//Initialiser engine
 		engine = getEngine();
-		engine.init(enviContrat,playerContrat, guardsContrat, listTresors);
-		
+		engine.init(enviContrat,player, listGuards, listTresors);
+		engine.setEnTestMode();
+
 		engine.setCmd(Command.DigL);
 		engine.step();
 		assertEquals(engine.getEnvironment().getCellNature(2, 1), Cell.HOL);
@@ -360,8 +365,8 @@ public class TestEngine extends AbstractJeuTest{
 
 
 	}
-	
-	
+
+
 
 
 
