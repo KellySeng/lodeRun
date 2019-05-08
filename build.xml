@@ -14,7 +14,7 @@
     <!-- Create the time stamp -->
     <tstamp/>
     <!-- Create the build directory structure used by compile -->
-    <mkdir dir="${build}"/>
+    <mkdir dir="bin"/>
   </target>
 
   <target name="compile" depends="init"
