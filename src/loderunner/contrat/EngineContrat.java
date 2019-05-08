@@ -74,11 +74,7 @@ public class EngineContrat extends EngineDecorator{
 				}
 			}
 			
-			if(getPlayer().getVie() == 0) {
-				if(!(getStatus() == Status.Loss)) {
-					throw new PostconditionError("player has no life left");
-				}
-			}
+			
 
 		}
 	}
@@ -161,6 +157,12 @@ public class EngineContrat extends EngineDecorator{
 		if(getTreasures().isEmpty()) {
 			if(!(getStatus() == Status.Win)) {
 				throw new PostconditionError("Game should be Win");
+			}
+		}
+		
+		if(getPlayer().getVie() == 0) {
+			if(!(getStatus() == Status.Loss)) {
+				throw new PostconditionError("player has no life left");
 			}
 		}
 
