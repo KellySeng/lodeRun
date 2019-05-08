@@ -125,7 +125,7 @@ public class TestPlayer extends AbstractJeuTest{
 	}
 
 	@Test
-	public void testPlayerGoRightPLTPositif() {
+	public void testPlayerGoRightPLT() {
 
 
 		initialisation(); // player en position (4,2), un seul guard est en position(0, 2)
@@ -143,7 +143,7 @@ public class TestPlayer extends AbstractJeuTest{
 	 * On test le player goRight quand il est sur un handrail
 	 */
 	@Test
-	public void testPlayerGoRightHDRPositif() {
+	public void testPlayerGoRightHDR() {
 
 
 		initialisation(); // player en position (4,2), un seul guard est en position(0, 2)
@@ -176,7 +176,7 @@ public class TestPlayer extends AbstractJeuTest{
 
 
 	@Test
-	public void testPlayerGoLeftPrePositif() {
+	public void testPlayerGoLeft() {
 
 
 		initialisation();// player en position (4,2), un seul guard est en position(0, 2)
@@ -192,7 +192,7 @@ public class TestPlayer extends AbstractJeuTest{
 
 
 	@Test
-	public void testPlayerGoUpPrePositif() {
+	public void testGoUp() {
 
 		// En initiale,le player en position (4,2), un seul guard est en position(0, 2)
 		initialisation();
@@ -210,7 +210,7 @@ public class TestPlayer extends AbstractJeuTest{
 
 	}
 	@Test
-	public void testPlayerFallPrePositif() {
+	public void testPlayerFallDeHaut() {
 
 		// En initiale,le player en position (4,2), un seul guard est en position(0, 2)
 		initialisation();
@@ -236,9 +236,24 @@ public class TestPlayer extends AbstractJeuTest{
 		assertEquals(engine.getPlayer().getWdt(),1);
 
 	}
+	
+	@Test
+	public void testPlayerFallDansHole(){
+		// En initiale,le player en position (4,2), un seul guard est en position(0, 2)
+		initialisation();
+		engine.setCmd(Command.DigR);
+		engine.step();
+		engine.setCmd(Command.Right);
+		engine.step();
+		engine.setCmd(Command.Neutral);
+		engine.step();
+		assertEquals(engine.getPlayer().getWdt(),5);
+		assertEquals(engine.getPlayer().getHgt(),1);
+	
+	}
 
 	@Test
-	public void testPlayerGoDownPrePositif() {
+	public void testPlayerGoDown() {
 
 		// En initiale,le player en position (4,2), un seul guard est en position(0, 2)
 		initialisation();
@@ -265,7 +280,7 @@ public class TestPlayer extends AbstractJeuTest{
 	 * le player va aller a gauche et fait DigL, donc le guard tombe dans le trou
 	 */
 	@Test
-	public void testPlayerDigLPrePositif() {
+	public void testPlayerDigL() {
 
 		initialisation();
 		engine.setCmd(Command.Left);
@@ -283,7 +298,7 @@ public class TestPlayer extends AbstractJeuTest{
 
 	}
 	@Test
-	public void testPlayerDigRPrePositif() {
+	public void testPlayerDigR() {
 
 		initialisation();// player en position (4,2),un seul guard est en position(0, 2)
 		engine.setCmd(Command.DigR);

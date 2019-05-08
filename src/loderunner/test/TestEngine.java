@@ -29,7 +29,7 @@ public class TestEngine extends AbstractJeuTest{
 	private int playerXInit ;
 	private int playerYInit ;
 
-	
+
 	@Override
 	public void beforeTests() {
 
@@ -78,8 +78,56 @@ public class TestEngine extends AbstractJeuTest{
 
 
 	}
+
+
+	/*Tests ptrconditions*/
+	@Test
+	public void testInitPrePositif() {
+
+
+		//cr�er un player qui est en pos (4,2)
+		Pair<Integer, Integer> player = new Pair<Integer, Integer>(4,2);
+
+
+
+		//cr�er un guard qui est en pos (0,2)
+		List<Triplet<Integer,Integer,Boolean>> listGuards = new ArrayList<Triplet<Integer,Integer,Boolean>> ();
+		listGuards.add(new Triplet<Integer,Integer,Boolean>(0,2,false));
+
+		//cr�er un tresor en pos(6,2)
+		List<Pair<Integer, Integer>> listTresors = new ArrayList<Pair<Integer, Integer>> ();
+		listTresors.add(new Pair<Integer, Integer>(6,2));
+
+		//Initialiser engine
+		engine = getEngine();
+		engine.init(enviContrat,player, listGuards, listTresors);
+
+	}
+
+	/**
+	 *  pre init(S,x,y) requires Environment : :CellNature(S,x,y) = EMP
+	 *  test quand CellNature(S,x,y) = PLT
+	 */
+	@Test
+	public void testInitPreNegatif() {
+
+		//cr�er un player qui est en pos (4,1)
+		Pair<Integer, Integer> player = new Pair<Integer, Integer>(4,1);
+
+		//cr�er un guard qui est en pos (0,2)
+		List<Triplet<Integer,Integer,Boolean>> listGuards = new ArrayList<Triplet<Integer,Integer,Boolean>> ();
+		listGuards.add(new Triplet<Integer,Integer,Boolean>(0,2,false));
+
+		//cr�er un tresor en pos(6,2)
+		List<Pair<Integer, Integer>> listTresors = new ArrayList<Pair<Integer, Integer>> ();
+		listTresors.add(new Pair<Integer, Integer>(6,2));
+
+		//Initialiser engine
+		engine = getEngine();
+		engine.init(enviContrat,player, listGuards, listTresors);
+	}
+
 	/*Tests transitions*/
-	
 	@Test
 	public void testExtensionContrat() {
 		initialisation();//player est en pos (4,2), un guard en pos (0,2)
@@ -89,19 +137,21 @@ public class TestEngine extends AbstractJeuTest{
 			engine.setCmd(Command.Neutral);
 			engine.step();
 		}
-		
+
 		//guard tombe dans le trou 
 		assertEquals(engine.getGuards().get(0).getWdt(), 3);
 		assertEquals(engine.getGuards().get(0).getHgt(), 1);
-		
+
 		engine.setCmd(Command.Left);
 		engine.step();
-	
+
 		for(int i = 0; i<4;i++) {
 			engine.setCmd(Command.Neutral);
 			engine.step();
 		}
-		
+		assertEquals(engine.getGuards().get(0).getTimeInHole(), 5);
+		assertEquals(engine.getEnvironment().getCellNature(3, 1), Cell.HOL);
+
 		assertEquals(engine.getPlayer().getVie(), 2);
 		// l'eran est reinitialise
 		assertEquals(engine.getPlayer().getWdt(), playerXInit);
@@ -110,23 +160,18 @@ public class TestEngine extends AbstractJeuTest{
 		assertEquals(engine.getGuards().get(0).getHgt(), 2);
 		assertEquals(engine.getPlayer().getScore(), 0);
 
-		
-		
-		
-
-		
 	}
-	
+
 	@Test
 	public void testExtensionGuardSpecial() {
-		
+
 		//créer un player qui est en pos (4,2)
 		Pair<Integer, Integer> player = new Pair<Integer, Integer>(4,2);
 
-		//créer un guard qui peut passer au dessus des trous  en pos (0,2)
+		//créer un guard special qui peut passer au dessus des trous  en pos (1,2)
 		List<Triplet<Integer,Integer,Boolean>> listGuards = new ArrayList<Triplet<Integer,Integer,Boolean>> ();
-		listGuards.add(new Triplet<Integer,Integer,Boolean>(0,2,true));
-		
+		listGuards.add(new Triplet<Integer,Integer,Boolean>(1,2,true));
+
 		//créer des tresors en pos (6,2) 
 		List<Pair<Integer, Integer>> listTresors = new ArrayList<Pair<Integer, Integer>> ();
 		listTresors.add(new Pair<Integer, Integer>(6,2));
@@ -135,26 +180,26 @@ public class TestEngine extends AbstractJeuTest{
 		engine = getEngine();
 		engine.init(enviContrat,player, listGuards, listTresors);
 		engine.setEnTestMode();
-		
+
 		engine.setCmd(Command.DigL);
 		engine.step();
-		for(int i = 0; i<2;i++) {
-			engine.setCmd(Command.Neutral);
-			engine.step();
-		}
+		engine.setCmd(Command.Neutral);
+		engine.step();
 		assertEquals(engine.getGuards().get(0).getWdt(), 3);
 		assertEquals(engine.getGuards().get(0).getHgt(), 2);
 		assertEquals(engine.getPlayer().getWdt(), 4);
 		assertEquals(engine.getPlayer().getHgt(), 2);
 		engine.setCmd(Command.Neutral);
 		engine.step();
-		assertEquals(engine.getGuards().get(0).getWdt(), 0);
+		//le guard et player sont revenu a la position initiale
+		assertEquals(engine.getGuards().get(0).getWdt(), 1);
 		assertEquals(engine.getGuards().get(0).getHgt(), 2);
-		
+		assertEquals(engine.getEnvironment().getCellNature(3, 1), Cell.HOL);
+		assertEquals(engine.getPlayer().getVie(), 2);
 	}
 
 	@Test
-	public void testExtensionScore() {
+	public void testExtensionScoreVie() {
 
 		//créer un player qui est en pos (4,2)
 		Pair<Integer, Integer> player = new Pair<Integer, Integer>(4,2);
@@ -162,7 +207,7 @@ public class TestEngine extends AbstractJeuTest{
 		//créer un guard qui est en pos (0,2)
 		List<Triplet<Integer,Integer,Boolean>> listGuards = new ArrayList<Triplet<Integer,Integer,Boolean>> ();
 		listGuards.add(new Triplet<Integer,Integer,Boolean>(0,2,false));
-		
+
 		//créer des tresors en pos (3,2) (6,2) (7,2) 
 		List<Pair<Integer, Integer>> listTresors = new ArrayList<Pair<Integer, Integer>> ();
 		listTresors.add(new Pair<Integer, Integer>(3,2));
@@ -186,18 +231,23 @@ public class TestEngine extends AbstractJeuTest{
 		assertEquals(engine.getPlayer().getScore(), 0);
 		assertEquals(engine.getPlayer().getWdt(), 4);
 		assertEquals(engine.getPlayer().getHgt(), 2);
-		
+
 		assertEquals(engine.getGuards().get(0).getWdt(), 0);
 		assertEquals(engine.getGuards().get(0).getHgt(), 2);
 		engine.setCmd(Command.Right);
 		engine.step();
 		engine.setCmd(Command.Right);
 		engine.step();
+		engine.setCmd(Command.Right);
+		engine.step();
 		engine.setCmd(Command.Neutral);
 		engine.step();
-		assertEquals(engine.getPlayer().getScore(), 1);
+		assertEquals(engine.getPlayer().getVie(), 2);
 
-		
+		assertEquals(engine.getPlayer().getScore(), 2);
+		assertEquals(engine.getStatus(), Status.Win);
+
+
 
 
 
@@ -237,6 +287,10 @@ public class TestEngine extends AbstractJeuTest{
 		assertEquals(engine.getPlayer().getScore(), 2);
 		engine.setCmd(Command.Neutral);
 		engine.step();
+		assertEquals(engine.getEnvironment().getCellContent(3, 2).size(), 0);
+		assertEquals(engine.getEnvironment().getCellContent(6, 2).size(), 0);
+		assertEquals(engine.getEnvironment().getCellContent(7, 2).size(), 1);
+
 		assertEquals(engine.getPlayer().getScore(), 3);
 		assertEquals(engine.getStatus(), Status.Win);
 
@@ -324,7 +378,7 @@ public class TestEngine extends AbstractJeuTest{
 	}
 
 
-	
+
 	/* Test senario : le guard revient à la position initiale
 	 * au début, le player est  en position (4,2),un seul guard est en position(0, 2)
 	 * player va a gauche et fait DigL, puis il va droite et fait un DigL, puis il va droite et fait un DigL(Il a fait 3 trous au total)

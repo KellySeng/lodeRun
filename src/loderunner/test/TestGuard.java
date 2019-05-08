@@ -6,9 +6,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import loderunner.contrat.CharacterContrat;
 import loderunner.contrat.GuardContrat;
-import loderunner.contrat.PlayerContrat;
 import loderunner.contrat.PreconditionError;
 import loderunner.impl.CharacterImpl;
 import loderunner.impl.EditableScreenImpl;
@@ -19,8 +17,6 @@ import loderunner.services.CharacterService;
 import loderunner.services.EditableScreenService;
 import loderunner.services.EnvironmentService;
 import loderunner.services.GuardService;
-import loderunner.services.Move;
-import loderunner.services.PlayerService;
 
 public class TestGuard {
 	
