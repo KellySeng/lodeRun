@@ -280,7 +280,7 @@ public class TestGuard {
 	//step
 	
 	@Test	
-	public void test1StepPositif() {
+	public void test1Step() {
 		g1.init(0, 1, env, target,false); 
 		g1.step();
 		assertEquals(g1.getWdt(), 1);
@@ -289,13 +289,14 @@ public class TestGuard {
 		g1.step();
 		assertEquals(g1.getWdt(), 3);
 		g1.step();
-		assertEquals(g1.getWdt(), 4);
+		assertEquals(g1.getWdt(), target.getWdt());
+		assertEquals(g1.getHgt(), target.getHgt());
 	}
 	
 	
 	@Test	
-	public void test2StepPositif() {
-		for(int i = 1; i<w; i++) {
+	public void test2Step() {
+		for(int i = 1; i<w-1; i++) {
 			es.setNature(1, i, Cell.LAD);
 		}
 		es.setNature(2, 3, Cell.MTL);
@@ -305,9 +306,10 @@ public class TestGuard {
 		g1.step();
 		g1.step();
 		g1.step();
-		g1.step();		
-		assertEquals(g1.getWdt(), 1);
-		assertEquals(g1.getHgt(), 4);
+		g1.step();
+		g1.step();
+		assertEquals(g1.getWdt(), target.getWdt());
+		assertEquals(g1.getHgt(), target.getHgt());
 	}
 	
 }

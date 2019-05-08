@@ -344,12 +344,14 @@ public class GuardContrat extends GuardDecorator{
 			}
 		}
 
-
-		Set<CellContent> setHaut =  getEnvi().getCellContent(getWdt(), getHgt()+1);
 		boolean haveGuardEnHaut = false;
-		for(CellContent c : setHaut) {
-			if(c instanceof CharacterService) {
-				haveGuardEnHaut = true;
+		if(getHgt()< getEnvi().getHeight()-1) {
+			Set<CellContent> setHaut =  getEnvi().getCellContent(getWdt(), getHgt()+1);
+			
+			for(CellContent c : setHaut) {
+				if(c instanceof CharacterService) {
+					haveGuardEnHaut = true;
+				}
 			}
 		}
 
@@ -367,9 +369,11 @@ public class GuardContrat extends GuardDecorator{
 
 		Set<CellContent> setDroite =  getEnvi().getCellContent(getWdt()+1, getHgt());
 		boolean haveCharacterEnDroite = false;
-		for(CellContent c : setDroite) {
-			if(c instanceof CharacterService) {
-				haveCharacterEnDroite = true;
+		if(getWdt()< getEnvi().getWidth()-1) {
+			for(CellContent c : setDroite) {
+				if(c instanceof CharacterService) {
+					haveCharacterEnDroite = true;
+				}
 			}
 		}
 		int hgt_pre = getHgt();
