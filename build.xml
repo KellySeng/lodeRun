@@ -57,7 +57,7 @@
 	    <echo>================ Run testScreen ================</echo>
 	    <junit printsummary="yes">
 	      <classpath>
-	        <pathelement location="${build}"/>
+	        <pathelement location="bin"/>
 	        <pathelement location="jars/junit.jar"/>
 	      </classpath>
 
@@ -72,7 +72,7 @@
 		    <echo>================ Run testEditableScreen ================</echo>
 		    <junit printsummary="yes">
 		      <classpath>
-		        <pathelement location="${build}"/>
+		        <pathelement location="bin"/>
 		        <pathelement location="jars/junit.jar"/>
 		      </classpath>
 
@@ -88,13 +88,13 @@
 				    <echo>================ Run testEnvironment ================</echo>
 				    <junit printsummary="yes">
 				      <classpath>
-				        <pathelement location="${build}"/>
+				         <pathelement location="bin"/>
 				        <pathelement location="jars/junit.jar"/>
 				      </classpath>
 
 				      <formatter type="plain"/>
 
-				      <test name="loderunner.test.TestEnvironment "/>
+				      <test name="loderunner.test.TestEnvironment"/>
 
 				    </junit>
 			</target>
@@ -103,7 +103,7 @@
 			    <echo>================ Run testCharacter================</echo>
 			    <junit printsummary="yes">
 			      <classpath>
-			        <pathelement location="${build}"/>
+			       	<pathelement location="bin"/>
 			        <pathelement location="jars/junit.jar"/>
 			      </classpath>
 
@@ -118,7 +118,7 @@
 			    <echo>================ Run testPlayer================</echo>
 			    <junit printsummary="yes">
 			      <classpath>
-			        <pathelement location="${build}"/>
+			        <pathelement location="bin"/>
 			        <pathelement location="jars/junit.jar"/>
 			      </classpath>
 
@@ -134,7 +134,7 @@
 				    <echo>================ Run testGuard================</echo>
 				    <junit printsummary="yes">
 				      <classpath>
-				        <pathelement location="${build}"/>
+				        <pathelement location="bin"/>
 				        <pathelement location="jars/junit.jar"/>
 				      </classpath>
 
@@ -149,7 +149,7 @@
 				    <echo>================ Run testEngine================</echo>
 				    <junit printsummary="yes">
 				      <classpath>
-				        <pathelement location="${build}"/>
+				        <pathelement location="bin"/>
 				        <pathelement location="jars/junit.jar"/>
 				      </classpath>
 
